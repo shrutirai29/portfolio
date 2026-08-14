@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Loading from './components/Loading.jsx';
 import World from './components/World.jsx';
 import ProjectDetail from './components/ProjectDetail.jsx';
@@ -9,14 +9,44 @@ function getRoute() {
   return m ? { page: 'project', index: m[1] } : { page: 'home' };
 }
 
+// Which scene is the current scroll position in, and how far into it?
+// Stored scene-relative so the restore survives viewport changes (pin
+// spacers resize with the viewport, so absolute Y values go stale).
+function captureJourneyPosition() {
+  const y = window.scrollY;
+  const scenes = [...document.querySelectorAll('[data-scene]')];
+  let scene = scenes[0] ? scenes[0].getAttribute('data-scene') : null;
+  let offset = 0;
+  for (const s of scenes) {
+    const top = s.getBoundingClientRect().top + y;
+    if (top <= y + 10) {
+      scene = s.getAttribute('data-scene');
+      offset = Math.max(0, y - top);
+    } else {
+      break;
+    }
+  }
+  return { scene, offset };
+}
+
 export default function App({ lenis }) {
   const [ready, setReady] = useState(false);
   const [route, setRoute] = useState(getRoute);
+  const [returnInfo, setReturnInfo] = useState(null);
+  const routeRef = useRef(route);
 
   useEffect(() => {
     const onHash = () => {
-      setRoute(getRoute());
-      window.scrollTo(0, 0);
+      const next = getRoute();
+      if (next.page === 'project' && routeRef.current.page === 'home') {
+        // Remember where the journey was when leaving for a project page.
+        setReturnInfo(captureJourneyPosition());
+        window.scrollTo(0, 0);
+      } else if (next.page === 'home') {
+        window.scrollTo(0, 0);
+      }
+      routeRef.current = next;
+      setRoute(next);
     };
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
@@ -47,7 +77,7 @@ export default function App({ lenis }) {
       </div>
 
       {!ready && <Loading onDone={handleReady} />}
-      {ready && <World />}
+      {ready && <World lenis={lenis} returnInfo={returnInfo} />}
     </>
   );
 }

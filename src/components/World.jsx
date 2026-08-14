@@ -21,8 +21,9 @@ function originAt(container, el) {
   return `${(((e.left + e.width / 2 - c.left) / c.width) * 100).toFixed(2)}% ${(((e.top + e.height / 2 - c.top) / c.height) * 100).toFixed(2)}%`;
 }
 
-export default function World() {
+export default function World({ lenis, returnInfo }) {
   const rootRef = useRef(null);
+  const restoredRef = useRef(false);
   const [buildKey, setBuildKey] = useState(0);
 
   // Rebuild when the viewport size changes meaningfully, so focal points
@@ -47,9 +48,6 @@ export default function World() {
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-
-    // Always start the journey at S.R.
-    window.scrollTo(0, 0);
 
     const isMobile = window.innerWidth <= 768;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -349,6 +347,38 @@ export default function World() {
 
       if (import.meta.env.DEV) {
         window.__journey = { sts: ScrollTrigger.getAll() };
+      }
+
+      // Restore the journey position once (first build) when returning from a
+      // project page. The position is scene-relative, and the scene top is
+      // re-measured here — after pins/spacers exist — so it stays exact even
+      // if the viewport changed between visits. A rAF keeps us after Lenis's
+      // own sync, and force bypasses Lenis if it is stopped/locked.
+      if (!restoredRef.current) {
+        restoredRef.current = true;
+        if (returnInfo && returnInfo.scene) {
+          const el = q(root, `[data-scene="${returnInfo.scene}"]`);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            const top = rect.top + window.scrollY;
+            const maxOffset = Math.max(0, rect.height - window.innerHeight);
+            const target = top + Math.min(returnInfo.offset || 0, maxOffset);
+            requestAnimationFrame(() => {
+              if (lenis) {
+                // Lenis caches document dimensions, but this fresh mount just
+                // inserted pin spacers — force a re-measure or scrollTo will
+                // clamp against the stale (tiny) limit.
+                lenis.resize();
+                lenis.scrollTo(target, { immediate: true, force: true });
+              } else {
+                window.scrollTo(0, target);
+              }
+              ScrollTrigger.update();
+            });
+          }
+        } else {
+          window.scrollTo(0, 0);
+        }
       }
     }, root);
 
