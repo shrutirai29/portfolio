@@ -2,35 +2,10 @@
    SHRUTI RAI — CINEMATIC EDITORIAL PORTFOLIO
    Palette derived from the provided background image
    (deep indigo / violet night — sampled from background.png)
-   Type: Cassandra (headings) × Beautiful People (labels)
-         × Vacations in Paradise (identity marks) × Manrope (body)
+   Type: Playfair Display (display serif) × Manrope (body)
+   Layout: normal flowing sections — the glass break and the
+   zoom into the A are the only pinned/scrubbed moments.
    ============================================================ */
-
-/* Billy Argel Fonts — free for personal use only.
-   Commercial use requires a license from billyargel.com. */
-@font-face {
-  font-family: 'Cassandra';
-  src: url('/fonts/cassandra.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Beautiful People';
-  src: url('/fonts/beautiful-people.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Vacations in Paradise';
-  src: url('/fonts/vacations-in-paradise.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
 
 :root {
   /* --- image-derived palette (sampled from background.png) --- */
@@ -50,9 +25,9 @@
   --green: #4ade9b;
   --green-soft: rgba(74, 222, 155, 0.14);
   --line: rgba(236, 232, 248, 0.1);
-  --font-hero: 'Cassandra', 'Brush Script MT', cursive;
-  --font-script: 'Beautiful People', 'Cassandra', cursive;
-  --font-script-2: 'Vacations in Paradise', 'Cassandra', cursive;
+  --font-hero: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-script: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-script-2: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-body: 'Manrope', system-ui, -apple-system, sans-serif;
 }
 
@@ -78,7 +53,7 @@ body.locked {
 
 .font-hero {
   font-family: var(--font-hero);
-  font-weight: 400;
+  font-weight: 500;
 }
 
 ::selection {
@@ -96,17 +71,21 @@ img {
   max-width: 100%;
 }
 
+/* Playfair italic for editorial accent words (Tech <em>Stack</em> …) */
 em {
-  font-style: normal;
+  font-style: italic;
 }
 
-/* Shared editorial micro-label */  .kicker {
-    display: block;
-    font-family: var(--font-script);
-    font-size: 14px;
-    letter-spacing: 0.05em;
-    color: var(--accent-soft);
-  }
+/* Shared editorial micro-label — small tracked uppercase sans */
+.kicker {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
 
 /* ------------------------------------------------------------
    Fixed UI: brand, journey progress
@@ -124,16 +103,17 @@ em {
 }
 
 .brand-mark {
-  font-family: var(--font-script-2);
-  font-size: 24px;
-  letter-spacing: 0.06em;
+  font-family: var(--font-hero);
+  font-size: 22px;
+  letter-spacing: 0.18em;
   color: var(--ink-2);
 }
 
 .brand-tag {
-  font-family: var(--font-script);
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
   color: var(--faint);
 }
 
@@ -179,9 +159,10 @@ em {
 }
 
 .loader-mark {
-  font-family: var(--font-script-2);
-  font-size: 76px;
-  letter-spacing: 0.05em;
+  font-family: var(--font-hero);
+  font-size: 64px;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
   color: var(--ink);
 }
 
@@ -208,22 +189,16 @@ em {
 }
 
 /* ------------------------------------------------------------
-   World / camera / background
+   World — normal document flow; the backdrop stays fixed
+   behind the scrolling journey.
    ------------------------------------------------------------ */
 
-.scroll-spacer {
+.world {
   position: relative;
 }
 
-.world {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  z-index: 10;
-}
-
 .world-backdrop {
-  position: absolute;
+  position: fixed;
   inset: -8%;
   z-index: 0;
   background-position: center;
@@ -237,7 +212,7 @@ em {
 
 /* dark atmospheric veil so content stays readable over the image */
 .world-shade {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
@@ -248,39 +223,35 @@ em {
     ),
     linear-gradient(
       180deg,
-      rgba(6, 6, 15, 0.8),
-      rgba(6, 6, 15, 0.5) 36%,
-      rgba(6, 6, 15, 0.56) 64%,
-      rgba(6, 6, 15, 0.86)
+      rgba(6, 6, 15, 0.82),
+      rgba(6, 6, 15, 0.52) 36%,
+      rgba(6, 6, 15, 0.58) 64%,
+      rgba(6, 6, 15, 0.88)
     );
 }
 
 .camera {
-  position: absolute;
-  inset: 0;
+  position: relative;
   z-index: 2;
 }
 
 .scene {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.scene[data-scene='sr'] {
+  position: relative;
+  min-height: 100vh;
   opacity: 1;
 }
 
 .stage {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   will-change: transform, opacity;
 }
 
 .scene-content {
-  position: absolute;
-  inset: 0;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,12 +282,16 @@ em {
   flex-direction: column;
   gap: 0;
   text-align: center;
+  padding: 14vh 6vw;
 }
 
 .sr-eyebrow {
-  font-family: var(--font-script);
-  font-size: 15px;
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.44em;
+  text-indent: 0.44em;
+  text-transform: uppercase;
   color: var(--accent-soft);
   margin-bottom: 3.5vh;
 }
@@ -339,9 +314,10 @@ em {
 
 .sr-caption {
   margin: 2.6vh 0 0;
-  font-family: var(--font-script);
-  font-size: clamp(16px, 1.8vw, 21px);
-  letter-spacing: 0.04em;
+  font-family: var(--font-hero);
+  font-style: italic;
+  font-size: clamp(17px, 1.9vw, 23px);
+  letter-spacing: 0.01em;
   color: var(--muted);
 }
 
@@ -358,9 +334,11 @@ em {
 }
 
 .scroll-hint-label {
-  font-family: var(--font-script);
-  font-size: 12px;
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
   color: var(--faint);
 }
 
@@ -485,6 +463,7 @@ em {
   flex-direction: column;
   gap: 0.06em;
   z-index: 2;
+  padding: 0 4vw;
 }
 
 .name-row {
@@ -530,15 +509,17 @@ em {
   right: 0;
   text-align: center;
   z-index: 2;
-  font-family: var(--font-script);
-  font-size: clamp(15px, 1.6vw, 18px);
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  font-size: clamp(10px, 1.1vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  text-transform: uppercase;
   color: var(--muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.4em;
-  opacity: 0;
+  gap: 1.6em;
 }
 
 .name-caption-dot {
@@ -555,6 +536,7 @@ em {
 
 .about-content {
   align-items: center;
+  padding: 14vh 5vw;
 }
 
 .about-grid {
@@ -599,9 +581,11 @@ em {
 }
 
 .photo-caption {
-  font-family: var(--font-script);
-  font-size: 14px;
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
   color: var(--muted);
 }
 
@@ -698,46 +682,31 @@ em {
 }
 
 /* ------------------------------------------------------------
-   Scene 4 · Tech Stack — kinetic rails
+   Scene 4 · Tech Stack — editorial capability index (OKC style)
    ------------------------------------------------------------ */
 
 .tech-head {
-  position: absolute;
-  top: 8vh;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   text-align: center;
+  margin: 12vh auto 0;
   z-index: 3;
   will-change: clip-path;
 }
 
 .tech-title {
-  margin: 10px 0 0;
+  margin: 12px 0 0;
   font-size: clamp(44px, 6vw, 88px);
   line-height: 1;
   color: var(--ink);
 }
 
 .tech-title em {
-  font-family: var(--font-script);
   color: var(--accent-strong);
 }
 
-.tech-rails {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(16px, 3.2vh, 30px);
-  z-index: 2;
-}
-
 .cap-index {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  margin: clamp(40px, 7vh, 72px) auto clamp(14vh, 18vh, 160px);
   width: min(1120px, 92vw);
   display: flex;
   flex-direction: column;
@@ -756,9 +725,12 @@ em {
 }
 
 .cap-label {
-  font-family: var(--font-script);
-  font-size: 14px;
-  letter-spacing: 0.04em;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  text-transform: uppercase;
   color: var(--muted);
   white-space: nowrap;
 }
@@ -801,28 +773,25 @@ em {
 }
 
 /* ------------------------------------------------------------
-   Scene 5 · Projects — editorial index
+   Scene 5 · Projects — editorial index (Studio Foundry style)
    ------------------------------------------------------------ */
 
 .film-head {
-  position: absolute;
-  top: 7.5vh;
-  left: 0;
-  right: 0;
+  position: relative;
   text-align: center;
+  margin: 12vh auto 0;
   z-index: 3;
   will-change: clip-path;
 }
 
 .film-title {
-  margin: 10px 0 0;
+  margin: 12px 0 0;
   font-size: clamp(44px, 5.6vw, 80px);
   line-height: 1;
   color: var(--ink);
 }
 
 .film-title em {
-  font-family: var(--font-script);
   color: var(--accent-strong);
 }
 
@@ -835,10 +804,8 @@ em {
 }
 
 .proj-stats {
-  position: absolute;
-  top: 15.5vh;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin: clamp(40px, 7vh, 64px) auto 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: clamp(14px, 3vw, 48px);
@@ -867,10 +834,8 @@ em {
 }
 
 .proj-index {
-  position: absolute;
-  top: 31vh;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin: clamp(36px, 6vh, 56px) auto clamp(14vh, 18vh, 160px);
   width: min(1080px, 90vw);
   z-index: 2;
   display: flex;
@@ -920,9 +885,10 @@ em {
 }
 
 .proj-tag {
-  font-family: var(--font-script);
-  font-size: 14px;
-  letter-spacing: 0.04em;
+  font-family: var(--font-hero);
+  font-style: italic;
+  font-size: clamp(13px, 1.3vw, 16px);
+  letter-spacing: 0.02em;
   color: var(--accent);
 }
 
@@ -995,24 +961,21 @@ em {
    ------------------------------------------------------------ */
 
 .scrap-head {
-  position: absolute;
-  top: 7vh;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   text-align: center;
+  margin: 12vh auto 0;
   z-index: 3;
   will-change: clip-path;
 }
 
 .scrap-title {
-  margin: 10px 0 0;
+  margin: 12px 0 0;
   font-size: clamp(44px, 5.6vw, 80px);
   line-height: 1;
   color: var(--ink);
 }
 
 .scrap-title em {
-  font-family: var(--font-script);
   color: var(--accent-strong);
 }
 
@@ -1024,16 +987,15 @@ em {
 }
 
 .scrap-collage {
-  position: absolute;
-  inset: 0;
+  position: relative;
   display: grid;
   grid-template-columns: minmax(250px, 330px) 1fr 1fr;
   grid-template-rows: repeat(3, 1fr);
   gap: clamp(12px, 1.5vw, 20px);
   place-content: center;
   width: min(1120px, 92vw);
-  margin: auto;
-  padding-top: 7vh;
+  margin: clamp(36px, 6vh, 56px) auto clamp(14vh, 18vh, 160px);
+  padding-top: 4vh;
   z-index: 2;
 }
 
@@ -1133,9 +1095,11 @@ em {
 }
 
 .scrap-note {
-  font-family: var(--font-script);
-  font-size: 14px;
-  letter-spacing: 0.04em;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
   color: var(--muted);
   text-align: center;
   white-space: nowrap;
@@ -1213,15 +1177,14 @@ em {
    ------------------------------------------------------------ */
 
 .final-content {
-  position: absolute;
-  inset: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   z-index: 2;
-  padding: 0 5vw;
+  padding: 14vh 5vw;
 }
 
 .final-kicker {
@@ -1238,15 +1201,17 @@ em {
 }
 
 .final-title em {
-  font-family: var(--font-script);
   color: var(--accent-strong);
 }
 
 .final-sub {
   margin: 2.4vh 0 0;
-  font-family: var(--font-script);
-  font-size: clamp(15px, 1.6vw, 19px);
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  font-size: clamp(10px, 1.1vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  text-transform: uppercase;
   color: var(--accent-soft);
   white-space: nowrap;
 }
@@ -1307,9 +1272,10 @@ em {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-script-2);
-  font-size: clamp(24px, 2.8vw, 32px);
-  letter-spacing: 0.04em;
+  font-family: var(--font-hero);
+  font-size: clamp(22px, 2.6vw, 30px);
+  letter-spacing: 0.18em;
+  text-indent: 0.18em;
   color: var(--accent-strong);
   border: 1px solid rgba(185, 168, 230, 0.38);
   background: radial-gradient(circle at 50% 38%, rgba(185, 168, 230, 0.18), transparent 72%);
@@ -1390,22 +1356,23 @@ em {
 
 .final-foot {
   margin: 3.5vh 0 0;
-  font-family: var(--font-script);
-  font-size: 13px;
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
   color: var(--muted);
 }
 
 /* The closing bookend — small S.R., echoing the opening reveal */
 .final-mark {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-script-2);
+  position: relative;
+  text-align: center;
+  padding: 4vh 0 14vh;
+  font-family: var(--font-hero);
   font-size: clamp(24px, 3vw, 36px);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.18em;
+  text-indent: 0.18em;
   color: var(--ink-2);
   z-index: 8;
   pointer-events: none;
@@ -1484,7 +1451,6 @@ em {
 
   /* projects index */
   .proj-stats {
-    top: 8vh;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
     width: 88vw;
@@ -1500,7 +1466,6 @@ em {
   }
 
   .proj-index {
-    top: 22vh;
     width: 90vw;
   }
 
@@ -1519,7 +1484,7 @@ em {
   }
 
   .proj-tag {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .proj-body {
@@ -1547,8 +1512,7 @@ em {
     grid-template-rows: none;
     gap: 14px;
     width: min(560px, 90vw);
-    padding-top: 8vh;
-    overflow-y: hidden;
+    padding-top: 6vh;
   }
 
   .scrap-anime {
