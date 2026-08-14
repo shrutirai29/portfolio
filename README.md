@@ -32,7 +32,7 @@ Every transition is a camera move on a single GSAP ScrollTrigger timeline — fu
 - **GSAP + ScrollTrigger** — one scrubbed master timeline drives the entire camera journey (Lenis-synced)
 - **Lenis** — smooth inertial scrolling
 - **React + Vite** — component-per-scene, no unnecessary re-renders
-- Fonts: **Bodoni Moda** (editorial display serif) × **Manrope** (body)
+- Fonts (self-hosted in `public/fonts`): **Cassandra** — headings · **Beautiful People** — labels & captions · **Vacations in Paradise** — the S.R. identity marks · **Manrope** — body. All three Billy Argel script fonts are **free for personal use only**; commercial use requires a license from [billyargel.com](https://billyargel.com)
 - The whole palette is **derived from the provided background image** (deep indigo / violet night) — see `scripts/sample-colors.mjs`
 - Images optimized to WebP (originals kept as source assets)
 

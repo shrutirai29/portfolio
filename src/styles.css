@@ -2,8 +2,35 @@
    SHRUTI RAI — CINEMATIC EDITORIAL PORTFOLIO
    Palette derived from the provided background image
    (deep indigo / violet night — sampled from background.png)
-   Bodoni Moda (display serif) × Manrope (body)
+   Type: Cassandra (headings) × Beautiful People (labels)
+         × Vacations in Paradise (identity marks) × Manrope (body)
    ============================================================ */
+
+/* Billy Argel Fonts — free for personal use only.
+   Commercial use requires a license from billyargel.com. */
+@font-face {
+  font-family: 'Cassandra';
+  src: url('/fonts/cassandra.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Beautiful People';
+  src: url('/fonts/beautiful-people.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Vacations in Paradise';
+  src: url('/fonts/vacations-in-paradise.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* --- image-derived palette (sampled from background.png) --- */
@@ -23,7 +50,9 @@
   --green: #4ade9b;
   --green-soft: rgba(74, 222, 155, 0.14);
   --line: rgba(236, 232, 248, 0.1);
-  --font-hero: 'Bodoni Moda', 'Didot', 'Playfair Display', Georgia, serif;
+  --font-hero: 'Cassandra', 'Brush Script MT', cursive;
+  --font-script: 'Beautiful People', 'Cassandra', cursive;
+  --font-script-2: 'Vacations in Paradise', 'Cassandra', cursive;
   --font-body: 'Manrope', system-ui, -apple-system, sans-serif;
 }
 
@@ -50,7 +79,6 @@ body.locked {
 .font-hero {
   font-family: var(--font-hero);
   font-weight: 400;
-  font-optical-sizing: auto;
 }
 
 ::selection {
@@ -69,19 +97,16 @@ img {
 }
 
 em {
-  font-style: italic;
+  font-style: normal;
 }
 
-/* Shared editorial micro-label */
-.kicker {
-  display: block;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.5em;
-  text-indent: 0.5em;
-  color: var(--faint);
-  text-transform: uppercase;
-}
+/* Shared editorial micro-label */  .kicker {
+    display: block;
+    font-family: var(--font-script);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    color: var(--accent-soft);
+  }
 
 /* ------------------------------------------------------------
    Fixed UI: brand, journey progress
@@ -99,16 +124,16 @@ em {
 }
 
 .brand-mark {
-  font-family: var(--font-hero);
-  font-size: 21px;
-  letter-spacing: 0.32em;
+  font-family: var(--font-script-2);
+  font-size: 24px;
+  letter-spacing: 0.06em;
   color: var(--ink-2);
 }
 
 .brand-tag {
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.34em;
+  font-family: var(--font-script);
+  font-size: 13px;
+  letter-spacing: 0.04em;
   color: var(--faint);
 }
 
@@ -154,11 +179,10 @@ em {
 }
 
 .loader-mark {
-  font-size: 64px;
-  letter-spacing: 0.24em;
-  text-indent: 0.24em;
+  font-family: var(--font-script-2);
+  font-size: 76px;
+  letter-spacing: 0.05em;
   color: var(--ink);
-  font-style: italic;
 }
 
 .loader-bar {
@@ -290,19 +314,18 @@ em {
 }
 
 .sr-eyebrow {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.6em;
-  text-indent: 0.6em;
-  color: var(--faint);
+  font-family: var(--font-script);
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  color: var(--accent-soft);
   margin-bottom: 3.5vh;
 }
 
 .sr-title {
   margin: 0;
   font-size: clamp(120px, 25vw, 400px);
-  line-height: 0.95;
-  letter-spacing: 0.06em;
+  line-height: 1;
+  letter-spacing: 0.02em;
   color: var(--ink);
   text-shadow: 0 0 60px rgba(185, 168, 230, 0.2), 0 0 140px rgba(185, 168, 230, 0.09);
 }
@@ -315,9 +338,10 @@ em {
 }
 
 .sr-caption {
-  margin: 2.4vh 0 0;
-  font-size: clamp(11px, 1.2vw, 13px);
-  letter-spacing: 0.18em;
+  margin: 2.6vh 0 0;
+  font-family: var(--font-script);
+  font-size: clamp(16px, 1.8vw, 21px);
+  letter-spacing: 0.04em;
   color: var(--muted);
 }
 
@@ -334,10 +358,9 @@ em {
 }
 
 .scroll-hint-label {
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.5em;
-  text-indent: 0.5em;
+  font-family: var(--font-script);
+  font-size: 12px;
+  letter-spacing: 0.05em;
   color: var(--faint);
 }
 
@@ -466,8 +489,8 @@ em {
 
 .name-row {
   display: flex;
-  gap: 0.045em;
-  line-height: 1.02;
+  gap: 0.02em;
+  line-height: 1.05;
   white-space: nowrap;
 }
 
@@ -507,9 +530,9 @@ em {
   right: 0;
   text-align: center;
   z-index: 2;
-  font-size: clamp(9px, 1.1vw, 12px);
-  font-weight: 500;
-  letter-spacing: 0.34em;
+  font-family: var(--font-script);
+  font-size: clamp(15px, 1.6vw, 18px);
+  letter-spacing: 0.05em;
   color: var(--muted);
   display: flex;
   align-items: center;
@@ -576,9 +599,10 @@ em {
 }
 
 .photo-caption {
-  font-size: 9px;
-  letter-spacing: 0.42em;
-  color: var(--faint);
+  font-family: var(--font-script);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
 }
 
 .about-side {
@@ -695,6 +719,7 @@ em {
 }
 
 .tech-title em {
+  font-family: var(--font-script);
   color: var(--accent-strong);
 }
 
@@ -724,13 +749,12 @@ em {
 }
 
 .rail-label {
-  min-width: clamp(100px, 13vw, 170px);
+  min-width: clamp(110px, 14vw, 180px);
   text-align: right;
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.32em;
-  text-indent: 0.32em;
-  color: var(--faint);
+  font-family: var(--font-script);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
   white-space: nowrap;
 }
 
@@ -778,9 +802,8 @@ em {
   justify-content: center;
   font-size: 34vh;
   line-height: 1;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   color: rgba(185, 168, 230, 0.05);
-  font-style: italic;
   z-index: 1;
   pointer-events: none;
 }
@@ -807,6 +830,7 @@ em {
 }
 
 .film-title em {
+  font-family: var(--font-script);
   color: var(--accent-strong);
 }
 
@@ -942,8 +966,7 @@ em {
   right: 2%;
   font-size: clamp(70px, 9vw, 130px);
   line-height: 1;
-  font-style: italic;
-  color: rgba(185, 168, 230, 0.14);
+  color: rgba(185, 168, 230, 0.16);
   pointer-events: none;
 }
 
@@ -951,9 +974,10 @@ em {
   position: absolute;
   bottom: 7%;
   left: 4%;
-  font-size: 9px;
-  letter-spacing: 0.42em;
-  color: var(--faint);
+  font-family: var(--font-script);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
 }
 
 .film-meta {
@@ -965,10 +989,9 @@ em {
 }
 
 .film-tag {
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
+  font-family: var(--font-script);
+  font-size: 15px;
+  letter-spacing: 0.04em;
   color: var(--accent);
 }
 
@@ -1041,6 +1064,7 @@ em {
 }
 
 .scrap-title em {
+  font-family: var(--font-script);
   color: var(--accent-strong);
 }
 
@@ -1161,10 +1185,10 @@ em {
 }
 
 .scrap-note {
-  font-size: 8px;
-  letter-spacing: 0.42em;
-  text-indent: 0.42em;
-  color: var(--faint);
+  font-family: var(--font-script);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
   text-align: center;
   white-space: nowrap;
 }
@@ -1196,8 +1220,7 @@ em {
   right: 14px;
   font-size: 30px;
   line-height: 1;
-  font-style: italic;
-  color: rgba(185, 168, 230, 0.24);
+  color: rgba(185, 168, 230, 0.26);
   pointer-events: none;
 }
 
@@ -1232,7 +1255,6 @@ em {
   justify-content: center;
   font-size: 38vh;
   line-height: 1;
-  font-style: italic;
   color: rgba(185, 168, 230, 0.05);
   z-index: 1;
   pointer-events: none;
@@ -1268,16 +1290,16 @@ em {
 }
 
 .final-title em {
+  font-family: var(--font-script);
   color: var(--accent-strong);
 }
 
 .final-sub {
-  margin: 2.2vh 0 0;
-  font-size: clamp(9px, 1.05vw, 12px);
-  font-weight: 500;
-  letter-spacing: 0.4em;
-  text-indent: 0.4em;
-  color: var(--muted);
+  margin: 2.4vh 0 0;
+  font-family: var(--font-script);
+  font-size: clamp(15px, 1.6vw, 19px);
+  letter-spacing: 0.05em;
+  color: var(--accent-soft);
   white-space: nowrap;
 }
 
@@ -1332,14 +1354,14 @@ em {
 
 .signal-core {
   position: absolute;
-  inset: 36%;
+  inset: 34%;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(16px, 2vw, 24px);
-  letter-spacing: 0.2em;
-  text-indent: 0.2em;
+  font-family: var(--font-script-2);
+  font-size: clamp(24px, 2.8vw, 32px);
+  letter-spacing: 0.04em;
   color: var(--accent-strong);
   border: 1px solid rgba(185, 168, 230, 0.38);
   background: radial-gradient(circle at 50% 38%, rgba(185, 168, 230, 0.18), transparent 72%);
@@ -1420,10 +1442,10 @@ em {
 
 .final-foot {
   margin: 3.5vh 0 0;
-  font-size: 9px;
-  letter-spacing: 0.3em;
-  text-indent: 0.3em;
-  color: var(--faint);
+  font-family: var(--font-script);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
 }
 
 /* The closing bookend — small S.R., echoing the opening reveal */
@@ -1433,9 +1455,9 @@ em {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(20px, 2.6vw, 32px);
-  letter-spacing: 0.5em;
-  text-indent: 0.5em;
+  font-family: var(--font-script-2);
+  font-size: clamp(24px, 3vw, 36px);
+  letter-spacing: 0.05em;
   color: var(--ink-2);
   z-index: 8;
   pointer-events: none;
