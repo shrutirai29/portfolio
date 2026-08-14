@@ -3,8 +3,8 @@
    Palette derived from the provided background image
    (deep indigo / violet night — sampled from background.png)
    Type: Playfair Display (display serif) × Manrope (body)
-   Layout: normal flowing sections — the glass break and the
-   zoom into the A are the only pinned/scrubbed moments.
+   Layout: normal flowing sections — the zoom into the A is the
+   only pinned/scrubbed moment.
    ============================================================ */
 
 :root {
@@ -362,89 +362,6 @@ em {
     transform-origin: top;
     opacity: 1;
   }
-}
-
-/* ------------------------------------------------------------
-   Glass layer — exists ONLY during the S.R. → name transition.
-   The whole sr scene (including this layer) is removed after the
-   shatter, so no crack/fragment can ever persist.
-   ------------------------------------------------------------ */
-
-.glass-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 30;
-  pointer-events: none;
-  overflow: hidden;
-  will-change: opacity;
-}
-
-.glass-sheen {
-  position: absolute;
-  inset: -40%;
-  background: linear-gradient(
-    115deg,
-    transparent 42%,
-    rgba(216, 204, 246, 0.07) 46%,
-    rgba(216, 204, 246, 0.13) 50%,
-    rgba(216, 204, 246, 0.07) 54%,
-    transparent 58%
-  );
-  pointer-events: none;
-}
-
-.glass-cracks {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-
-.crack-path {
-  fill: none;
-  stroke-linecap: round;
-}
-
-/* radial fractures (running away from the impact) read brightest */
-.crack-path[data-tier='r'] {
-  stroke: rgba(236, 232, 248, 0.5);
-  stroke-width: 0.3;
-}
-
-/* short cross-edges between fracture lines are faint stress cracks */
-.crack-path[data-tier='c'] {
-  stroke: rgba(236, 232, 248, 0.13);
-  stroke-width: 0.13;
-}
-
-.glass-shock {
-  position: absolute;
-  left: var(--ix, 50%);
-  top: var(--iy, 50%);
-  width: 70px;
-  height: 70px;
-  transform: translate(-50%, -50%) scale(0);
-  border: 2px solid rgba(216, 204, 246, 0.85);
-  border-radius: 50%;
-  box-shadow: 0 0 34px rgba(185, 168, 230, 0.55);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.glass-flash {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  opacity: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(238, 232, 252, 0.95), rgba(216, 204, 246, 0.3) 30%, transparent 65%);
-  mix-blend-mode: screen;
-}
-
-.glass-shard {
-  position: absolute;
-  inset: 0;
-  will-change: transform, opacity;
 }
 
 /* ------------------------------------------------------------

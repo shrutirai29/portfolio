@@ -1,8 +1,8 @@
 # Shruti Rai — Cinematic Portfolio
 
-An editorial, cinematic portfolio that **scrolls like a real website** — natural flowing sections with a few signature camera moments, not a site where everything is a zoom.
+An editorial, cinematic portfolio that **scrolls like a real website** — natural flowing sections with a couple of signature camera moments, not a site where everything is a zoom.
 
-The experience opens with **S.R.** and a glass-break that shatters as you scroll, then the one big pinned camera move — a **whole-screen zoom into the "A"** of SHRUTI RAI — before everything settles into a normal, premium editorial scroll through About, Tech Stack, Projects, Fun Facts and Contact.
+The experience opens with **S.R.**, then scrolls directly into **SHRUTI RAI** and the one big pinned camera move — a **whole-screen zoom into the "A"** — before settling into a normal, premium editorial scroll through About, Tech Stack, Projects, Fun Facts and Contact.
 
 ## The journey
 
@@ -10,7 +10,7 @@ The experience opens with **S.R.** and a glass-break that shatters as you scroll
 | --- | --- |
 | 0 · Loading | Minimal cinematic preloader (fonts + images preloaded), curtain lifts |
 | 1 · S.R. | First identity reveal — initials only, elegant and mysterious |
-| Transition 1 | **Glass break + camera zoom** — the hero is pinned; the pane fractures slowly and gradually as you scroll, then the whole S.R. composition zooms forward while shards fly outward with depth, and the camera pushes **through** the shattered pane revealing the name behind it. The glass then leaves the frame completely |
+| Transition 1 | The hero scrolls away naturally and **SHRUTI RAI arrives directly** — no glass break, no gimmick — then the pinned camera moment begins |
 | 2 · SHRUTI RAI | Large cinematic typography with drifting particles; the only other pinned moment — a **real camera zoom into the "A"**: the whole composition scales around the letter, the other letters remain visible and drift to the edges, and the camera passes through the A |
 
 | 3 · About Me | Photo (left) + description (right) with a pulsing green **OPEN TO WORK** badge |
@@ -45,8 +45,7 @@ npm run preview  # preview the production build
 ## Notes
 
 - All content is sourced from the résumé, GitHub profile and public profiles — nothing is invented.
-- The glass break is a transition, not a texture: once the pane shatters, the entire S.R. layer (cracks, shards, reflections) is removed from the scene and never returns until you scroll back to the start.
-- `prefers-reduced-motion` and small screens get a simplified experience (fewer shards, reduced zoom, tuned typography) without losing the story.
+- `prefers-reduced-motion` and small screens get a simplified experience (reduced zoom, tuned typography) without losing the story.
 - In development, `window.__journey` + `window.__lenis` are exposed for deterministic timeline inspection.
 
 © 2026 Shruti Rai

@@ -1,5 +1,4 @@
 import React from 'react';
-import Glass from '../components/Glass.jsx';
 
 export default function SRScene() {
   return (
@@ -16,7 +15,6 @@ export default function SRScene() {
           <span className="scroll-hint-line" />
         </div>
       </div>
-      <Glass />
       <div className="vignette" />
     </section>
   );

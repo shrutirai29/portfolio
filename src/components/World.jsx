@@ -13,7 +13,6 @@ import ContactScene from '../scenes/ContactScene.jsx';
 gsap.registerPlugin(ScrollTrigger);
 
 const q = (root, sel) => root.querySelector(sel);
-const rand = (a, b) => a + Math.random() * (b - a);
 
 // Focal point of `el` as a percentage of `container` (layout-based, transform-safe).
 function originAt(container, el) {
@@ -76,14 +75,7 @@ export default function World() {
     const g6 = stage('facts');
     const g7 = stage('contact');
 
-    const shards = [...root.querySelectorAll('.glass-shard')];
-    const crackPaths = [...root.querySelectorAll('.crack-path')];
-    const glassFlash = q(root, '.glass-flash');
-    const glassSheen = q(root, '.glass-sheen');
-    const glassShock = q(root, '.glass-shock');
-    const glassLayer = q(root, '.glass-layer');
     const backdrop = q(root, '.world-backdrop');
-    const scrollHint = q(root, '.scroll-hint');
     const nameCaption = q(root, '.name-caption');
     const portalRing = q(root, '.portal-ring');
     const photo = q(root, '[data-photo]');
@@ -96,11 +88,7 @@ export default function World() {
 
     const ctx = gsap.context(() => {
       // ---------- initial states ----------
-      gsap.set([glassFlash, glassShock, portalRing], { opacity: 0 });
-      gsap.set(crackPaths, {
-        strokeDasharray: (i, el) => el.getTotalLength(),
-        strokeDashoffset: (i, el) => el.getTotalLength(),
-      });
+      gsap.set(portalRing, { opacity: 0 });
       gsap.set(root.querySelectorAll('[data-reveal]:not([data-reveal="clip"])'), { opacity: 0 });
       gsap.set(root.querySelectorAll('[data-reveal="clip"]'), { clipPath: 'inset(0% 100% 0% 0%)' });
       gsap.set(root.querySelectorAll('[data-reveal="frame"]'), { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 });
@@ -130,77 +118,20 @@ export default function World() {
         }
       );
 
-      // ---------- GLASS BREAK — a pinned camera zoom: the camera pushes
-      // through the shattering pane and the name is revealed behind it. The
-      // whole S.R. layer is removed once the pass-through completes.
-      const maxDist = Math.max(window.innerWidth, window.innerHeight) * (isMobile ? 0.5 : 0.85);
-      const shardMotion = shards.map((el) => {
-        const dx = parseFloat(el.dataset.dx);
-        const dy = parseFloat(el.dataset.dy);
-        const depth = parseFloat(el.dataset.depth);
-        const dist = maxDist * (0.45 + depth * 0.75) * rand(0.7, 1.25);
-        return {
-          x: dx * dist,
-          y: dy * dist + maxDist * 0.12,
-          rotation: rand(-90, 90),
-          rotateX: rand(-14, 14),
-          rotateY: rand(-14, 14),
-          scale: 0.82 + depth * 0.14,
-        };
-      });
-
-      const heroZoom = reduced ? 2.3 : 5.4 * Z;
-      gsap.set(g1, { transformOrigin: '50% 45%' });
-
-      const heroTL = gsap.timeline({
-        defaults: { ease: 'none' },
-        scrollTrigger: { trigger: s1, start: 'top top', end: '+=240%', pin: true, scrub: true, anticipatePin: 1 },
-      });
-
-      // Cracks develop slowly and gradually across most of the pin —
-      // the pane fractures bit by bit as the user scrolls.
-      heroTL
-        .to(scrollHint, { opacity: 0, duration: 0.3 }, 0)
-        .to(crackPaths, { strokeDashoffset: 0, duration: 1.3, ease: 'power1.inOut', stagger: 0.01 }, 0.05)
-        .to(glassSheen, { opacity: 0, duration: 0.9, ease: 'power1.in' }, 0.1)
-        .fromTo(glassShock, { scale: 0, opacity: 0.9 }, { scale: 2.4, opacity: 0, duration: 0.8, ease: 'power2.out' }, 0.12);
-
-      if (!reduced) {
-        heroTL
-          .fromTo(glassFlash, { opacity: 0 }, { opacity: 0.85, duration: 0.3, ease: 'power2.out' }, 0.12)
-          .to(glassFlash, { opacity: 0, duration: 0.8, ease: 'power1.in' }, 0.45)
-          .to(
-            g1,
-            { keyframes: { x: [0, 8, -6, 4, -2, 0], y: [0, -3, 2, -1, 0] }, duration: 0.7, ease: 'power2.out' },
-            0.2
-          );
-      }
-
-      heroTL
-        .to(
-          shards,
-          {
-            x: (i) => shardMotion[i].x,
-            y: (i) => shardMotion[i].y,
-            scale: (i) => shardMotion[i].scale,
-            rotation: (i) => shardMotion[i].rotation,
-            rotateX: (i) => shardMotion[i].rotateX,
-            rotateY: (i) => shardMotion[i].rotateY,
-            opacity: 0,
-            transformPerspective: 900,
-            duration: 1.8,
-            ease: 'power3.out',
-            stagger: 0.005,
-          },
-          1.6
-        )
-        .to(g1, { scale: heroZoom, duration: 4.2, ease: 'power2.inOut' }, 0.3)
-        .fromTo(g2, { yPercent: 16, opacity: 0.15 }, { yPercent: 0, opacity: 1, duration: 2.8, ease: 'power2.out' }, 2.4)
-        .to(crackPaths, { opacity: 0, duration: 0.5, ease: 'power1.in' }, 3.6)
-        .to(g1, { opacity: 0, duration: 0.9, ease: 'power1.in' }, 4.6)
-        .to(glassLayer, { autoAlpha: 0, duration: 0.5, ease: 'power1.inOut' }, 4.3);
-
-      // ---------- SHRUTI RAI + the one pinned camera moment: ZOOM INTO THE A ----------
+      // ---------- SHRUTI RAI — the hero scrolls away naturally and the
+      // name arrives, then the pinned camera moment: ZOOM INTO THE A ----------
+      // A gentle rise-and-fade as the name scrolls into view (before the pin).
+      gsap.fromTo(
+        g2,
+        { yPercent: 8, opacity: 0.85 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: s2, start: 'top 92%', once: true },
+        }
+      );
       gsap.set(g2, { transformOrigin: aOrigin });
       if (!reduced) {
         const aTL = gsap.timeline({
