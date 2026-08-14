@@ -154,12 +154,14 @@ export default function World() {
 
       const heroTL = gsap.timeline({
         defaults: { ease: 'none' },
-        scrollTrigger: { trigger: s1, start: 'top top', end: '+=150%', pin: true, scrub: true, anticipatePin: 1 },
+        scrollTrigger: { trigger: s1, start: 'top top', end: '+=240%', pin: true, scrub: true, anticipatePin: 1 },
       });
 
+      // Cracks develop slowly and gradually across most of the pin —
+      // the pane fractures bit by bit as the user scrolls.
       heroTL
         .to(scrollHint, { opacity: 0, duration: 0.3 }, 0)
-        .to(crackPaths, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut', stagger: 0.004 }, 0.05)
+        .to(crackPaths, { strokeDashoffset: 0, duration: 1.3, ease: 'power1.inOut', stagger: 0.01 }, 0.05)
         .to(glassSheen, { opacity: 0, duration: 0.9, ease: 'power1.in' }, 0.1)
         .fromTo(glassShock, { scale: 0, opacity: 0.9 }, { scale: 2.4, opacity: 0, duration: 0.8, ease: 'power2.out' }, 0.12);
 
@@ -186,17 +188,17 @@ export default function World() {
             rotateY: (i) => shardMotion[i].rotateY,
             opacity: 0,
             transformPerspective: 900,
-            duration: 1.6,
+            duration: 1.8,
             ease: 'power3.out',
-            stagger: 0.004,
+            stagger: 0.005,
           },
-          0.5
+          1.6
         )
         .to(g1, { scale: heroZoom, duration: 4.2, ease: 'power2.inOut' }, 0.3)
         .fromTo(g2, { yPercent: 16, opacity: 0.15 }, { yPercent: 0, opacity: 1, duration: 2.8, ease: 'power2.out' }, 2.4)
-        .to(crackPaths, { opacity: 0, duration: 0.5, ease: 'power1.in' }, 2.7)
+        .to(crackPaths, { opacity: 0, duration: 0.5, ease: 'power1.in' }, 3.6)
         .to(g1, { opacity: 0, duration: 0.9, ease: 'power1.in' }, 4.6)
-        .to(glassLayer, { autoAlpha: 0, duration: 0.5, ease: 'power1.inOut' }, 3.3);
+        .to(glassLayer, { autoAlpha: 0, duration: 0.5, ease: 'power1.inOut' }, 4.3);
 
       // ---------- SHRUTI RAI + the one pinned camera moment: ZOOM INTO THE A ----------
       gsap.set(g2, { transformOrigin: aOrigin });
@@ -222,7 +224,23 @@ export default function World() {
         gsap.to(nameCaption, { opacity: 1, duration: 0.8, delay: 0.2 });
       }
 
-      // ---------- ABOUT — enter reveals ----------
+      // ---------- ABOUT — enter reveals, then a pinned camera zoom into
+      // OPEN TO WORK that passes through into the Tech Stack ----------
+      const badge = q(root, '[data-focal="badge"]');
+      const badgeOrigin = originAt(g3, badge);
+      gsap.set(g3, { transformOrigin: badgeOrigin });
+      const aboutZoom = reduced ? 2.4 : 6.8 * Z;
+      if (!reduced) {
+        const aboutTL = gsap.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: { trigger: s3, start: 'top top', end: '+=200%', pin: true, scrub: true, anticipatePin: 1 },
+        });
+        aboutTL
+          .to(g3, { scale: aboutZoom, duration: 5.2, ease: 'power1.in' }, 0.6)
+          .to(g3, { scale: aboutZoom * 1.28, opacity: 0, duration: 1.8, ease: 'power1.in' }, 5.8)
+          .fromTo(g4, { yPercent: 16, opacity: 0.15 }, { yPercent: 0, opacity: 1, duration: 2.8, ease: 'power2.out' }, 3.6);
+      }
+
       gsap.fromTo(
         photo,
         { clipPath: 'inset(0% 0% 100% 0%)' },
@@ -267,16 +285,17 @@ export default function World() {
           scrollTrigger: { trigger: s4, start: 'top 75%', once: true },
         }
       );
+      // Tech rows slide in from alternate directions, converging to the
+      // center as the user scrolls (scrubbed — normal scroll, no zoom).
       gsap.fromTo(
         capRows,
-        { xPercent: (i) => (i % 2 ? 3 : -3), opacity: 0 },
+        { xPercent: (i) => (i % 2 ? 16 : -16), opacity: 0 },
         {
           xPercent: 0,
           opacity: 1,
-          duration: 1.1,
-          ease: 'power2.out',
-          stagger: 0.09,
-          scrollTrigger: { trigger: s4, start: 'top 72%', once: true },
+          ease: 'none',
+          stagger: 0.14,
+          scrollTrigger: { trigger: s4, start: 'top 72%', end: 'bottom 35%', scrub: true },
         }
       );
 
@@ -302,16 +321,16 @@ export default function World() {
           scrollTrigger: { trigger: s5, start: 'top 74%', once: true },
         }
       );
+      // Project rows — same alternate-direction, scroll-driven entrance.
       gsap.fromTo(
         revealsIn('projects', 'rise'),
-        { y: 46, opacity: 0 },
+        { xPercent: (i) => (i % 2 ? 18 : -18), opacity: 0 },
         {
-          y: 0,
+          xPercent: 0,
           opacity: 1,
-          duration: 1.2,
-          ease: 'power2.out',
-          stagger: 0.12,
-          scrollTrigger: { trigger: s5, start: 'top 76%', once: true },
+          ease: 'none',
+          stagger: 0.16,
+          scrollTrigger: { trigger: s5, start: 'top 70%', end: 'bottom 30%', scrub: true },
         }
       );
 

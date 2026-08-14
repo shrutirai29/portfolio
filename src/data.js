@@ -28,9 +28,17 @@ export const PROJECTS = [
     tagline: 'Smart Agriculture Marketplace',
     description:
       'A full-stack marketplace connecting farmers with fertilizer suppliers, seed vendors and cold-storage owners — role-based dashboards, AI crop-disease detection with a CNN, a fertilizer authenticity checker, voice navigation in 14+ languages and government-scheme advisory.',
+    highlights: [
+      'React 19 frontend with Node.js + Express 5 API and MongoDB',
+      'AI crop-disease detection using a CNN',
+      'Fertilizer authenticity checker',
+      'Voice navigation in 14+ languages',
+      'Role-based dashboards: farmer, supplier, vendor, cold-storage owner',
+      'Government-scheme advisory for farmers',
+    ],
     tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'Flask', 'CNN'],
     github: 'https://github.com/shrutirai29/khety-deploy',
-    live: null,
+    live: 'https://khety-frontend-shruti.onrender.com/',
   },
   {
     index: '02',
@@ -38,9 +46,17 @@ export const PROJECTS = [
     tagline: 'AI-Assisted Healthcare Platform',
     description:
       'A 50+ page multi-stakeholder healthcare prototype with Patient, Doctor and NGO portals — prescription decoding, anonymous symptom reporting, health-camp discovery, simplified government schemes and an AI-assisted voice support concept.',
+    highlights: [
+      '50+ page multi-stakeholder prototype',
+      'Patient, Doctor and NGO portals',
+      'Prescription decoding and anonymous symptom reporting',
+      'Health-camp discovery',
+      'Simplified government scheme information',
+      'AI-assisted voice support concept',
+    ],
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/shrutirai29/MEDTrust',
-    live: null,
+    live: 'https://shrutirai29.github.io/MEDTrust/',
   },
   {
     index: '03',
@@ -48,6 +64,14 @@ export const PROJECTS = [
     tagline: 'AI Resume Analyzer',
     description:
       'Claude-powered resume scoring against job descriptions — JWT auth, personalized course recommendations, a rejection-email analyzer and a personal dashboard, built on a Flask REST API with a React + Vite frontend.',
+    highlights: [
+      'Claude-powered resume scoring against job descriptions',
+      'JWT-authenticated accounts and a personal dashboard',
+      'Personalized course recommendations',
+      'Rejection-email analyzer',
+      'Flask REST API with SQLAlchemy',
+      'React + Vite frontend',
+    ],
     tech: ['React', 'Vite', 'Flask', 'SQLAlchemy', 'Claude API', 'JWT'],
     github: 'https://github.com/shrutirai29/analyzer',
     live: null,
@@ -58,6 +82,12 @@ export const PROJECTS = [
     tagline: 'The classic — reborn as this journey',
     description:
       'A responsive HTML/CSS/JavaScript portfolio with a Formspree contact form, deployed on GitHub Pages. It is the predecessor of the cinematic experience you are scrolling through right now.',
+    highlights: [
+      'Responsive HTML/CSS/JavaScript single-page site',
+      'Formspree-powered contact form',
+      'Deployed on GitHub Pages',
+      'The predecessor of this very cinematic journey',
+    ],
     tech: ['HTML', 'CSS', 'JavaScript', 'GitHub Pages'],
     github: 'https://github.com/shrutirai29/portfolio',
     live: null,

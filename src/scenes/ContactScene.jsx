@@ -1,15 +1,15 @@
 import React from 'react';
 import { CONTACT } from '../data.js';
 
-// Editorial closing index — the same language as the Projects rows:
-// label · handle · arrow, with a quiet hover interaction.
+// A quiet, premium closing — big serif invitation, one refined link list,
+// and a single bookend S.R. at the very end.
 const LINKS = [
-  { label: 'GitHub', value: 'shrutirai29', href: CONTACT.github },
-  { label: 'LinkedIn', value: 'Shruti Rai', href: CONTACT.linkedin },
-  { label: 'Instagram', value: '@shruti.r8524', href: CONTACT.instagram },
-  { label: 'Email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
-  { label: 'LeetCode', value: 'Shruti_rai', href: CONTACT.leetcode },
-  { label: 'TryHackMe', value: 'shruti.r8524', href: CONTACT.tryhackme },
+  { label: 'GitHub', href: CONTACT.github },
+  { label: 'LinkedIn', href: CONTACT.linkedin },
+  { label: 'Instagram', href: CONTACT.instagram },
+  { label: 'Email', href: `mailto:${CONTACT.email}` },
+  { label: 'LeetCode', href: CONTACT.leetcode },
+  { label: 'TryHackMe', href: CONTACT.tryhackme },
 ];
 
 export default function ContactScene() {
@@ -29,17 +29,16 @@ export default function ContactScene() {
             AVAILABLE FOR INTERNSHIPS · COLLABORATIONS · PROJECTS
           </p>
 
-          <div className="contact-index" data-reveal="rise">
+          <nav className="final-links" data-reveal="rise" aria-label="Contact links">
             {LINKS.map((l) => (
-              <a key={l.label} className="contact-row" href={l.href} target="_blank" rel="noreferrer">
-                <span className="contact-label">{l.label}</span>
-                <span className="contact-value">{l.value}</span>
-                <span className="contact-arrow" aria-hidden="true">
+              <a key={l.label} className="final-link" href={l.href} target="_blank" rel="noreferrer">
+                <span className="final-link-text">{l.label}</span>
+                <span className="final-link-arrow" aria-hidden="true">
                   →
                 </span>
               </a>
             ))}
-          </div>
+          </nav>
 
           <p className="final-foot" data-reveal="rise">
             © 2026 SHRUTI RAI — CRAFTED WITH A CAMERA, NOT A SCROLLBAR

@@ -35,14 +35,7 @@ export default function ProjectsScene() {
 
         <div className="proj-index">
           {PROJECTS.map((p) => (
-            <a
-              className="proj-row"
-              href={p.github}
-              target="_blank"
-              rel="noreferrer"
-              data-reveal="rise"
-              key={p.index}
-            >
+            <a className="proj-row" href={`#/project/${p.index}`} data-reveal="rise" key={p.index}>
               <span className="proj-no font-hero" aria-hidden="true">
                 {p.index}
               </span>

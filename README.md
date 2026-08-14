@@ -10,14 +10,15 @@ The experience opens with **S.R.** and a glass-break that shatters as you scroll
 | --- | --- |
 | 0 · Loading | Minimal cinematic preloader (fonts + images preloaded), curtain lifts |
 | 1 · S.R. | First identity reveal — initials only, elegant and mysterious |
-| Transition 1 | **Glass break + camera zoom** — the hero is pinned; as you scroll, fracture lines crack from center, the whole S.R. composition zooms forward while shards fly outward with depth, and the camera pushes **through** the shattered pane revealing the name behind it. The glass then leaves the frame completely |
+| Transition 1 | **Glass break + camera zoom** — the hero is pinned; the pane fractures slowly and gradually as you scroll, then the whole S.R. composition zooms forward while shards fly outward with depth, and the camera pushes **through** the shattered pane revealing the name behind it. The glass then leaves the frame completely |
 | 2 · SHRUTI RAI | Large cinematic typography with drifting particles; the only other pinned moment — a **real camera zoom into the "A"**: the whole composition scales around the letter, the other letters remain visible and drift to the edges, and the camera passes through the A |
 
 | 3 · About Me | Photo (left) + description (right) with a pulsing green **OPEN TO WORK** badge |
-| 4 · Tech Stack | **Capability index** (OKC-style) — one editorial row per domain (Languages, Web & Frontend, Backend & Data, Security & Systems, Tools & Core) with a label and a flowing technology cluster |
-| 5 · Projects | **Editorial project index** (Studio Foundry pattern) — numbered rows with name, tagline, description, stack and an EXPLORE link, under a CA Film Creatives-style "by the numbers" stat band |
+| Transition 3 | A pinned camera **zooms into OPEN TO WORK** and passes through it into the Tech Stack |
+| 4 · Tech Stack | **Capability index** (OKC-style) — one editorial row per domain (Languages, Web & Frontend, Backend & Data, Security & Systems, Tools & Core); rows **slide in from alternate directions**, converging to the center as you scroll |
+| 5 · Projects | **Editorial project index** (Studio Foundry pattern) — numbered rows entering from **alternate directions** under a CA Film Creatives-style "by the numbers" stat band. **EXPLORE opens a dedicated project page** (`#/project/01` …) with the full story, highlights, tech, and live + GitHub links at the end |
 | 6 · Fun Facts | **Kinetic editorial scrapbook** — the anime portrait anchored in a collage of rotated, drifting, verified facts |
-| 7 · Contact | **Final transmission** — an editorial closing index (label · handle · arrow rows, in the same language as the Projects rows) under "Let's create something."; a small **S.R.** bookend closes the loop at the end |
+| 7 · Contact | **Final transmission** — a clean, premium centered composition: "Let's create something." with one refined link list (GitHub · LinkedIn · Instagram · Email · LeetCode · TryHackMe) and a small **S.R.** bookend closing the loop |
 
 Everything is scroll-driven with GSAP ScrollTrigger and fully reversible.
 
