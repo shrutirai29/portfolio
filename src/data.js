@@ -307,13 +307,13 @@ export const FACTS = [
   },
   {
     icon: '🛡️',
-    title: 'Top 5% on TryHackMe',
+    title: 'Top 3% on TryHackMe',
     text: '82 rooms completed, a 46-day streak and 4 badges — learning how systems break so I can build them better.',
   },
   {
     icon: '🧮',
-    title: '71 LeetCode problems',
-    text: '20 Easy, 34 Medium, 17 Hard — DSA grind in Python and C++, between shipped projects.',
+    title: '100+ LeetCode problems',
+    text: '109 solved — 40 Easy, 46 Medium, 23 Hard — DSA grind in Python and C++, between shipped projects.',
   },
   {
     icon: '🏗️',
