@@ -26,6 +26,7 @@ export const PROJECTS = [
     index: '01',
     name: 'Khety',
     tagline: 'Smart Agriculture Marketplace',
+    role: 'Full-stack · AI',
     description:
       'A full-stack marketplace connecting farmers with fertilizer suppliers, seed vendors and cold-storage owners — role-based dashboards, AI crop-disease detection with a CNN, a fertilizer authenticity checker, voice navigation in 14+ languages and government-scheme advisory.',
     highlights: [
@@ -36,6 +37,19 @@ export const PROJECTS = [
       'Role-based dashboards: farmer, supplier, vendor, cold-storage owner',
       'Government-scheme advisory for farmers',
     ],
+    facts: [
+      ['VOICE LANGUAGES', '14+'],
+      ['AI MODULE', 'CNN disease detection'],
+      ['BACKEND', 'Node.js + Express 5'],
+      ['DATABASE', 'MongoDB'],
+      ['DEPLOYED', 'Render'],
+      ['AUDIENCE', 'Farmers & suppliers'],
+    ],
+    stackGroups: {
+      Frontend: ['React', 'Tailwind CSS'],
+      Backend: ['Node.js', 'Express', 'MongoDB', 'Flask'],
+      AI: ['CNN', 'crop-disease detection'],
+    },
     tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'Flask', 'CNN'],
     github: 'https://github.com/shrutirai29/khety-deploy',
     live: 'https://khety-frontend-shruti.onrender.com/',
@@ -44,6 +58,7 @@ export const PROJECTS = [
     index: '02',
     name: 'MEDTrust',
     tagline: 'AI-Assisted Healthcare Platform',
+    role: 'UX · Prototype · Frontend',
     description:
       'A 50+ page multi-stakeholder healthcare prototype with Patient, Doctor and NGO portals — prescription decoding, anonymous symptom reporting, health-camp discovery, simplified government schemes and an AI-assisted voice support concept.',
     highlights: [
@@ -54,6 +69,18 @@ export const PROJECTS = [
       'Simplified government scheme information',
       'AI-assisted voice support concept',
     ],
+    facts: [
+      ['SCOPE', '50+ pages'],
+      ['PORTALS', 'Patient · Doctor · NGO'],
+      ['AUDIENCE', 'Healthcare access'],
+      ['THEME', 'Accessibility-first'],
+      ['CONCEPT', 'AI voice support'],
+      ['DEPLOYED', 'GitHub Pages'],
+    ],
+    stackGroups: {
+      Frontend: ['HTML', 'CSS', 'JavaScript'],
+      Design: ['Multi-portal IA', 'Symptom flows'],
+    },
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/shrutirai29/MEDTrust',
     live: 'https://shrutirai29.github.io/MEDTrust/',
@@ -62,6 +89,7 @@ export const PROJECTS = [
     index: '03',
     name: 'SkillBridge',
     tagline: 'AI Resume Analyzer',
+    role: 'Full-stack · AI',
     description:
       'Claude-powered resume scoring against job descriptions — JWT auth, personalized course recommendations, a rejection-email analyzer and a personal dashboard, built on a Flask REST API with a React + Vite frontend.',
     highlights: [
@@ -72,6 +100,19 @@ export const PROJECTS = [
       'Flask REST API with SQLAlchemy',
       'React + Vite frontend',
     ],
+    facts: [
+      ['AI ENGINE', 'Claude API'],
+      ['AUTH', 'JWT'],
+      ['API', 'Flask REST + SQLAlchemy'],
+      ['FRONTEND', 'React + Vite'],
+      ['FEATURE', 'Rejection-email analyzer'],
+      ['OUTPUT', 'Resume score vs JD'],
+    ],
+    stackGroups: {
+      Frontend: ['React', 'Vite'],
+      Backend: ['Flask', 'SQLAlchemy', 'JWT'],
+      AI: ['Claude API', 'resume scoring'],
+    },
     tech: ['React', 'Vite', 'Flask', 'SQLAlchemy', 'Claude API', 'JWT'],
     github: 'https://github.com/shrutirai29/analyzer',
     live: null,
@@ -80,6 +121,7 @@ export const PROJECTS = [
     index: '04',
     name: 'Personal Portfolio',
     tagline: 'The classic — reborn as this journey',
+    role: 'Design · Frontend',
     description:
       'A responsive HTML/CSS/JavaScript portfolio with a Formspree contact form, deployed on GitHub Pages. It is the predecessor of the cinematic experience you are scrolling through right now.',
     highlights: [
@@ -88,6 +130,16 @@ export const PROJECTS = [
       'Deployed on GitHub Pages',
       'The predecessor of this very cinematic journey',
     ],
+    facts: [
+      ['BUILT WITH', 'HTML · CSS · JS'],
+      ['FORM', 'Formspree'],
+      ['DEPLOYED', 'GitHub Pages'],
+      ['EVOLVED INTO', 'This journey'],
+    ],
+    stackGroups: {
+      Frontend: ['HTML', 'CSS', 'JavaScript'],
+      Deploy: ['GitHub Pages'],
+    },
     tech: ['HTML', 'CSS', 'JavaScript', 'GitHub Pages'],
     github: 'https://github.com/shrutirai29/portfolio',
     live: null,
