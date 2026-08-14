@@ -2,16 +2,14 @@
 
 An editorial, cinematic portfolio that **scrolls like a real website** — natural flowing sections with a couple of signature camera moments, not a site where everything is a zoom.
 
-The experience opens with **S.R.**, then scrolls directly into **SHRUTI RAI** and the one big pinned camera move — a **whole-screen zoom into the "A"** — before settling into a normal, premium editorial scroll through About, Tech Stack, Projects, Fun Facts and Contact.
+The experience opens directly with **SHRUTI RAI** (no initials hero) and the one big pinned camera move — a **whole-screen zoom into the "A"** — before settling into a normal, premium editorial scroll through About, Tech Stack, Projects, Fun Facts and Contact.
 
 ## The journey
 
 | Scene | What happens |
 | --- | --- |
 | 0 · Loading | Minimal cinematic preloader (fonts + images preloaded), curtain lifts |
-| 1 · S.R. | First identity reveal — initials only, elegant and mysterious |
-| Transition 1 | The hero scrolls away naturally and **SHRUTI RAI arrives directly** — no glass break, no gimmick — then the pinned camera moment begins |
-| 2 · SHRUTI RAI | Large cinematic typography with drifting particles; the only other pinned moment — a **real camera zoom into the "A"**: the whole composition scales around the letter, the other letters remain visible and drift to the edges, and the camera passes through the A |
+| 1 · SHRUTI RAI | The name appears directly after the loader — large cinematic typography with drifting particles; the only pinned moment — a **real camera zoom into the "A"**: the whole composition scales around the letter, the other letters remain visible and drift to the edges, and the camera passes through the A |
 
 | 3 · About Me | Photo (left) + description (right) with a pulsing green **OPEN TO WORK** badge |
 | Transition 3 | A pinned camera **zooms into OPEN TO WORK** and passes through it into the Tech Stack |
@@ -24,7 +22,7 @@ Everything is scroll-driven with GSAP ScrollTrigger and fully reversible.
 
 ## Tech
 
-- **GSAP + ScrollTrigger** — scroll-driven timeline for the glass break, the pinned A-zoom, and reveal animations (Lenis-synced)
+- **GSAP + ScrollTrigger** — scroll-driven timeline for the pinned A-zoom, the OPEN TO WORK zoom, and reveal animations (Lenis-synced)
 - **Lenis** — smooth inertial scrolling
 - **React + Vite** — component-per-scene, no unnecessary re-renders
 - Typography: **Playfair Display** (display serif — hero, headings, editorial accents) × **Manrope** (body, UI, micro-labels) via Google Fonts

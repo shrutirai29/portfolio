@@ -2,7 +2,6 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { IMG } from '../data.js';
-import SRScene from '../scenes/SRScene.jsx';
 import NameScene from '../scenes/NameScene.jsx';
 import AboutScene from '../scenes/AboutScene.jsx';
 import TechScene from '../scenes/TechScene.jsx';
@@ -57,7 +56,6 @@ export default function World({ lenis, returnInfo }) {
     const stage = (name) => q(root, `[data-scene="${name}"] [data-stage]`);
     const revealsIn = (name, kind) => scene(name).querySelectorAll(`[data-reveal="${kind}"]`);
 
-    const s1 = scene('sr');
     const s2 = scene('name');
     const s3 = scene('about');
     const s4 = scene('tech');
@@ -65,7 +63,6 @@ export default function World({ lenis, returnInfo }) {
     const s6 = scene('facts');
     const s7 = scene('contact');
 
-    const g1 = stage('sr');
     const g2 = stage('name');
     const g3 = stage('about');
     const g4 = stage('tech');
@@ -394,7 +391,6 @@ export default function World({ lenis, returnInfo }) {
       />
       <div className="world-shade" aria-hidden="true" />
       <div className="camera">
-        <SRScene />
         <NameScene />
         <AboutScene />
         <TechScene />
