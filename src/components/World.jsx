@@ -211,17 +211,19 @@ export default function World({ lenis, returnInfo }) {
           scrollTrigger: { trigger: s4, start: 'top 75%', once: true },
         }
       );
-      // Tech rows slide in from alternate directions, converging to the
-      // center early in the section so every row is settled and readable
-      // well before the next scene arrives (scrubbed — normal scroll).
+      // Tech rows sweep in from alternate sides of the screen (even rows
+      // from the left, odd rows from the right), converging to the center
+      // early in the section so every row is settled and readable well
+      // before the next scene arrives (scrubbed — normal scroll).
       gsap.fromTo(
         capRows,
-        { xPercent: (i) => (i % 2 ? 18 : -18), opacity: 0 },
+        { xPercent: (i) => (i % 2 ? 88 : -88), rotation: (i) => (i % 2 ? -2.5 : 2.5), opacity: 0 },
         {
           xPercent: 0,
+          rotation: 0,
           opacity: 1,
           ease: 'none',
-          stagger: 0.1,
+          stagger: 0.08,
           scrollTrigger: { trigger: s4, start: 'top 95%', end: 'top 68%', scrub: true },
         }
       );
@@ -248,16 +250,18 @@ export default function World({ lenis, returnInfo }) {
           scrollTrigger: { trigger: s5, start: 'top 74%', once: true },
         }
       );
-      // Project rows — same alternate-direction entrance, converged early
-      // so the index is fully readable before Fun Facts arrives.
+      // Project rows sweep in from alternate sides (even from the left,
+      // odd from the right), converged early so the index is fully
+      // readable before Fun Facts arrives.
       gsap.fromTo(
         revealsIn('projects', 'rise'),
-        { xPercent: (i) => (i % 2 ? 20 : -20), opacity: 0 },
+        { xPercent: (i) => (i % 2 ? 92 : -92), rotation: (i) => (i % 2 ? -2.5 : 2.5), opacity: 0 },
         {
           xPercent: 0,
+          rotation: 0,
           opacity: 1,
           ease: 'none',
-          stagger: 0.14,
+          stagger: 0.1,
           scrollTrigger: { trigger: s5, start: 'top 85%', end: 'top 45%', scrub: true },
         }
       );
