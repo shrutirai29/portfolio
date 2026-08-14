@@ -94,6 +94,7 @@ em {
 .brand {
   position: fixed;
   top: 24px;
+  top: calc(24px + env(safe-area-inset-top));
   left: 28px;
   z-index: 90;
   display: flex;
@@ -239,12 +240,14 @@ em {
 .scene {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh; /* mobile browsers: match the visible (URL-bar) viewport */
   opacity: 1;
 }
 
 .stage {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1170,11 +1173,13 @@ em {
 .detail-page {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
 }
 
 .detail-back {
   position: fixed;
   top: 26px;
+  top: calc(26px + env(safe-area-inset-top));
   left: 28px;
   z-index: 60;
   display: inline-flex;
@@ -1485,6 +1490,7 @@ em {
   position: relative;
   z-index: 2;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1500,6 +1506,7 @@ em {
 @media (max-width: 820px) {
   .brand {
     top: 18px;
+    top: calc(18px + env(safe-area-inset-top));
     left: 20px;
   }
 
@@ -1511,6 +1518,7 @@ em {
     flex-direction: column;
     gap: 6px;
     bottom: 8vh;
+    bottom: 8svh;
   }
 
   .name-caption-dot {
@@ -1672,7 +1680,7 @@ em {
 
   /* project detail */
   .detail-title {
-    font-size: 21vw;
+    font-size: 14vw; /* long titles (e.g. GOA · Build Your Identity) stay on 2 lines */
   }
 
   .detail-facts {
