@@ -130,7 +130,9 @@ export default function World() {
         }
       );
 
-      // ---------- GLASS BREAK — over the hero's scroll, then gone forever ----------
+      // ---------- GLASS BREAK — a pinned camera zoom: the camera pushes
+      // through the shattering pane and the name is revealed behind it. The
+      // whole S.R. layer is removed once the pass-through completes.
       const maxDist = Math.max(window.innerWidth, window.innerHeight) * (isMobile ? 0.5 : 0.85);
       const shardMotion = shards.map((el) => {
         const dx = parseFloat(el.dataset.dx);
@@ -147,14 +149,16 @@ export default function World() {
         };
       });
 
+      const heroZoom = reduced ? 2.3 : 5.4 * Z;
+      gsap.set(g1, { transformOrigin: '50% 45%' });
+
       const heroTL = gsap.timeline({
         defaults: { ease: 'none' },
-        scrollTrigger: { trigger: s1, start: 'top top', end: 'bottom top', scrub: true },
+        scrollTrigger: { trigger: s1, start: 'top top', end: '+=150%', pin: true, scrub: true, anticipatePin: 1 },
       });
 
       heroTL
         .to(scrollHint, { opacity: 0, duration: 0.3 }, 0)
-        .to(g1, { scale: 1.05, duration: 1.4 }, 0)
         .to(crackPaths, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut', stagger: 0.004 }, 0.05)
         .to(glassSheen, { opacity: 0, duration: 0.9, ease: 'power1.in' }, 0.1)
         .fromTo(glassShock, { scale: 0, opacity: 0.9 }, { scale: 2.4, opacity: 0, duration: 0.8, ease: 'power2.out' }, 0.12);
@@ -188,8 +192,11 @@ export default function World() {
           },
           0.5
         )
-        .to(g1, { opacity: 0, duration: 0.9, ease: 'power1.inOut' }, 0.7)
-        .to(glassLayer, { autoAlpha: 0, duration: 0.9, ease: 'power1.inOut' }, 2.5);
+        .to(g1, { scale: heroZoom, duration: 4.2, ease: 'power2.inOut' }, 0.3)
+        .fromTo(g2, { yPercent: 16, opacity: 0.15 }, { yPercent: 0, opacity: 1, duration: 2.8, ease: 'power2.out' }, 2.4)
+        .to(crackPaths, { opacity: 0, duration: 0.5, ease: 'power1.in' }, 2.7)
+        .to(g1, { opacity: 0, duration: 0.9, ease: 'power1.in' }, 4.6)
+        .to(glassLayer, { autoAlpha: 0, duration: 0.5, ease: 'power1.inOut' }, 3.3);
 
       // ---------- SHRUTI RAI + the one pinned camera moment: ZOOM INTO THE A ----------
       gsap.set(g2, { transformOrigin: aOrigin });

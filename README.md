@@ -10,13 +10,14 @@ The experience opens with **S.R.** and a glass-break that shatters as you scroll
 | --- | --- |
 | 0 · Loading | Minimal cinematic preloader (fonts + images preloaded), curtain lifts |
 | 1 · S.R. | First identity reveal — initials only, elegant and mysterious |
-| Transition 1 | **Glass break** — as you scroll the hero away, fracture lines crack from center, shards fly outward with depth, revealing the name behind the broken pane. The glass then **leaves the frame completely** (the whole S.R. layer is removed — no cracks or fragments ever persist) |
-| 2 · SHRUTI RAI | Large cinematic typography with drifting particles; the only pinned moment — a **real camera zoom into the "A"**: the whole composition scales around the letter, the other letters remain visible and drift to the edges, and the camera passes through the A |
+| Transition 1 | **Glass break + camera zoom** — the hero is pinned; as you scroll, fracture lines crack from center, the whole S.R. composition zooms forward while shards fly outward with depth, and the camera pushes **through** the shattered pane revealing the name behind it. The glass then leaves the frame completely |
+| 2 · SHRUTI RAI | Large cinematic typography with drifting particles; the only other pinned moment — a **real camera zoom into the "A"**: the whole composition scales around the letter, the other letters remain visible and drift to the edges, and the camera passes through the A |
+
 | 3 · About Me | Photo (left) + description (right) with a pulsing green **OPEN TO WORK** badge |
 | 4 · Tech Stack | **Capability index** (OKC-style) — one editorial row per domain (Languages, Web & Frontend, Backend & Data, Security & Systems, Tools & Core) with a label and a flowing technology cluster |
 | 5 · Projects | **Editorial project index** (Studio Foundry pattern) — numbered rows with name, tagline, description, stack and an EXPLORE link, under a CA Film Creatives-style "by the numbers" stat band |
 | 6 · Fun Facts | **Kinetic editorial scrapbook** — the anime portrait anchored in a collage of rotated, drifting, verified facts |
-| 7 · Contact | **Final transmission** — an interactive radar signal with orbiting links; a small **S.R.** bookend closes the loop at the end |
+| 7 · Contact | **Final transmission** — an editorial closing index (label · handle · arrow rows, in the same language as the Projects rows) under "Let's create something."; a small **S.R.** bookend closes the loop at the end |
 
 Everything is scroll-driven with GSAP ScrollTrigger and fully reversible.
 
