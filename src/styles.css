@@ -401,9 +401,33 @@ em {
 
 .crack-path {
   fill: none;
-  stroke: rgba(236, 232, 248, 0.55);
-  stroke-width: 0.32;
   stroke-linecap: round;
+}
+
+/* radial fractures (running away from the impact) read brightest */
+.crack-path[data-tier='r'] {
+  stroke: rgba(236, 232, 248, 0.5);
+  stroke-width: 0.3;
+}
+
+/* short cross-edges between fracture lines are faint stress cracks */
+.crack-path[data-tier='c'] {
+  stroke: rgba(236, 232, 248, 0.13);
+  stroke-width: 0.13;
+}
+
+.glass-shock {
+  position: absolute;
+  left: var(--ix, 50%);
+  top: var(--iy, 50%);
+  width: 70px;
+  height: 70px;
+  transform: translate(-50%, -50%) scale(0);
+  border: 2px solid rgba(216, 204, 246, 0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 34px rgba(185, 168, 230, 0.55);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .glass-flash {

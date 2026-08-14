@@ -83,6 +83,7 @@ export default function World() {
     const crackPaths = [...root.querySelectorAll('.crack-path')];
     const glassFlash = q(root, '.glass-flash');
     const glassSheen = q(root, '.glass-sheen');
+    const glassShock = q(root, '.glass-shock');
     const backdrop = q(root, '.world-backdrop');
     const scrollHint = q(root, '.scroll-hint');
     const techHead = q(root, '.tech-head');
@@ -116,7 +117,7 @@ export default function World() {
       // ---------- initial states ----------
       gsap.set([s2, s3, s4, s5, s6, s7], { opacity: 0 });
       gsap.set([g2, g3, g4, g5, g6, g7], { scale: 1.7 });
-      gsap.set([glassFlash, portalRing, nameCaption], { opacity: 0 });
+      gsap.set([glassFlash, glassShock, portalRing, nameCaption], { opacity: 0 });
       gsap.set(finalMark, { autoAlpha: 0 });
       gsap.set([zoomDark2, zoomDark3, zoomDark4, zoomDark5, zoomDark6], { opacity: 0 });
       gsap.set(crackPaths, {
@@ -166,7 +167,8 @@ export default function World() {
 
       /* ============ GLASS CRACK (4 → 6.6) ============ */
       tl.to(crackPaths, { strokeDashoffset: 0, duration: 2.3, ease: 'power2.inOut', stagger: 0.05 }, 4)
-        .to(glassSheen, { opacity: 0, duration: 2.2, ease: 'power1.in' }, 4.2);
+        .to(glassSheen, { opacity: 0, duration: 2.2, ease: 'power1.in' }, 4.2)
+        .fromTo(glassShock, { scale: 0, opacity: 0.9 }, { scale: 2.4, opacity: 0, duration: 1.5, ease: 'power2.out' }, 4.05);
 
       if (!reduced) {
         tl.fromTo(glassFlash, { opacity: 0 }, { opacity: 0.9, duration: 0.6, ease: 'power2.out' }, 4)
@@ -183,7 +185,8 @@ export default function World() {
         shards,
         {
           x: (i) => shardMotion[i].x,
-          y: (i) => shardMotion[i].y,
+          y: (i) => shardMotion[i].y + maxDist * 0.12, // slight gravity, like falling glass
+          scale: (i) => 0.82 + shardMotion[i].depth * 0.14, // depth: near pieces stay bigger
           rotation: (i) => shardMotion[i].rotation,
           rotateX: (i) => shardMotion[i].rotateX,
           rotateY: (i) => shardMotion[i].rotateY,
