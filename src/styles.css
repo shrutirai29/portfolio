@@ -1,0 +1,1250 @@
+/* ============================================================
+   SHRUTI RAI — CINEMATIC PORTFOLIO
+   Cormorant Garamond (hero) × Manrope (body)
+   ============================================================ */
+
+:root {
+  --bg: #050507;
+  --bg-2: #0a0a11;
+  --ink: #efe9dd;
+  --muted: rgba(239, 233, 221, 0.6);
+  --faint: rgba(239, 233, 221, 0.34);
+  --gold: #c8a165;
+  --gold-soft: rgba(200, 161, 101, 0.55);
+  --green: #34d399;
+  --green-soft: rgba(52, 211, 153, 0.16);
+  --line: rgba(239, 233, 221, 0.1);
+  --font-hero: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Manrope', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+body.locked {
+  overflow: hidden;
+}
+
+.font-hero {
+  font-family: var(--font-hero);
+  font-weight: 400;
+}
+
+::selection {
+  background: rgba(200, 161, 101, 0.35);
+  color: #fff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ------------------------------------------------------------
+   Fixed UI: brand, journey progress
+   ------------------------------------------------------------ */
+
+.brand {
+  position: fixed;
+  top: 24px;
+  left: 28px;
+  z-index: 90;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.brand-mark {
+  font-family: var(--font-hero);
+  font-size: 21px;
+  letter-spacing: 0.32em;
+  color: rgba(239, 233, 221, 0.82);
+}
+
+.brand-tag {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  color: var(--faint);
+}
+
+.journey-progress {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(239, 233, 221, 0.07);
+  z-index: 90;
+  pointer-events: none;
+}
+
+#journey-progress {
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(200, 161, 101, 0.5), var(--gold), #f0e2c8);
+}
+
+/* ------------------------------------------------------------
+   Loading
+   ------------------------------------------------------------ */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: clip-path;
+}
+
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.loader-mark {
+  font-size: 64px;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  color: var(--ink);
+}
+
+.loader-bar {
+  width: 220px;
+  height: 1px;
+  background: rgba(239, 233, 221, 0.14);
+  overflow: hidden;
+}
+
+.loader-fill {
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--gold);
+}
+
+.loader-count {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  color: var(--faint);
+}
+
+/* ------------------------------------------------------------
+   World / camera
+   ------------------------------------------------------------ */
+
+.scroll-spacer {
+  position: relative;
+}
+
+.world {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.world-backdrop {
+  position: absolute;
+  inset: -6%;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  filter: blur(18px) saturate(0.7) brightness(0.6);
+  animation: backdrop-drift 40s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes backdrop-drift {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.06) translate(-1.5%, 1%);
+  }
+}
+
+.camera {
+  position: absolute;
+  inset: 0;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scene[data-scene='sr'] {
+  opacity: 1;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+.scene-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 42%, transparent 52%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.zoom-dark {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 18%, rgba(2, 2, 4, 0.92) 100%);
+}
+
+/* ------------------------------------------------------------
+   Scene 1 · S.R.
+   ------------------------------------------------------------ */
+
+.sr-content {
+  flex-direction: column;
+  gap: 0;
+  text-align: center;
+}
+
+.sr-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.6em;
+  text-indent: 0.6em;
+  color: var(--faint);
+  margin-bottom: 3.5vh;
+}
+
+.sr-title {
+  margin: 0;
+  font-size: clamp(120px, 25vw, 400px);
+  line-height: 0.95;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  text-shadow: 0 0 60px rgba(200, 161, 101, 0.18), 0 0 140px rgba(200, 161, 101, 0.08);
+}
+
+.sr-rule {
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+  margin: 4vh auto 3vh;
+}
+
+.sr-caption {
+  margin: 0;
+  font-size: clamp(11px, 1.3vw, 14px);
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: lowercase;
+  color: var(--muted);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 5.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 8;
+}
+
+.scroll-hint-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  color: var(--faint);
+}
+
+.scroll-hint-line {
+  width: 1px;
+  height: 52px;
+  background: linear-gradient(180deg, rgba(239, 233, 221, 0.5), transparent);
+  animation: hint-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  0%,
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+  50% {
+    transform: scaleY(0.45);
+    transform-origin: top;
+    opacity: 0.45;
+  }
+}
+
+/* ------------------------------------------------------------
+   Glass layer
+   ------------------------------------------------------------ */
+
+.glass-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  overflow: hidden;
+  will-change: opacity;
+}
+
+.glass-sheen {
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 42%,
+    rgba(255, 255, 255, 0.055) 46%,
+    rgba(255, 255, 255, 0.11) 50%,
+    rgba(255, 255, 255, 0.055) 54%,
+    transparent 58%
+  );
+  pointer-events: none;
+}
+
+.glass-cracks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.crack-path {
+  fill: none;
+  stroke: rgba(240, 244, 255, 0.5);
+  stroke-width: 0.32;
+  stroke-linecap: round;
+}
+
+.glass-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.25) 30%, transparent 65%);
+  mix-blend-mode: screen;
+}
+
+.glass-shard {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+/* ------------------------------------------------------------
+   Scene 2 · SHRUTI RAI
+   ------------------------------------------------------------ */
+
+.particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.name-content {
+  flex-direction: column;
+  gap: 0.06em;
+  z-index: 2;
+}
+
+.name-row {
+  display: flex;
+  gap: 0.045em;
+  line-height: 1.02;
+  white-space: nowrap;
+}
+
+.letter {
+  font-family: var(--font-hero);
+  font-size: clamp(84px, 16vw, 215px);
+  line-height: 1;
+  color: var(--ink);
+  display: inline-block;
+  position: relative;
+  will-change: transform;
+}
+
+.letter-a {
+  color: #e7cfa4;
+  text-shadow: 0 0 46px rgba(231, 207, 164, 0.4), 0 0 120px rgba(231, 207, 164, 0.16);
+}
+
+.name-row-a {
+  margin-top: 0.02em;
+}
+
+.portal-ring {
+  position: absolute;
+  inset: -38% -30%;
+  border-radius: 50%;
+  border: 2px solid rgba(231, 207, 164, 0.85);
+  box-shadow: 0 0 40px rgba(231, 207, 164, 0.55), inset 0 0 30px rgba(231, 207, 164, 0.25);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.name-caption {
+  position: absolute;
+  bottom: 13vh;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2;
+  font-size: clamp(9px, 1.1vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4em;
+  opacity: 0;
+}
+
+.name-caption-dot {
+  color: var(--gold-soft);
+}
+
+.vignette-name {
+  background: radial-gradient(ellipse at 50% 48%, transparent 46%, rgba(0, 0, 0, 0.58) 100%);
+}
+
+/* ------------------------------------------------------------
+   Scene 3 · About
+   ------------------------------------------------------------ */
+
+.about-content {
+  align-items: center;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) 1.15fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+  width: min(1180px, 90vw);
+}
+
+.about-photo {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.photo-frame {
+  position: relative;
+  width: min(340px, 34vw);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid rgba(200, 161, 101, 0.4);
+  background: var(--bg-2);
+  will-change: clip-path;
+}
+
+.photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 0 60px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.02);
+}
+
+.photo-caption {
+  font-size: 9px;
+  letter-spacing: 0.42em;
+  color: var(--faint);
+}
+
+.about-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.open-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.62em 1.25em;
+  border-radius: 999px;
+  background: var(--green-soft);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  color: #6ee7b7;
+  font-size: clamp(11px, 1.2vw, 13px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  box-shadow: 0 0 26px rgba(52, 211, 153, 0.18);
+  will-change: transform;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.9);
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.72);
+    opacity: 0.6;
+  }
+}
+
+.about-heading {
+  margin: 0;
+  font-size: clamp(46px, 6.4vw, 84px);
+  line-height: 1;
+  color: var(--ink);
+  will-change: clip-path;
+}
+
+.about-intro,
+.about-body {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+  font-size: clamp(13px, 1.35vw, 15.5px);
+  max-width: 54ch;
+}
+
+.about-intro {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.about-quick {
+  margin: 8px 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 36px;
+  width: 100%;
+  max-width: 520px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.quick-item dt {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--faint);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.quick-item dd {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------
+   Scene 4 · Tech Stack
+   ------------------------------------------------------------ */
+
+.tech-content {
+  z-index: 2;
+}
+
+.tech-hub {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: clamp(130px, 17vmin, 200px);
+  height: clamp(130px, 17vmin, 200px);
+  border-radius: 50%;
+  border: 1px solid rgba(200, 161, 101, 0.4);
+  background: radial-gradient(circle at 50% 35%, rgba(200, 161, 101, 0.1), transparent 70%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 0 60px rgba(200, 161, 101, 0.12);
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+.tech-hub-mark {
+  font-size: clamp(30px, 4vmin, 44px);
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.tech-hub-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  color: var(--gold-soft);
+}
+
+.tech-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px dashed rgba(239, 233, 221, 0.09);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.tech-ring-label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.44em;
+  text-indent: 0.44em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.chip {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0.5em 1em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(239, 233, 221, 0.1);
+  color: var(--ink);
+  font-size: clamp(10px, 1.15vmin, 12.5px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  backdrop-filter: blur(2px);
+  animation: chip-float 5.4s ease-in-out infinite alternate;
+}
+
+@keyframes chip-float {
+  from {
+    transform: translate(-50%, -50%) translateY(-5px);
+  }
+  to {
+    transform: translate(-50%, -50%) translateY(5px);
+  }
+}
+
+.tech-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 58vmin;
+  height: 58vmin;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(200, 161, 101, 0.16);
+  border-radius: 50%;
+  animation: orbit-spin 70s linear infinite;
+}
+
+.tech-orbit::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(200, 161, 101, 0.8);
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------
+   Scene 5 · Projects
+   ------------------------------------------------------------ */
+
+.projects-content {
+  flex-direction: column;
+  gap: 4vh;
+}
+
+.projects-heading {
+  margin: 0;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1;
+  color: var(--ink);
+  text-align: center;
+  will-change: clip-path;
+}
+
+.projects-list {
+  width: min(1080px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.project {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: clamp(16px, 2.4vw, 40px);
+  align-items: start;
+  padding: 2.6vh 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.p-index {
+  font-style: italic;
+  font-size: clamp(26px, 3vw, 40px);
+  color: var(--gold-soft);
+  line-height: 1;
+  padding-top: 4px;
+}
+
+.p-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.p-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2em;
+  flex-wrap: wrap;
+}
+
+.p-name {
+  margin: 0;
+  font-size: clamp(26px, 3.2vw, 44px);
+  line-height: 1;
+  color: var(--ink);
+}
+
+.p-tagline {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+
+.p-desc {
+  margin: 10px 0 12px;
+  color: var(--muted);
+  font-size: clamp(12px, 1.2vw, 14px);
+  line-height: 1.65;
+  max-width: 62ch;
+}
+
+.p-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-sm {
+  position: static;
+  transform: none;
+  animation: none;
+  padding: 0.32em 0.8em;
+  font-size: 9.5px;
+  color: var(--muted);
+  border-color: rgba(239, 233, 221, 0.09);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.p-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.p-link {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  transition: color 0.25s ease;
+}
+
+.p-link:hover {
+  color: var(--gold);
+}
+
+/* ------------------------------------------------------------
+   Scene 6 · Fun Facts
+   ------------------------------------------------------------ */
+
+.facts-content {
+  gap: clamp(40px, 5vw, 80px);
+}
+
+.facts-figure {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.anime-glow {
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 161, 101, 0.22), rgba(120, 90, 200, 0.1) 55%, transparent 75%);
+  filter: blur(28px);
+  animation: glow-breathe 6s ease-in-out infinite alternate;
+}
+
+@keyframes glow-breathe {
+  from {
+    transform: scale(0.92);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+.anime-wrap {
+  animation: anime-float 7s ease-in-out infinite alternate;
+}
+
+@keyframes anime-float {
+  from {
+    transform: translateY(-8px);
+  }
+  to {
+    transform: translateY(8px);
+  }
+}
+
+.anime-frame {
+  position: relative;
+  width: clamp(220px, 24vw, 320px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 161, 101, 0.45);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 0 44px rgba(200, 161, 101, 0.14);
+  will-change: clip-path, opacity;
+}
+
+.anime-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.anime-float {
+  position: absolute;
+  right: -34px;
+  bottom: -26px;
+  width: clamp(96px, 10vw, 136px);
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(239, 233, 221, 0.14);
+  opacity: 0.85;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.5);
+  animation: anime-float 9s ease-in-out infinite alternate-reverse;
+  z-index: 2;
+}
+
+.anime-float img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.anime-caption {
+  font-size: 8.5px;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  color: var(--faint);
+}
+
+.facts-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 560px;
+}
+
+.facts-heading {
+  margin: 0;
+  font-size: clamp(40px, 5.4vw, 72px);
+  line-height: 1;
+  color: var(--ink);
+  will-change: clip-path;
+}
+
+.facts-intro {
+  margin: 0;
+  font-size: clamp(12px, 1.3vw, 14px);
+  color: var(--muted);
+}
+
+.fact-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.fact {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(239, 233, 221, 0.08);
+  border-radius: 8px;
+  align-items: flex-start;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.fact:hover {
+  border-color: rgba(200, 161, 101, 0.35);
+  background: rgba(200, 161, 101, 0.05);
+}
+
+.fact-icon {
+  font-size: 20px;
+  line-height: 1;
+  animation: icon-float 4s ease-in-out infinite alternate;
+}
+
+.fact-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+@keyframes icon-float {
+  from {
+    transform: translateY(-3px);
+  }
+  to {
+    transform: translateY(3px);
+  }
+}
+
+.fact-title {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.fact-text {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------
+   Scene 7 · Contact
+   ------------------------------------------------------------ */
+
+.contact-content {
+  flex-direction: column;
+  text-align: center;
+  gap: 0;
+}
+
+.contact-eyebrow {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.55em;
+  text-indent: 0.55em;
+  color: var(--gold-soft);
+  margin-bottom: 2.5vh;
+}
+
+.contact-heading {
+  margin: 0;
+  font-size: clamp(52px, 8vw, 116px);
+  line-height: 1;
+  color: var(--ink);
+  text-shadow: 0 0 50px rgba(200, 161, 101, 0.16);
+  will-change: clip-path;
+}
+
+.contact-sub {
+  margin: 2.5vh 0 0;
+  font-size: clamp(12px, 1.4vw, 15px);
+  color: var(--muted);
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4.5vh;
+  width: min(520px, 86vw);
+}
+
+.contact-link {
+  display: grid;
+  grid-template-columns: 110px 1fr 20px;
+  align-items: baseline;
+  gap: 18px;
+  width: 100%;
+  padding: 11px 6px;
+  border-bottom: 1px solid var(--line);
+  transition: color 0.25s ease, border-color 0.25s ease;
+  will-change: opacity;
+}
+
+.contact-link:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.contact-link:hover {
+  color: var(--gold);
+  border-color: rgba(200, 161, 101, 0.35);
+}
+
+.contact-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--faint);
+  text-align: left;
+}
+
+.contact-value {
+  font-size: clamp(12.5px, 1.5vw, 15px);
+  font-weight: 500;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-arrow {
+  color: var(--gold-soft);
+  font-size: 12px;
+  text-align: right;
+}
+
+.contact-foot {
+  margin: 4.5vh 0 0;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  color: var(--faint);
+}
+
+/* ------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------ */
+
+@media (max-width: 820px) {
+  .brand {
+    top: 18px;
+    left: 20px;
+  }
+
+  .brand-tag {
+    display: none;
+  }
+
+  .name-caption {
+    flex-direction: column;
+    gap: 6px;
+    bottom: 8vh;
+  }
+
+  .name-caption-dot {
+    display: none;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    width: 88vw;
+  }
+
+  .photo-frame {
+    width: min(280px, 62vw);
+  }
+
+  .about-side {
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-intro,
+  .about-body {
+    text-align: center;
+  }
+
+  .about-quick {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+  }
+
+  .quick-item {
+    text-align: left;
+  }
+
+  .tech-hub {
+    transform: scale(0.9);
+  }
+
+  .tech-ring-label {
+    display: none;
+  }
+
+  .project {
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    padding: 16px 0;
+  }
+
+  .p-links {
+    grid-column: 2;
+    flex-direction: row;
+    gap: 18px;
+    padding-top: 0;
+  }
+
+  .facts-content {
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  .facts-figure {
+    order: -1;
+  }
+
+  .fact-list {
+    grid-template-columns: 1fr;
+  }
+
+  .facts-side {
+    align-items: center;
+    text-align: center;
+    max-width: 88vw;
+  }
+
+  .anime-float {
+    right: -14px;
+    bottom: -18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sr-title {
+    font-size: 38vw;
+  }
+
+  .letter {
+    font-size: 17.5vw;
+  }
+
+  .contact-link {
+    grid-template-columns: 86px 1fr 16px;
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-backdrop,
+  .scroll-hint-line,
+  .badge-dot,
+  .chip,
+  .tech-orbit,
+  .anime-glow,
+  .anime-wrap,
+  .anime-float,
+  .fact-icon {
+    animation: none !important;
+  }
+}
