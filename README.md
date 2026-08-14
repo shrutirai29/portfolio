@@ -14,7 +14,7 @@ The experience opens directly with **SHRUTI RAI** (no initials hero) and the one
 | 3 · About Me | Photo (left) + description (right) with a pulsing green **OPEN TO WORK** badge |
 | Transition 3 | A pinned camera **zooms into OPEN TO WORK** and passes through it into the Tech Stack |
 | 4 · Tech Stack | **Capability index** (OKC-style) — one editorial row per domain (Languages, Web & Frontend, Backend & Data, Security & Systems, Tools & Core); rows **slide in from alternate directions**, converging to the center as you scroll |
-| 5 · Projects | **Editorial project index** (Studio Foundry pattern) — numbered rows entering from **alternate directions** under a CA Film Creatives-style "by the numbers" stat band. **EXPLORE opens a dedicated project page** (`#/project/01` …) with the full story, highlights, tech, and live + GitHub links at the end |
+| 5 · Projects | **Editorial project index** (Studio Foundry pattern) — nine numbered rows entering from **alternate directions** under a CA Film Creatives-style "by the numbers" stat band (09 public projects, all from the GitHub profile — Khety, MEDTrust, SkillBridge, Portfolio, GOA, FLEETRA, TypeBlaster, Shikha, DSA Journey). **EXPLORE opens a dedicated project page** (`#/project/01` …) with the full story, highlights, tech, and live + GitHub links at the end |
 | 6 · Fun Facts | **Kinetic editorial scrapbook** — the anime portrait anchored in a collage of rotated, drifting, verified facts |
 | 7 · Contact | **Final transmission** — a clean, premium centered composition: "Let's create something." with one refined link list (GitHub · LinkedIn · Instagram · Email · LeetCode · TryHackMe) and a small **S.R.** bookend closing the loop |
 

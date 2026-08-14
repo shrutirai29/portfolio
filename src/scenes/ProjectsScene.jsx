@@ -6,7 +6,7 @@ import { PROJECTS } from '../data.js';
 // "by the numbers" band inspired by CA Film Creatives. All stats are
 // taken from the résumé — nothing invented.
 const STATS = [
-  ['04', 'SHIPPED PROJECTS'],
+  ['09', 'PUBLIC PROJECTS'],
   ['50+', 'PAGES — MEDTRUST PROTOTYPE'],
   ['14+', 'VOICE LANGUAGES — KHETY'],
   ['03', 'AI FEATURES — CNN · CLAUDE · RULES'],
@@ -17,7 +17,7 @@ export default function ProjectsScene() {
     <section className="scene" data-scene="projects" aria-label="Projects">
       <div className="stage" data-stage>
         <div className="film-head" data-reveal="clip">
-          <span className="kicker">05 · SELECTED WORK</span>
+          <span className="kicker">09 · SELECTED WORK</span>
           <h2 className="film-title font-hero">
             Selected <em>Work</em>
           </h2>
