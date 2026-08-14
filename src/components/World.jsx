@@ -157,14 +157,20 @@ export default function World({ lenis, returnInfo }) {
       gsap.set(g3, { transformOrigin: badgeOrigin });
       const aboutZoom = reduced ? 2.4 : 6.8 * Z;
       if (!reduced) {
+        // The section first pins fully in view and holds STATIC for a long
+        // settle beat (about a third of the pin range) so its content is
+        // readable before the camera push begins — on phones the section is
+        // exactly one viewport tall, so without this the zoom used to start
+        // the moment the section filled the screen.
         const aboutTL = gsap.timeline({
           defaults: { ease: 'none' },
-          scrollTrigger: { trigger: s3, start: 'top top', end: '+=200%', pin: true, scrub: true, anticipatePin: 1 },
+          scrollTrigger: { trigger: s3, start: 'top top', end: '+=150%', pin: true, scrub: true, anticipatePin: 1 },
         });
         aboutTL
-          .to(g3, { scale: aboutZoom, duration: 5.2, ease: 'power1.in' }, 0.6)
-          .to(g3, { scale: aboutZoom * 1.28, opacity: 0, duration: 1.8, ease: 'power1.in' }, 5.8)
-          .fromTo(g4, { yPercent: 16, opacity: 0.15 }, { yPercent: 0, opacity: 1, duration: 2.8, ease: 'power2.out' }, 3.6);
+          .to({}, { duration: 8 })
+          .to(g3, { scale: aboutZoom, duration: 4.5, ease: 'power1.in' }, 8)
+          .to(g3, { scale: aboutZoom * 1.3, opacity: 0, duration: 1.7, ease: 'power1.in' }, 12.5)
+          .fromTo(g4, { yPercent: 16, opacity: 0.15 }, { yPercent: 0, opacity: 1, duration: 2.6, ease: 'power2.out' }, 10.5);
       }
 
       gsap.fromTo(
