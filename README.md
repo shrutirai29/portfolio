@@ -19,9 +19,9 @@ Every transition is a camera move on a single GSAP ScrollTrigger timeline — fu
 | Transition 2 | **Whole-screen camera zoom toward the "A"** — the entire composition scales, letters move to the edges, the camera passes through the A |
 | 3 · About Me | Photo (left) + description (right) with a pulsing green **OPEN TO WORK** badge |
 | Transition 3 | Camera zooms the whole About composition into the badge, then passes through it |
-| 4 · Tech Stack | **Kinetic tech rails** — five editorial strips (Languages, Web, Backend, Security, Tools) sliding at different speeds and directions with a scroll-driven focus band at the viewport center |
-| Transition 4 | The rails **collapse into a single point**, then the camera zooms through it |
-| 5 · Projects | **Cinematic filmstrip** — one huge project per frame, sliding horizontally: Khety, MEDTrust, SkillBridge, this portfolio, each with a themed abstract visual |
+| 4 · Tech Stack | **Capability index** (OKC-style) — one editorial row per domain (Languages, Web & Frontend, Backend & Data, Security & Systems, Tools & Core) with a script label and a flowing technology cluster |
+| Transition 4 | The rows **collapse into a single point**, then the camera zooms through it |
+| 5 · Projects | **Editorial project index** (Studio Foundry pattern) — numbered rows with name, tagline, description, stack and an EXPLORE link, under a CA Film Creatives-style "by the numbers" stat band |
 | Transition 5 | Camera zoom into the projects' center |
 | 6 · Fun Facts | **Kinetic editorial scrapbook** — the anime portrait anchored in a collage of rotated, drifting, verified facts |
 | Transition 6 | Camera zooms into the anime image and passes through it |
