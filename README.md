@@ -14,25 +14,26 @@ Every transition is a camera move on a single GSAP ScrollTrigger timeline — fu
 | --- | --- |
 | 0 · Loading | Minimal cinematic preloader (fonts + images preloaded), curtain lifts |
 | 1 · S.R. | First identity reveal — initials only, elegant and mysterious |
-| Transition 1 | **Glass break** — fracture lines crack from center, shards fly outward with depth, revealing the name behind the broken pane |
+| Transition 1 | **Glass break** — fracture lines crack from center, shards fly outward with depth, revealing the name behind the broken pane. The glass then **leaves the frame completely** (the whole S.R. layer is removed — no cracks or fragments ever persist) |
 | 2 · SHRUTI RAI | Large cinematic typography composition with drifting particles |
 | Transition 2 | **Whole-screen camera zoom toward the "A"** — the entire composition scales, letters move to the edges, the camera passes through the A |
 | 3 · About Me | Photo (left) + description (right) with a pulsing green **OPEN TO WORK** badge |
 | Transition 3 | Camera zooms the whole About composition into the badge, then passes through it |
-| 4 · Tech Stack | Orbiting technology ecosystem around an S.R. hub |
-| Transition 4 | Camera zooms the whole scene into its center |
-| 5 · Projects | Cinematic editorial list of verified projects (Khety, MEDTrust, SkillBridge, this portfolio) |
+| 4 · Tech Stack | **Kinetic tech rails** — five editorial strips (Languages, Web, Backend, Security, Tools) sliding at different speeds and directions with a scroll-driven focus band at the viewport center |
+| Transition 4 | The rails **collapse into a single point**, then the camera zooms through it |
+| 5 · Projects | **Cinematic filmstrip** — one huge project per frame, sliding horizontally: Khety, MEDTrust, SkillBridge, this portfolio, each with a themed abstract visual |
 | Transition 5 | Camera zoom into the projects' center |
-| 6 · Fun Facts | Playful, personality-driven facts with the anime portrait as the centerpiece |
+| 6 · Fun Facts | **Kinetic editorial scrapbook** — the anime portrait anchored in a collage of rotated, drifting, verified facts |
 | Transition 6 | Camera zooms into the anime image and passes through it |
-| 7 · Contact | The conclusion — GitHub, LinkedIn, Instagram, email, LeetCode, TryHackMe |
+| 7 · Contact | **Final transmission** — an interactive radar signal with orbiting links; the camera then pulls back and a small **S.R.** closes the loop |
 
 ## Tech
 
 - **GSAP + ScrollTrigger** — one scrubbed master timeline drives the entire camera journey (Lenis-synced)
 - **Lenis** — smooth inertial scrolling
 - **React + Vite** — component-per-scene, no unnecessary re-renders
-- Fonts: **Cormorant Garamond** (hero/headings) × **Manrope** (body)
+- Fonts: **Bodoni Moda** (editorial display serif) × **Manrope** (body)
+- The whole palette is **derived from the provided background image** (deep indigo / violet night) — see `scripts/sample-colors.mjs`
 - Images optimized to WebP (originals kept as source assets)
 
 ## Run it
@@ -50,7 +51,8 @@ npm run preview  # preview the production build
 
 - All content is sourced from the résumé, GitHub profile and public profiles — nothing is invented.
 - The "A" zoom is a real camera move: the whole scene scales around the letter, the other letters remain visible and drift to the edges — nothing is hidden or individually animated.
+- The glass break is a transition, not a texture: once the pane shatters, the entire S.R. layer (cracks, shards, reflections) is removed from the scene and never returns until you scroll back to the start.
 - `prefers-reduced-motion` and small screens get a simplified experience (fewer shards, reduced zoom, tuned typography) without losing the story.
-- In development, `window.__journey.goto(progress)` is exposed for deterministic timeline inspection.
+- In development, `window.__journey.goto(progress)` + `window.__lenis.scrollTo(y)` are exposed for deterministic timeline inspection.
 
 © 2026 Shruti Rai

@@ -64,36 +64,38 @@ export const PROJECTS = [
   },
 ];
 
+export const FACTS_INTRO = "The résumé's footnotes — the person behind the code.";
+
 export const FACTS = [
+  {
+    icon: '🎭',
+    title: 'Drama club VP',
+    text: "Vice President & Treasurer of Qalavant — Rashtriya Raksha University's drama & films club. Comfortable on a stage that isn't a browser tab.",
+  },
   {
     icon: '🛡️',
     title: 'Top 5% on TryHackMe',
-    text: '82 rooms completed, a 46-day streak and 4 badges earned in ethical hacking.',
+    text: '82 rooms completed, a 46-day streak and 4 badges — learning how systems break so I can build them better.',
   },
   {
     icon: '🧮',
     title: '71 LeetCode problems',
-    text: '20 Easy, 34 Medium, 17 Hard — DSA & competitive programming in Python and C++.',
+    text: '20 Easy, 34 Medium, 17 Hard — DSA grind in Python and C++, between shipped projects.',
   },
   {
-    icon: '🎭',
-    title: 'Drama club Vice President',
-    text: 'VP & Treasurer of Qalavant, the drama club at Rashtriya Raksha University.',
-  },
-  {
-    icon: '🎓',
-    title: 'CGPA 8.17',
-    text: 'Maintaining an 8.17 CGPA while building AI and full-stack projects.',
+    icon: '🏗️',
+    title: 'Builder energy',
+    text: 'Healthcare, agriculture, AI analyzers — four shipped projects across React, Flask and AI stacks, not one tutorial clone.',
   },
   {
     icon: '💼',
-    title: 'Infosys Springboard intern',
-    text: 'Completed the virtual Software Engineering / Full-Stack learning track in 2025.',
+    title: 'Infosys Springboard',
+    text: 'Virtual full-stack engineering internship, 2025 — certificates earned, industry patterns internalized.',
   },
   {
     icon: '🔐',
-    title: 'Security-first builder',
-    text: 'Every project ships secure — JWT auth, hashed passwords, rate limiting.',
+    title: 'Security × development',
+    text: 'I care how systems are built AND how they can be secured — JWT auth, hashed passwords and safe defaults in every project.',
   },
 ];
 

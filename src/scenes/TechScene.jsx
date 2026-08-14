@@ -1,46 +1,59 @@
 import React from 'react';
 import { TECH } from '../data.js';
 
-const RINGS = [
-  { key: 'lang', label: 'LANGUAGES', r: 15, items: TECH.languages },
-  { key: 'web', label: 'WEB & BACKEND', r: 29, items: [...TECH.web, ...TECH.backend] },
-  { key: 'tools', label: 'TOOLS · SECURITY · CORE', r: 42, items: [...TECH.tools, ...TECH.security, ...TECH.concepts] },
+// Kinetic tech rails: each row is an infinitely scrolling strip of
+// technologies. Rows move at different speeds and directions; a
+// "focus band" at the viewport center sharpens items, and the whole
+// composition collapses into the center when the camera moves on.
+const RAILS = [
+  { key: 'lang', label: '01 · LANGUAGES', items: TECH.languages, dur: '26s', dir: 'normal' },
+  { key: 'web', label: '02 · WEB & FRONTEND', items: TECH.web, dur: '34s', dir: 'reverse' },
+  { key: 'backend', label: '03 · BACKEND & DATA', items: TECH.backend, dur: '22s', dir: 'normal' },
+  { key: 'security', label: '04 · SECURITY & SYSTEMS', items: TECH.security, dur: '30s', dir: 'reverse' },
+  { key: 'tools', label: '05 · TOOLS & CORE', items: TECH.tools.concat(TECH.concepts), dur: '38s', dir: 'normal' },
 ];
-
-const polar = (r, angle) => ({
-  left: `calc(50% + ${(r * Math.cos(angle)).toFixed(2)}vmin)`,
-  top: `calc(50% + ${(r * Math.sin(angle)).toFixed(2)}vmin)`,
-});
 
 export default function TechScene() {
   return (
     <section className="scene" data-scene="tech" aria-label="Tech Stack">
       <div className="stage" data-stage>
-        <div className="scene-content tech-content">
-          <div className="tech-hub" data-reveal="pop">
-            <div className="tech-hub-mark font-hero">S.R.</div>
-            <div className="tech-hub-label">TECH STACK</div>
-          </div>
+        <div className="tech-head" data-reveal="clip">
+          <span className="kicker">04 · SYSTEMS &amp; CRAFT</span>
+          <h2 className="tech-title font-hero">
+            Tech <em>Stack</em>
+          </h2>
+        </div>
 
-          {RINGS.map((ring) => (
-            <div key={ring.key} className="tech-ring" style={{ width: `${ring.r * 2}vmin`, height: `${ring.r * 2}vmin` }}>
-              <span className="tech-ring-label" style={{ top: `calc(50% - ${ring.r + 1.2}vmin)` }}>
-                {ring.label}
-              </span>
-              {ring.items.map((item, i) => {
-                const angle = (i / ring.items.length) * Math.PI * 2 - Math.PI / 2;
-                const pos = polar(ring.r, angle);
-                return (
-                  <span key={item} className="chip" style={{ ...pos, animationDelay: `${(i * 0.37) % 6}s` }}>
-                    {item}
-                  </span>
-                );
-              })}
+        <div className="tech-rails">
+          {RAILS.map((rail, ri) => (
+            <div className={`rail-rot ${ri % 2 ? 'rot-b' : 'rot-a'}`} key={rail.key}>
+              <div className="rail-row" data-rail={rail.key}>
+                <span className="rail-label">{rail.label}</span>
+                <div className="rail-track" style={{ ['--dur']: rail.dur, ['--dir']: rail.dir }}>
+                  <div className="rail-group">
+                    {rail.items.map((item, i) => (
+                      <span className="rail-chip" key={`${rail.key}-a-${i}`}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="rail-group" aria-hidden="true">
+                    {rail.items.map((item, i) => (
+                      <span className="rail-chip" key={`${rail.key}-b-${i}`}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
-
-          <div className="tech-orbit" aria-hidden="true" />
         </div>
+
+        <div className="tech-ghost font-hero" aria-hidden="true">
+          S.R.
+        </div>
+
         <div className="zoom-dark" data-zoom-dark />
         <div className="vignette" />
       </div>

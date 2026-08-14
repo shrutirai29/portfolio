@@ -23,4 +23,8 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add((time) => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 
+if (import.meta.env.DEV) {
+  window.__lenis = lenis;
+}
+
 createRoot(document.getElementById('root')).render(<App lenis={lenis} />);

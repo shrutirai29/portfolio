@@ -63,6 +63,7 @@ export default function World() {
     const stage = (name) => q(root, `[data-scene="${name}"] [data-stage]`);
     const revealsIn = (name, kind) => scene(name).querySelectorAll(`[data-reveal="${kind}"]`);
 
+    const s1 = scene('sr');
     const s2 = scene('name');
     const s3 = scene('about');
     const s4 = scene('tech');
@@ -82,8 +83,16 @@ export default function World() {
     const crackPaths = [...root.querySelectorAll('.crack-path')];
     const glassFlash = q(root, '.glass-flash');
     const glassSheen = q(root, '.glass-sheen');
-    const glassLayer = q(root, '.glass-layer');
+    const backdrop = q(root, '.world-backdrop');
     const scrollHint = q(root, '.scroll-hint');
+    const techHead = q(root, '.tech-head');
+    const railRows = [...root.querySelectorAll('.rail-row')];
+    const railChips = [...root.querySelectorAll('.rail-chip')];
+    const filmTrack = q(root, '.film-track');
+    const filmPanels = [...root.querySelectorAll('.film-panel')];
+    const scrapFacts = [...root.querySelectorAll('.scrap-fact')];
+    const finalContent = q(root, '.final-content');
+    const finalMark = q(root, '.final-mark');
 
     const nameCaption = q(root, '.name-caption');
     const portalRing = q(root, '.portal-ring');
@@ -99,15 +108,16 @@ export default function World() {
     const animeOrigin = originAt(g6, q(root, '[data-scene="facts"] [data-focal="anime"]'));
 
     const photo = q(root, '[data-photo]');
-    const techChips = root.querySelectorAll('[data-scene="tech"] .chip');
 
     let st = null;
+    let onTick = null;
 
     const ctx = gsap.context(() => {
       // ---------- initial states ----------
       gsap.set([s2, s3, s4, s5, s6, s7], { opacity: 0 });
       gsap.set([g2, g3, g4, g5, g6, g7], { scale: 1.7 });
       gsap.set([glassFlash, portalRing, nameCaption], { opacity: 0 });
+      gsap.set(finalMark, { autoAlpha: 0 });
       gsap.set([zoomDark2, zoomDark3, zoomDark4, zoomDark5, zoomDark6], { opacity: 0 });
       gsap.set(crackPaths, {
         strokeDasharray: (i, el) => el.getTotalLength(),
@@ -119,10 +129,8 @@ export default function World() {
       gsap.set(revealsIn('projects', 'rise'), { y: 40, opacity: 0 });
       gsap.set(revealsIn('facts', 'rise'), { y: 30, opacity: 0 });
       gsap.set(revealsIn('contact', 'rise'), { y: 26, opacity: 0 });
-      gsap.set(root.querySelectorAll('[data-reveal="pop"]'), { scale: 0.6, opacity: 0 });
       gsap.set(root.querySelectorAll('[data-reveal="frame"]'), { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 });
       gsap.set(photo, { clipPath: 'inset(0% 0% 100% 0%)' });
-      gsap.set(techChips, { opacity: 0 });
 
       // Camera targets (whole-scene zooms rotate around these points)
       gsap.set(g2, { transformOrigin: aOrigin });
@@ -152,7 +160,8 @@ export default function World() {
       const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
 
       /* ============ SCENE 1 · S.R. ============ */
-      tl.to(g1, { scale: 1.07, duration: 16 }, 0)
+      tl.fromTo(backdrop, { scale: 1.1, xPercent: -0.8 }, { scale: 1.26, xPercent: 0.8, duration: 96, ease: 'none' }, 0)
+        .to(g1, { scale: 1.07, duration: 16 }, 0)
         .to(scrollHint, { opacity: 0, duration: 2.6, ease: 'power1.out' }, 0.4);
 
       /* ============ GLASS CRACK (4 → 6.6) ============ */
@@ -187,7 +196,7 @@ export default function World() {
         6.6
       )
         .to(g1, { opacity: 0, duration: 1.6, ease: 'power1.inOut' }, 6.4)
-        .to(glassLayer, { opacity: 0, duration: 1.6, ease: 'power1.inOut' }, 8.4)
+        .to(s1, { autoAlpha: 0, duration: 1.8, ease: 'power1.inOut' }, 8.4)
         .to(nameCaption, { opacity: 1, duration: 2.4, ease: 'power1.inOut' }, 7.5);
 
       /* ============ SHRUTI RAI revealed behind the glass ============ */
@@ -250,18 +259,25 @@ export default function World() {
         .to(s4, { opacity: 1, duration: 2.2, ease: 'power1.inOut' }, 45)
         .fromTo(g4, { scale: 1.6 }, { scale: 1, duration: 3.6, ease: 'power1.out' }, 45);
 
-      /* ============ TECH STACK hold (48.5 → 55) ============ */
+      /* ============ TECH STACK hold — kinetic rails (48.5 → 55) ============ */
       tl.fromTo(
-        root.querySelectorAll('[data-reveal="pop"]'),
-        { scale: 0.6, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.6, ease: 'back.out(1.6)' },
+        railRows,
+        { xPercent: (i) => (i % 2 ? 5 : -5), opacity: 0 },
+        { xPercent: 0, opacity: 1, duration: 1.5, ease: 'power2.out', stagger: 0.1 },
         48.5
       ).fromTo(
-        techChips,
-        { opacity: 0 },
-        { opacity: 1, duration: 1.3, ease: 'power1.out', stagger: 0.045 },
-        49
+        q(root, '[data-scene="tech"] [data-reveal="clip"]'),
+        { clipPath: 'inset(0% 100% 0% 0%)' },
+        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'power2.inOut' },
+        48.6
       );
+
+      /* ============ RAILS COLLAPSE INTO THE CENTER (55 → 57.5) ============ */
+      tl.to(
+        railRows,
+        { y: (i) => (2 - i) * 46, scale: 0.28, opacity: 0, duration: 2.1, ease: 'power2.in', stagger: 0.06 },
+        55
+      ).to(techHead, { opacity: 0, duration: 1.5, ease: 'power1.in' }, 55);
 
       /* ============ ZOOM INTO TECH CENTER (55 → 60) ============ */
       tl.to(g4, { scale: 6.5 * Z, duration: 5, ease: 'power1.in' }, 55).to(
@@ -276,18 +292,28 @@ export default function World() {
         .to(s5, { opacity: 1, duration: 2.2, ease: 'power1.inOut' }, 60)
         .fromTo(g5, { scale: 1.55 }, { scale: 1, duration: 3.4, ease: 'power1.out' }, 60);
 
-      /* ============ PROJECTS hold (63.5 → 69) ============ */
+      /* ============ PROJECTS hold — filmstrip (63.5 → 69) ============ */
       tl.fromTo(
         q(root, '[data-scene="projects"] [data-reveal="clip"]'),
         { clipPath: 'inset(0% 100% 0% 0%)' },
-        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'power2.inOut' },
+        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power2.inOut' },
         63.5
       ).fromTo(
-        revealsIn('projects', 'rise'),
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.5, ease: 'power2.out', stagger: 0.11 },
-        63.8
+        filmTrack,
+        { x: 0 },
+        { x: () => -3 * window.innerWidth, duration: 5.0, ease: 'power1.inOut' },
+        63.5
       );
+
+      // Each panel's content rises as the strip slides it into the frame
+      filmPanels.forEach((panel, i) => {
+        tl.fromTo(
+          panel.querySelectorAll('[data-reveal="rise"]'),
+          { y: 36, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.1, ease: 'power2.out', stagger: 0.08 },
+          63.6 + i * 1.25
+        );
+      });
 
       /* ============ ZOOM INTO PROJECTS CENTER (69 → 74) ============ */
       tl.to(g5, { scale: 6.5 * Z, duration: 5, ease: 'power1.in' }, 69).to(
@@ -302,7 +328,7 @@ export default function World() {
         .to(s6, { opacity: 1, duration: 2.2, ease: 'power1.inOut' }, 74)
         .fromTo(g6, { scale: 1.55 }, { scale: 1, duration: 3.4, ease: 'power1.out' }, 74);
 
-      /* ============ FUN FACTS hold (77.5 → 82) ============ */
+      /* ============ FUN FACTS hold — scrapbook (77.5 → 82) ============ */
       tl.fromTo(
         q(root, '[data-scene="facts"] [data-reveal="frame"]'),
         { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 },
@@ -312,15 +338,42 @@ export default function World() {
         .fromTo(
           q(root, '[data-scene="facts"] [data-reveal="clip"]'),
           { clipPath: 'inset(0% 100% 0% 0%)' },
-          { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'power2.inOut' },
-          77.8
+          { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power2.inOut' },
+          77.7
         )
         .fromTo(
-          revealsIn('facts', 'rise'),
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.4, ease: 'power2.out', stagger: 0.09 },
-          78
+          q(root, '.scrap-intro'),
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.2, ease: 'power2.out' },
+          77.9
         );
+
+      // Facts drift in from different directions, settling at their collage angles
+      const factEntries = [
+        { x: -110, y: 18, rotation: -9 },
+        { x: 110, y: -14, rotation: 9 },
+        { x: 40, y: 70, rotation: 7 },
+        { x: -80, y: -22, rotation: -7 },
+        { x: 0, y: 40, rotation: 12, scale: 0.4 },
+        { x: 90, y: 26, rotation: -9 },
+      ];
+      scrapFacts.forEach((f, i) => {
+        const from = factEntries[i] || { x: -60, y: 30, rotation: -5 };
+        tl.fromTo(
+          f,
+          { ...from, opacity: 0 },
+          {
+            x: 0,
+            y: 0,
+            rotation: parseFloat(f.dataset.rot || 0),
+            scale: 1,
+            opacity: 1,
+            duration: 1.3,
+            ease: 'power2.out',
+          },
+          78 + i * 0.12
+        );
+      });
 
       /* ============ ZOOM INTO THE ANIME IMAGE (82 → 87) ============ */
       tl.to(g6, { scale: 9 * Z, duration: 5, ease: 'power1.in' }, 82).to(
@@ -335,7 +388,7 @@ export default function World() {
         .to(s7, { opacity: 1, duration: 2.2, ease: 'power1.inOut' }, 87)
         .fromTo(g7, { scale: 1.6 }, { scale: 1, duration: 3.4, ease: 'power1.out' }, 87);
 
-      /* ============ CONTACT hold (90 → 96) ============ */
+      /* ============ CONTACT hold (90 → 93.5) ============ */
       tl.fromTo(
         q(root, '[data-scene="contact"] [data-reveal="clip"]'),
         { clipPath: 'inset(0% 100% 0% 0%)' },
@@ -347,8 +400,12 @@ export default function World() {
           { y: 26, opacity: 0 },
           { y: 0, opacity: 1, duration: 1.2, ease: 'power2.out', stagger: 0.07 },
           90.3
-        )
-        .to(g7, { scale: 1.045, duration: 5, ease: 'none' }, 91);
+        );
+
+      /* ============ FINAL BEAT — camera pulls back, S.R. closes the loop (93.5 → 96) ============ */
+      tl.to(g7, { scale: 0.94, duration: 2.4, ease: 'power1.inOut' }, 93.5)
+        .to(finalContent, { opacity: 0.55, duration: 2.4, ease: 'power1.inOut' }, 93.5)
+        .to(finalMark, { autoAlpha: 1, duration: 1.6, ease: 'power1.out' }, 94.2);
 
       /* ============ master scroll trigger ============ */
       const TOTAL = 96;
@@ -357,6 +414,7 @@ export default function World() {
       if (spacer) spacer.style.height = `${TOTAL * pxPerUnit}px`;
 
       const progressEl = document.getElementById('journey-progress');
+      let focusActive = false;
       st = ScrollTrigger.create({
         trigger: spacer,
         start: 'top top',
@@ -365,8 +423,27 @@ export default function World() {
         animation: tl,
         onUpdate: (self) => {
           if (progressEl) progressEl.style.transform = `scaleX(${self.progress})`;
+          // Focus band is live while the tech rails hold (48.5 → 55 units)
+          const p = self.progress * 96;
+          focusActive = p > 48.4 && p < 55.1;
         },
       });
+
+      // Rail center-focus: sharpen items near the viewport center, soften edges
+      onTick = () => {
+        if (!focusActive || railChips.length === 0) return;
+        const cx = window.innerWidth / 2;
+        const half = window.innerWidth / 2;
+        for (const c of railChips) {
+          const r = c.getBoundingClientRect();
+          const d = Math.min(1, Math.abs(r.left + r.width / 2 - cx) / half);
+          const t = 1 - d * d;
+          c.style.opacity = (0.3 + 0.7 * t).toFixed(3);
+          c.style.filter = t > 0.99 ? 'none' : `blur(${(1.5 - t * 1.5).toFixed(2)}px)`;
+          c.style.scale = (0.94 + 0.1 * t).toFixed(3);
+        }
+      };
+      gsap.ticker.add(onTick);
 
       ScrollTrigger.refresh();
 
@@ -376,12 +453,14 @@ export default function World() {
         window.__journey = {
           goto: (p) => tl.progress(p),
           len: tl.duration(),
+          st,
         };
       }
     }, root);
 
     return () => {
       if (st) st.kill();
+      if (onTick) gsap.ticker.remove(onTick);
       ctx.revert();
     };
   }, [buildKey]);
@@ -395,6 +474,7 @@ export default function World() {
           style={{ backgroundImage: `url(${IMG('background.webp')})` }}
           aria-hidden="true"
         />
+        <div className="world-shade" aria-hidden="true" />
         <div className="camera">
           <SRScene />
           <NameScene />
