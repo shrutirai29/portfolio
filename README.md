@@ -9,7 +9,7 @@ The experience opens directly with **SHRUTI RAI** (no initials hero) and the one
 | Scene | What happens |
 | --- | --- |
 | 0 · Loading | Minimal cinematic preloader (fonts + images preloaded), curtain lifts |
-| 1 · SHRUTI RAI | The name appears directly after the loader — large cinematic typography with drifting particles; the only pinned moment — a **real camera zoom into the "A"**: the whole composition scales around the letter, the other letters remain visible and drift to the edges, and the camera passes through the A |
+| 1 · SHRUTI RAI | The name appears directly after the loader — large cinematic typography with drifting particles and floating dev-humor code snippets ("// works on my machine", "catch (error) { blameTheWiFi(); }"); the only pinned moment — a **real camera zoom into the "A"**: the whole composition scales around the letter, the other letters remain visible and drift to the edges, and the camera passes through the A |
 
 | 3 · About Me | Photo (left) + description (right) with a pulsing green **OPEN TO WORK** badge |
 | Transition 3 | A pinned camera **zooms into OPEN TO WORK** and passes through it into the Tech Stack |

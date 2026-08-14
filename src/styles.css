@@ -359,6 +359,54 @@ em {
   background: radial-gradient(ellipse at 50% 48%, transparent 46%, rgba(2, 2, 10, 0.62) 100%);
 }
 
+/* Floating dev-humor snippets around the name */
+.floaters {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.floater {
+  position: absolute;
+  font-family: var(--font-body);
+  font-size: clamp(10px, 0.95vw, 13px);
+  letter-spacing: 0.02em;
+  color: var(--accent-soft);
+  background: rgba(8, 8, 24, 0.5);
+  border: 1px solid rgba(185, 168, 230, 0.22);
+  border-radius: 9px;
+  padding: 8px 12px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  white-space: nowrap;
+  opacity: 0;
+  animation:
+    floater-in 0.9s ease var(--d) both,
+    floater-bob var(--dur) ease-in-out var(--d) infinite;
+  will-change: transform;
+}
+
+@keyframes floater-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes floater-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot));
+  }
+  50% {
+    transform: translateY(-12px) rotate(calc(var(--rot) + 2.2deg));
+  }
+}
+
 /* ------------------------------------------------------------
    Scene 3 · About
    ------------------------------------------------------------ */
@@ -1605,6 +1653,12 @@ em {
   }
 }
 
+@media (max-width: 768px) {
+  .floater-hide-sm {
+    display: none;
+  }
+}
+
 @media (max-width: 480px) {
   .letter {
     font-size: 17.5vw;
@@ -1647,7 +1701,9 @@ em {
   .anime-glow,
   .anime-wrap,
   .anime-float,
-  .scrap-tape {
+  .scrap-tape,
+  .floater {
     animation: none !important;
+    opacity: 1;
   }
 }
