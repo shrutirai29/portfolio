@@ -87,10 +87,7 @@ export default function World() {
     const backdrop = q(root, '.world-backdrop');
     const scrollHint = q(root, '.scroll-hint');
     const techHead = q(root, '.tech-head');
-    const railRows = [...root.querySelectorAll('.rail-row')];
-    const railChips = [...root.querySelectorAll('.rail-chip')];
-    const filmTrack = q(root, '.film-track');
-    const filmPanels = [...root.querySelectorAll('.film-panel')];
+    const capRows = [...root.querySelectorAll('.cap-row')];
     const scrapFacts = [...root.querySelectorAll('.scrap-fact')];
     const finalContent = q(root, '.final-content');
     const finalMark = q(root, '.final-mark');
@@ -111,7 +108,6 @@ export default function World() {
     const photo = q(root, '[data-photo]');
 
     let st = null;
-    let onTick = null;
 
     const ctx = gsap.context(() => {
       // ---------- initial states ----------
@@ -262,10 +258,10 @@ export default function World() {
         .to(s4, { opacity: 1, duration: 2.2, ease: 'power1.inOut' }, 45)
         .fromTo(g4, { scale: 1.6 }, { scale: 1, duration: 3.6, ease: 'power1.out' }, 45);
 
-      /* ============ TECH STACK hold — kinetic rails (48.5 → 55) ============ */
+      /* ============ TECH STACK hold — capability index (48.5 → 55) ============ */
       tl.fromTo(
-        railRows,
-        { xPercent: (i) => (i % 2 ? 5 : -5), opacity: 0 },
+        capRows,
+        { xPercent: (i) => (i % 2 ? 4 : -4), opacity: 0 },
         { xPercent: 0, opacity: 1, duration: 1.5, ease: 'power2.out', stagger: 0.1 },
         48.5
       ).fromTo(
@@ -275,9 +271,9 @@ export default function World() {
         48.6
       );
 
-      /* ============ RAILS COLLAPSE INTO THE CENTER (55 → 57.5) ============ */
+      /* ============ CAPABILITY ROWS COLLAPSE INTO THE CENTER (55 → 57.5) ============ */
       tl.to(
-        railRows,
+        capRows,
         { y: (i) => (2 - i) * 46, scale: 0.28, opacity: 0, duration: 2.1, ease: 'power2.in', stagger: 0.06 },
         55
       ).to(techHead, { opacity: 0, duration: 1.5, ease: 'power1.in' }, 55);
@@ -295,28 +291,25 @@ export default function World() {
         .to(s5, { opacity: 1, duration: 2.2, ease: 'power1.inOut' }, 60)
         .fromTo(g5, { scale: 1.55 }, { scale: 1, duration: 3.4, ease: 'power1.out' }, 60);
 
-      /* ============ PROJECTS hold — filmstrip (63.5 → 69) ============ */
+      /* ============ PROJECTS hold — editorial index (63.5 → 69) ============ */
       tl.fromTo(
         q(root, '[data-scene="projects"] [data-reveal="clip"]'),
         { clipPath: 'inset(0% 100% 0% 0%)' },
         { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power2.inOut' },
         63.5
-      ).fromTo(
-        filmTrack,
-        { x: 0 },
-        { x: () => -3 * window.innerWidth, duration: 5.0, ease: 'power1.inOut' },
-        63.5
-      );
-
-      // Each panel's content rises as the strip slides it into the frame
-      filmPanels.forEach((panel, i) => {
-        tl.fromTo(
-          panel.querySelectorAll('[data-reveal="rise"]'),
-          { y: 36, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.1, ease: 'power2.out', stagger: 0.08 },
-          63.6 + i * 1.25
+      )
+        .fromTo(
+          q(root, '.proj-stats'),
+          { y: 24, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.1, ease: 'power2.out' },
+          63.6
+        )
+        .fromTo(
+          revealsIn('projects', 'rise'),
+          { y: 46, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.4, ease: 'power2.out', stagger: 0.12 },
+          63.8
         );
-      });
 
       /* ============ ZOOM INTO PROJECTS CENTER (69 → 74) ============ */
       tl.to(g5, { scale: 6.5 * Z, duration: 5, ease: 'power1.in' }, 69).to(
@@ -417,7 +410,6 @@ export default function World() {
       if (spacer) spacer.style.height = `${TOTAL * pxPerUnit}px`;
 
       const progressEl = document.getElementById('journey-progress');
-      let focusActive = false;
       st = ScrollTrigger.create({
         trigger: spacer,
         start: 'top top',
@@ -426,27 +418,8 @@ export default function World() {
         animation: tl,
         onUpdate: (self) => {
           if (progressEl) progressEl.style.transform = `scaleX(${self.progress})`;
-          // Focus band is live while the tech rails hold (48.5 → 55 units)
-          const p = self.progress * 96;
-          focusActive = p > 48.4 && p < 55.1;
         },
       });
-
-      // Rail center-focus: sharpen items near the viewport center, soften edges
-      onTick = () => {
-        if (!focusActive || railChips.length === 0) return;
-        const cx = window.innerWidth / 2;
-        const half = window.innerWidth / 2;
-        for (const c of railChips) {
-          const r = c.getBoundingClientRect();
-          const d = Math.min(1, Math.abs(r.left + r.width / 2 - cx) / half);
-          const t = 1 - d * d;
-          c.style.opacity = (0.3 + 0.7 * t).toFixed(3);
-          c.style.filter = t > 0.99 ? 'none' : `blur(${(1.5 - t * 1.5).toFixed(2)}px)`;
-          c.style.scale = (0.94 + 0.1 * t).toFixed(3);
-        }
-      };
-      gsap.ticker.add(onTick);
 
       ScrollTrigger.refresh();
 
@@ -463,7 +436,6 @@ export default function World() {
 
     return () => {
       if (st) st.kill();
-      if (onTick) gsap.ticker.remove(onTick);
       ctx.revert();
     };
   }, [buildKey]);

@@ -1,16 +1,14 @@
 import React from 'react';
 import { TECH } from '../data.js';
 
-// Kinetic tech rails: each row is an infinitely scrolling strip of
-// technologies. Rows move at different speeds and directions; a
-// "focus band" at the viewport center sharpens items, and the whole
-// composition collapses into the center when the camera moves on.
-const RAILS = [
-  { key: 'lang', label: '01 · LANGUAGES', items: TECH.languages, dur: '26s', dir: 'normal' },
-  { key: 'web', label: '02 · WEB & FRONTEND', items: TECH.web, dur: '34s', dir: 'reverse' },
-  { key: 'backend', label: '03 · BACKEND & DATA', items: TECH.backend, dur: '22s', dir: 'normal' },
-  { key: 'security', label: '04 · SECURITY & SYSTEMS', items: TECH.security, dur: '30s', dir: 'reverse' },
-  { key: 'tools', label: '05 · TOOLS & CORE', items: TECH.tools.concat(TECH.concepts), dur: '38s', dir: 'normal' },
+// Editorial capability index (OKC-style): one row per domain, with a
+// script label on the left and the technology cluster flowing beside it.
+const CAPS = [
+  { key: 'lang', label: '01 · LANGUAGES', items: TECH.languages },
+  { key: 'web', label: '02 · WEB & FRONTEND', items: TECH.web },
+  { key: 'backend', label: '03 · BACKEND & DATA', items: TECH.backend },
+  { key: 'security', label: '04 · SECURITY & SYSTEMS', items: TECH.security },
+  { key: 'tools', label: '05 · TOOLS & CORE', items: TECH.tools.concat(TECH.concepts) },
 ];
 
 export default function TechScene() {
@@ -24,27 +22,16 @@ export default function TechScene() {
           </h2>
         </div>
 
-        <div className="tech-rails">
-          {RAILS.map((rail, ri) => (
-            <div className={`rail-rot ${ri % 2 ? 'rot-b' : 'rot-a'}`} key={rail.key}>
-              <div className="rail-row" data-rail={rail.key}>
-                <span className="rail-label">{rail.label}</span>
-                <div className="rail-track" style={{ ['--dur']: rail.dur, ['--dir']: rail.dir }}>
-                  <div className="rail-group">
-                    {rail.items.map((item, i) => (
-                      <span className="rail-chip" key={`${rail.key}-a-${i}`}>
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="rail-group" aria-hidden="true">
-                    {rail.items.map((item, i) => (
-                      <span className="rail-chip" key={`${rail.key}-b-${i}`}>
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+        <div className="cap-index">
+          {CAPS.map((cap) => (
+            <div className="cap-row" data-reveal="rise" key={cap.key}>
+              <span className="cap-label">{cap.label}</span>
+              <div className="cap-items">
+                {cap.items.map((item) => (
+                  <span className="cap-chip" key={item}>
+                    {item}
+                  </span>
+                ))}
               </div>
             </div>
           ))}
