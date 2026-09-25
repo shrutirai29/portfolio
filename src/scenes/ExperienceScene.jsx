@@ -3,6 +3,18 @@ import { CONTACT } from '../data.js';
 
 const EXPERIENCES = [
   {
+    period: '2024 — 2025',
+    role: 'Smart India Hackathon (SIH) — 6th Rank',
+    org: 'Rashtriya Raksha University (Internal Round)',
+    category: 'HACKATHONS & INNOVATION',
+    points: [
+      'Ranked 6th among all competing engineering teams in the university internal round of Smart India Hackathon (SIH).',
+      'Engineered an end-to-end prototype addressing high-impact national problem statements under tight hackathon timelines.',
+      'Demonstrated robust technical architecture, UI/UX execution, and rapid problem-solving before faculty & evaluation panels.',
+    ],
+    badge: '🏆 6th Rank · Finalist',
+  },
+  {
     period: '2025 · VIRTUAL',
     role: 'Full-Stack Software Engineering Intern',
     org: 'Infosys Springboard',
@@ -30,6 +42,13 @@ const EXPERIENCES = [
 
 const METRICS = [
   {
+    value: '6th Rank',
+    label: 'INTERNAL SIH HACKATHON',
+    detail: 'Smart India Hackathon · RRU Internal',
+    link: null,
+    icon: '🏆',
+  },
+  {
     value: 'Top 5%',
     label: 'TRYHACKME GLOBAL RANK',
     detail: '82 rooms · 46-day streak · 4 badges',
@@ -50,13 +69,6 @@ const METRICS = [
     link: null,
     icon: '🎓',
   },
-  {
-    value: '09+',
-    label: 'SHIPPED PROJECTS',
-    detail: 'Full-stack, AI, WebGL & Systems',
-    link: CONTACT.github,
-    icon: '🚀',
-  },
 ];
 
 export default function ExperienceScene() {
@@ -69,7 +81,7 @@ export default function ExperienceScene() {
             Journey &amp; <em>Milestones</em>
           </h2>
           <p className="exp-intro">
-            A track record of consistent hands-on building, competitive problem solving, and rigorous computer science.
+            A track record of competitive problem solving, hackathon excellence, and rigorous software engineering.
           </p>
         </div>
 
@@ -110,8 +122,8 @@ export default function ExperienceScene() {
 
         {/* Experience & Education Cards */}
         <div className="exp-cards-container">
-          {EXPERIENCES.map((exp, idx) => (
-            <div className="exp-timeline-card" key={exp.org} data-reveal="rise">
+          {EXPERIENCES.map((exp) => (
+            <div className="exp-timeline-card" key={exp.role} data-reveal="rise">
               <div className="exp-card-glow" aria-hidden="true" />
               <div className="exp-card-header">
                 <div>

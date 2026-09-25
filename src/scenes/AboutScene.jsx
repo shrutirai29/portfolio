@@ -76,26 +76,30 @@ export default function AboutScene() {
                 ))}
               </dl>
 
-              {/* Bio Actions */}
+              {/* Bio Actions — Clean, refined, balanced buttons */}
               <div className="about-cta-row" data-reveal="rise">
                 <a
                   href="resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="about-btn-primary"
+                  title="View and download Shruti Rai's official résumé"
                 >
-                  <span>Download Résumé</span>
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  <span>Download Résumé (PDF)</span>
+                  <svg className="btn-download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
                   </svg>
                 </a>
                 <button
                   type="button"
                   onClick={scrollToProjects}
                   className="about-btn-ghost"
+                  title="Scroll to view all 9 projects"
                 >
-                  <span>Explore All Projects (9)</span>
-                  <span aria-hidden="true">↓</span>
+                  <span>Explore Projects (9)</span>
+                  <span className="btn-arrow-down" aria-hidden="true">↓</span>
                 </button>
               </div>
             </div>

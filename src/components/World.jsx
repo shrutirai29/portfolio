@@ -112,7 +112,6 @@ export default function World({ lenis, returnInfo }) {
       gsap.set(g2, { transformOrigin: aOrigin, opacity: 1, yPercent: 0 });
 
       if (!reduced) {
-        // Scrub with 0.4 dampening and without anticipatePin prevents jitter when returning to 0
         const aTL = gsap.timeline({
           defaults: { ease: 'none' },
           scrollTrigger: {
@@ -144,7 +143,7 @@ export default function World({ lenis, returnInfo }) {
             clipPath: 'inset(0% 0% 0% 0%)',
             duration: 1.1,
             ease: 'power2.inOut',
-            scrollTrigger: { trigger: s3, start: 'top 70%', once: true },
+            scrollTrigger: { trigger: s3, start: 'top 75%', once: true },
           }
         );
       }
@@ -156,7 +155,7 @@ export default function World({ lenis, returnInfo }) {
           clipPath: 'inset(0% 0% 0% 0%)',
           duration: 1.1,
           ease: 'power2.inOut',
-          scrollTrigger: { trigger: s3, start: 'top 70%', once: true },
+          scrollTrigger: { trigger: s3, start: 'top 75%', once: true },
         }
       );
 
@@ -168,8 +167,8 @@ export default function World({ lenis, returnInfo }) {
           opacity: 1,
           duration: 0.9,
           ease: 'power2.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: s3, start: 'top 72%', once: true },
+          stagger: 0.08,
+          scrollTrigger: { trigger: s3, start: 'top 78%', once: true },
         }
       );
 
@@ -181,7 +180,7 @@ export default function World({ lenis, returnInfo }) {
           clipPath: 'inset(0% 0% 0% 0%)',
           duration: 1.1,
           ease: 'power2.inOut',
-          scrollTrigger: { trigger: s4, start: 'top 75%', once: true },
+          scrollTrigger: { trigger: s4, start: 'top 80%', once: true },
         }
       );
 
@@ -197,7 +196,7 @@ export default function World({ lenis, returnInfo }) {
             ease: 'power2.out',
             scrollTrigger: {
               trigger: row,
-              start: 'top 88%',
+              start: 'top 90%',
               once: true,
             },
           }
@@ -212,7 +211,7 @@ export default function World({ lenis, returnInfo }) {
           clipPath: 'inset(0% 0% 0% 0%)',
           duration: 1.1,
           ease: 'power2.inOut',
-          scrollTrigger: { trigger: s5, start: 'top 75%', once: true },
+          scrollTrigger: { trigger: s5, start: 'top 80%', once: true },
         }
       );
 
@@ -226,7 +225,7 @@ export default function World({ lenis, returnInfo }) {
             opacity: 1,
             duration: 0.9,
             ease: 'power2.out',
-            scrollTrigger: { trigger: s5, start: 'top 72%', once: true },
+            scrollTrigger: { trigger: s5, start: 'top 76%', once: true },
           }
         );
       }
@@ -241,7 +240,7 @@ export default function World({ lenis, returnInfo }) {
             opacity: 1,
             duration: 0.8,
             ease: 'power2.out',
-            scrollTrigger: { trigger: s5, start: 'top 70%', once: true },
+            scrollTrigger: { trigger: s5, start: 'top 75%', once: true },
           }
         );
       }
@@ -258,7 +257,7 @@ export default function World({ lenis, returnInfo }) {
             ease: 'power2.out',
             scrollTrigger: {
               trigger: row,
-              start: 'top 90%',
+              start: 'top 92%',
               once: true,
             },
           }
@@ -274,7 +273,7 @@ export default function World({ lenis, returnInfo }) {
             clipPath: 'inset(0% 0% 0% 0%)',
             duration: 1.1,
             ease: 'power2.inOut',
-            scrollTrigger: { trigger: sExp, start: 'top 75%', once: true },
+            scrollTrigger: { trigger: sExp, start: 'top 80%', once: true },
           }
         );
 
@@ -288,7 +287,7 @@ export default function World({ lenis, returnInfo }) {
             duration: 0.8,
             stagger: 0.08,
             ease: 'power2.out',
-            scrollTrigger: { trigger: sExp, start: 'top 72%', once: true },
+            scrollTrigger: { trigger: sExp, start: 'top 76%', once: true },
           }
         );
 
@@ -302,22 +301,22 @@ export default function World({ lenis, returnInfo }) {
               opacity: 1,
               duration: 0.85,
               ease: 'power2.out',
-              scrollTrigger: { trigger: card, start: 'top 86%', once: true },
+              scrollTrigger: { trigger: card, start: 'top 88%', once: true },
             }
           );
         });
       }
 
-      // ---------- SCENE 6: FUN FACTS ----------
+      // ---------- SCENE 6: FUN FACTS (Fast, responsive trigger) ----------
       gsap.fromTo(
         q(root, '[data-scene="facts"] [data-reveal="frame"]'),
         { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 },
         {
           clipPath: 'inset(0% 0% 0% 0%)',
           opacity: 1,
-          duration: 1.3,
+          duration: 1.2,
           ease: 'power2.inOut',
-          scrollTrigger: { trigger: s6, start: 'top 70%', once: true },
+          scrollTrigger: { trigger: s6, start: 'top 90%', once: true },
         }
       );
 
@@ -326,9 +325,9 @@ export default function World({ lenis, returnInfo }) {
         { clipPath: 'inset(0% 100% 0% 0%)' },
         {
           clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 1.1,
+          duration: 1.0,
           ease: 'power2.inOut',
-          scrollTrigger: { trigger: s6, start: 'top 73%', once: true },
+          scrollTrigger: { trigger: s6, start: 'top 90%', once: true },
         }
       );
 
@@ -340,22 +339,22 @@ export default function World({ lenis, returnInfo }) {
             y: 0,
             rotation: parseFloat(f.dataset.rot || 0),
             opacity: 1,
-            duration: 0.9,
+            duration: 0.85,
             ease: 'power2.out',
-            scrollTrigger: { trigger: f, start: 'top 90%', once: true },
+            scrollTrigger: { trigger: f, start: 'top 92%', once: true },
           }
         );
       });
 
-      // ---------- SCENE 7: CONTACT ----------
+      // ---------- SCENE 7: CONTACT (Triggers immediately on enter — 100% reliable) ----------
       gsap.fromTo(
         revealsIn('contact', 'clip'),
         { clipPath: 'inset(0% 100% 0% 0%)' },
         {
           clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 1.2,
+          duration: 1.0,
           ease: 'power2.inOut',
-          scrollTrigger: { trigger: s7, start: 'top 70%', once: true },
+          scrollTrigger: { trigger: s7, start: 'top 92%', once: true },
         }
       );
 
@@ -365,19 +364,19 @@ export default function World({ lenis, returnInfo }) {
         {
           y: 0,
           opacity: 1,
-          duration: 0.9,
+          duration: 0.85,
           ease: 'power2.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: s7, start: 'top 72%', once: true },
+          stagger: 0.08,
+          scrollTrigger: { trigger: s7, start: 'top 92%', once: true },
         }
       );
 
       if (finalMark) {
         gsap.to(finalMark, {
           autoAlpha: 1,
-          duration: 1.4,
+          duration: 1.2,
           ease: 'power1.out',
-          scrollTrigger: { trigger: s7, start: 'bottom bottom+=200', once: true },
+          scrollTrigger: { trigger: s7, start: 'top 85%', once: true },
         });
       }
 

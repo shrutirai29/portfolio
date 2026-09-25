@@ -1,18 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { euphoriaAudio } from '../lib/euphoriaAudio.js';
+import { euphoriaAudio, BTS_PLAYLIST } from '../lib/euphoriaAudio.js';
 
 export default function Navbar({ lenis }) {
   const [activeSection, setActiveSection] = useState('name');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(BTS_PLAYLIST[0]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const activeRef = useRef('name');
   const scrolledRef = useRef(false);
 
   useEffect(() => {
-    const unsub = euphoriaAudio.subscribe((playing) => {
-      setIsPlaying(playing);
+    const unsub = euphoriaAudio.subscribe((state) => {
+      setIsPlaying(state.isPlaying);
+      setCurrentTrack(state.currentTrack);
     });
     return unsub;
   }, []);
@@ -90,6 +92,16 @@ export default function Navbar({ lenis }) {
     euphoriaAudio.toggle();
   };
 
+  const handleNextTrack = (e) => {
+    e.stopPropagation();
+    euphoriaAudio.next();
+  };
+
+  const handlePrevTrack = (e) => {
+    e.stopPropagation();
+    euphoriaAudio.prev();
+  };
+
   const navItems = [
     { id: 'about', label: 'About' },
     { id: 'tech', label: 'Tech' },
@@ -129,23 +141,45 @@ export default function Navbar({ lenis }) {
 
         {/* Right: Actions */}
         <div className="header-actions">
-          {/* BTS Euphoria Instrumental Button */}
-          <button
-            onClick={handleAudioToggle}
-            className={`action-btn bts-toggle ${isPlaying ? 'bts-on' : ''}`}
-            title={isPlaying ? 'Euphoria Instrumental (BTS) — Click to Pause' : 'Play Euphoria Instrumental (BTS) 💜'}
-            aria-label="Toggle Euphoria Instrumental"
-          >
-            <span className="bts-heart" aria-hidden="true">💜</span>
-            <div className="sound-bars" aria-hidden="true">
-              <span className="bar bar-1" />
-              <span className="bar bar-2" />
-              <span className="bar bar-3" />
+          {/* BTS Sequential Playlist Pill */}
+          <div className="bts-audio-wrapper">
+            <button
+              onClick={handleAudioToggle}
+              className={`action-btn bts-toggle ${isPlaying ? 'bts-on' : ''}`}
+              title={isPlaying ? `Playing: ${currentTrack?.title} (BTS) — Click to Pause` : 'Play BTS Instrumentals 💜'}
+              aria-label="Toggle BTS Instrumentals"
+            >
+              <span className="bts-heart" aria-hidden="true">💜</span>
+              <div className="sound-bars" aria-hidden="true">
+                <span className="bar bar-1" />
+                <span className="bar bar-2" />
+                <span className="bar bar-3" />
+              </div>
+              <span className="sound-label truncate max-w-[95px]">
+                {currentTrack?.title}
+              </span>
+            </button>
+
+            {/* Quick Skip Buttons */}
+            <div className="bts-mini-controls">
+              <button
+                onClick={handlePrevTrack}
+                className="bts-ctrl-btn"
+                title="Previous BTS track"
+                aria-label="Previous track"
+              >
+                ‹
+              </button>
+              <button
+                onClick={handleNextTrack}
+                className="bts-ctrl-btn"
+                title="Next BTS track"
+                aria-label="Next track"
+              >
+                ›
+              </button>
             </div>
-            <span className="sound-label truncate max-w-[110px]">
-              {isPlaying ? 'Euphoria' : 'Euphoria ♫'}
-            </span>
-          </button>
+          </div>
 
           {/* Resume PDF Download/View */}
           <a
@@ -190,17 +224,33 @@ export default function Navbar({ lenis }) {
           ))}
         </div>
         <div className="mobile-drawer-footer">
-          <button
-            onClick={handleAudioToggle}
-            className={`w-full py-3 px-4 rounded-xl border text-xs font-bold tracking-wider flex items-center justify-center gap-2 mb-3 transition-colors ${
-              isPlaying
-                ? 'border-purple-400 bg-purple-950/60 text-purple-200 shadow-lg shadow-purple-900/30'
-                : 'border-white/10 bg-white/5 text-slate-300'
-            }`}
-          >
-            <span>💜</span>
-            <span>{isPlaying ? 'PAUSE EUPHORIA (BTS)' : 'PLAY EUPHORIA INSTRUMENTAL (BTS)'}</span>
-          </button>
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <button
+              onClick={handlePrevTrack}
+              className="p-2.5 rounded-lg border border-white/10 bg-white/5 text-purple-300 font-bold"
+              aria-label="Previous track"
+            >
+              ‹
+            </button>
+            <button
+              onClick={handleAudioToggle}
+              className={`flex-1 py-2.5 px-3 rounded-lg border text-xs font-bold tracking-wider flex items-center justify-center gap-2 ${
+                isPlaying
+                  ? 'border-purple-400 bg-purple-950/60 text-purple-200'
+                  : 'border-white/10 bg-white/5 text-slate-300'
+              }`}
+            >
+              <span>💜</span>
+              <span>{isPlaying ? `Playing: ${currentTrack?.title}` : `Play BTS Instrumentals`}</span>
+            </button>
+            <button
+              onClick={handleNextTrack}
+              className="p-2.5 rounded-lg border border-white/10 bg-white/5 text-purple-300 font-bold"
+              aria-label="Next track"
+            >
+              ›
+            </button>
+          </div>
           <a href="resume.pdf" target="_blank" rel="noopener noreferrer" className="mobile-resume-btn">
             Download Resume (PDF)
           </a>

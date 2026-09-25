@@ -4,6 +4,7 @@ import World from './components/World.jsx';
 import ProjectDetail from './components/ProjectDetail.jsx';
 import Navbar from './components/Navbar.jsx';
 import CustomCursor from './components/CustomCursor.jsx';
+import { euphoriaAudio } from './lib/euphoriaAudio.js';
 
 // Hash router — #/project/01 opens the detail page, anything else is home.
 function getRoute() {
@@ -52,6 +53,7 @@ export default function App({ lenis }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    euphoriaAudio.startAutoplayOnArrival();
   }, []);
 
   const handleReady = () => {
