@@ -1,6 +1,6 @@
 // BTS Instrumental Playlist Controller
 // Sequential tracks: Euphoria -> Life Goes On -> Still With You -> Magic Shop
-// Features: Auto-play on first touch/scroll, tab-visibility pause/resume, sequential playback
+// Features: Auto-play on arrival & first gesture, tab-visibility pause/resume, sequential playback
 
 const PLAYLIST = [
   { id: 'euphoria', title: 'Euphoria', file: 'euphoria.mp3' },
@@ -15,10 +15,12 @@ class BTSPlaylistController {
     this.currentIndex = 0;
     this.isPlaying = false;
     this.wasPlayingBeforeHidden = false;
-    this.volume = 0.45;
+    this.volume = 0.5;
     this.fadeInterval = null;
     this.listeners = new Set();
     this.hasUserInteracted = false;
+    this.listenersArmed = false;
+    this.boundGestureHandler = null;
   }
 
   subscribe(callback) {
@@ -57,12 +59,12 @@ class BTSPlaylistController {
         this.notify();
       });
 
-      // Play next song automatically when current one ends
+      // Sequential auto-play when track ends
       this.audio.addEventListener('ended', () => {
         this.next();
       });
 
-      // Handle Tab Visibility: pause when user switches to other tabs, resume when returning
+      // Pause when switching tabs, resume when returning
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
           if (this.isPlaying) {
@@ -79,7 +81,7 @@ class BTSPlaylistController {
 
       this.loadTrack(this.currentIndex);
     } catch {
-      // Audio error handling
+      // Audio setup fallback
     }
   }
 
@@ -95,9 +97,10 @@ class BTSPlaylistController {
 
   startAutoplayOnArrival() {
     this.init();
+    if (!this.audio) return;
 
-    // 1. Try immediate play (works in browsers that allow autoplay or on reload)
-    const promise = this.audio ? this.audio.play() : null;
+    // 1. Try immediate unmuted play (succeeds if user already visited or browser allows)
+    const promise = this.audio.play();
     if (promise !== undefined && promise !== null) {
       promise
         .then(() => {
@@ -106,51 +109,65 @@ class BTSPlaylistController {
           this.notify();
         })
         .catch(() => {
-          // 2. If blocked by browser autoplay policy, arm listener on first scroll or touch
-          const onFirstInteraction = () => {
-            if (this.hasUserInteracted) return;
-            this.hasUserInteracted = true;
-            this.play();
-            window.removeEventListener('pointerdown', onFirstInteraction);
-            window.removeEventListener('scroll', onFirstInteraction);
-            window.removeEventListener('keydown', onFirstInteraction);
-            window.removeEventListener('wheel', onFirstInteraction);
-          };
-
-          window.addEventListener('pointerdown', onFirstInteraction, { once: true, passive: true });
-          window.addEventListener('scroll', onFirstInteraction, { once: true, passive: true });
-          window.addEventListener('keydown', onFirstInteraction, { once: true, passive: true });
-          window.addEventListener('wheel', onFirstInteraction, { once: true, passive: true });
+          // Blocked by browser autoplay policy -> arm persistent gesture listeners
+          this.armGestureListeners();
         });
+    } else {
+      this.armGestureListeners();
     }
   }
 
-  toggle() {
-    this.init();
-    if (!this.audio) return false;
+  armGestureListeners() {
+    if (this.listenersArmed) return;
+    this.listenersArmed = true;
 
-    if (this.isPlaying) {
-      this.pause(true);
-    } else {
-      this.play();
-    }
-    return this.isPlaying;
+    const events = ['click', 'pointerdown', 'mousedown', 'touchstart', 'touchend', 'keydown'];
+
+    this.boundGestureHandler = () => {
+      if (this.isPlaying) {
+        this.removeGestureListeners();
+        return;
+      }
+
+      this.play().then((started) => {
+        if (started) {
+          this.hasUserInteracted = true;
+          this.removeGestureListeners();
+        }
+      });
+    };
+
+    events.forEach((evt) => {
+      window.addEventListener(evt, this.boundGestureHandler, { capture: true, passive: true });
+      document.addEventListener(evt, this.boundGestureHandler, { capture: true, passive: true });
+    });
+  }
+
+  removeGestureListeners() {
+    if (!this.listenersArmed || !this.boundGestureHandler) return;
+    const events = ['click', 'pointerdown', 'mousedown', 'touchstart', 'touchend', 'keydown'];
+    events.forEach((evt) => {
+      window.removeEventListener(evt, this.boundGestureHandler, { capture: true });
+      document.removeEventListener(evt, this.boundGestureHandler, { capture: true });
+    });
+    this.listenersArmed = false;
+    this.boundGestureHandler = null;
   }
 
   play() {
     this.init();
-    if (!this.audio) return;
+    if (!this.audio) return Promise.resolve(false);
 
     clearInterval(this.fadeInterval);
-    this.audio.volume = 0.05;
+    this.audio.volume = 0.08;
 
     const promise = this.audio.play();
-    if (promise !== undefined) {
-      promise
+    if (promise !== undefined && promise !== null) {
+      return promise
         .then(() => {
           this.isPlaying = true;
           this.notify();
-          let v = 0.05;
+          let v = 0.08;
           this.fadeInterval = setInterval(() => {
             v += 0.05;
             if (v >= this.volume) {
@@ -158,10 +175,16 @@ class BTSPlaylistController {
               clearInterval(this.fadeInterval);
             }
             if (this.audio) this.audio.volume = v;
-          }, 50);
+          }, 45);
+          return true;
         })
-        .catch(() => {});
+        .catch(() => {
+          this.isPlaying = false;
+          this.notify();
+          return false;
+        });
     }
+    return Promise.resolve(false);
   }
 
   pause(userInitiated = true) {
@@ -186,6 +209,18 @@ class BTSPlaylistController {
         if (this.audio) this.audio.volume = v;
       }
     }, 30);
+  }
+
+  toggle() {
+    this.init();
+    if (!this.audio) return false;
+
+    if (this.isPlaying) {
+      this.pause(true);
+    } else {
+      this.play();
+    }
+    return this.isPlaying;
   }
 
   next() {

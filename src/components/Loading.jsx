@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { IMAGES_TO_PRELOAD } from '../data.js';
+import { euphoriaAudio } from '../lib/euphoriaAudio.js';
 
 export default function Loading({ onDone }) {
   const rootRef = useRef(null);
@@ -44,7 +45,10 @@ export default function Loading({ onDone }) {
         .timeline()
         .to(root.querySelector('.loader-inner'), { y: -26, opacity: 0, duration: 0.5, ease: 'power2.in' })
         .to(root, { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.0, ease: 'power4.inOut' }, 0.15)
-        .add(() => onDone(), 0.15)
+        .add(() => {
+          onDone();
+          euphoriaAudio.startAutoplayOnArrival();
+        }, 0.15)
         .set(root, { display: 'none' });
     });
 
@@ -54,8 +58,18 @@ export default function Loading({ onDone }) {
     };
   }, [onDone]);
 
+  const handleInteract = () => {
+    euphoriaAudio.play();
+  };
+
   return (
-    <div className="loader" ref={rootRef} aria-label="Loading">
+    <div
+      className="loader"
+      ref={rootRef}
+      aria-label="Loading"
+      onClick={handleInteract}
+      onPointerDown={handleInteract}
+    >
       <div className="loader-inner">
         <div className="loader-mark font-hero">S.R.</div>
         <div className="loader-bar">

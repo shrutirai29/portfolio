@@ -68,6 +68,8 @@ export default function World({ lenis, returnInfo }) {
 
     const backdrop = q(root, '.world-backdrop');
     const nameCaption = q(root, '.name-caption');
+    const scrollCue = q(root, '.hero-scroll-cue');
+    const floaters = q(root, '.floaters');
     const portalRing = q(root, '.portal-ring');
     const photo = q(root, '[data-photo]');
     const scrapFacts = [...root.querySelectorAll('.scrap-fact')];
@@ -128,7 +130,9 @@ export default function World({ lenis, returnInfo }) {
 
         aTL
           .to(g2, { scale: 9.5 * Z, duration: 6, ease: 'power1.in' }, 0)
-          .to(nameCaption, { opacity: 0, duration: 2.2, ease: 'power1.in' }, 0)
+          .to(nameCaption, { opacity: 0, duration: 1.8, ease: 'power1.in' }, 0)
+          .to(scrollCue, { opacity: 0, duration: 1.4, ease: 'power1.in' }, 0)
+          .to(floaters, { opacity: 0, duration: 1.6, ease: 'power1.in' }, 0)
           .to(g2, { scale: 12 * Z, opacity: 0, duration: 2, ease: 'power1.in' }, 6)
           .fromTo(portalRing, { opacity: 0, scale: 0.6 }, { opacity: 0.9, duration: 1.0, ease: 'power2.out' }, 5.5)
           .to(portalRing, { opacity: 0, scale: 1.8, duration: 0.9, ease: 'power1.in' }, 6.5);
