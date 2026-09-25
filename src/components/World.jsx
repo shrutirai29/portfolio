@@ -26,7 +26,7 @@ export default function World({ lenis, returnInfo }) {
   const restoredRef = useRef(false);
   const [buildKey, setBuildKey] = useState(0);
 
-  // Rebuild when the viewport size changes meaningfully
+  // Rebuild when viewport width changes significantly
   useLayoutEffect(() => {
     let lastW = window.innerWidth;
     let timer = 0;
@@ -50,7 +50,7 @@ export default function World({ lenis, returnInfo }) {
 
     const isMobile = window.innerWidth <= 768;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const Z = (isMobile ? 0.75 : 1) * (reduced ? 0.55 : 1);
+    const Z = (isMobile ? 0.72 : 1) * (reduced ? 0.55 : 1);
 
     const scene = (name) => q(root, `[data-scene="${name}"]`);
     const stage = (name) => q(root, `[data-scene="${name}"] [data-stage]`);
@@ -65,8 +65,6 @@ export default function World({ lenis, returnInfo }) {
     const s7 = scene('contact');
 
     const g2 = stage('name');
-    const g3 = stage('about');
-    const g4 = stage('tech');
 
     const backdrop = q(root, '.world-backdrop');
     const nameCaption = q(root, '.name-caption');
@@ -79,7 +77,7 @@ export default function World({ lenis, returnInfo }) {
     const aOrigin = aFocal && g2 ? originAt(g2, aFocal) : '50% 50%';
 
     const ctx = gsap.context(() => {
-      // ---------- initial states ----------
+      // Clean initial states
       gsap.set(portalRing, { opacity: 0 });
       gsap.set(root.querySelectorAll('[data-reveal]:not([data-reveal="clip"])'), { opacity: 0 });
       gsap.set(root.querySelectorAll('[data-reveal="clip"]'), { clipPath: 'inset(0% 100% 0% 0%)' });
@@ -87,7 +85,7 @@ export default function World({ lenis, returnInfo }) {
       if (photo) gsap.set(photo, { clipPath: 'inset(0% 0% 100% 0%)' });
       if (finalMark) gsap.set(finalMark, { autoAlpha: 0 });
 
-      // ---------- journey progress bar ----------
+      // Progress bar
       const progressBar = document.querySelector('#journey-progress');
       ScrollTrigger.create({
         trigger: root,
@@ -98,7 +96,7 @@ export default function World({ lenis, returnInfo }) {
         },
       });
 
-      // ---------- background parallax across the whole journey ----------
+      // Background Parallax
       gsap.fromTo(
         backdrop,
         { scale: 1.12, xPercent: -1 },
@@ -110,38 +108,31 @@ export default function World({ lenis, returnInfo }) {
         }
       );
 
-      // ---------- SCENE 1: SHRUTI RAI — Zoom into the 'A' ----------
-      gsap.fromTo(
-        g2,
-        { yPercent: 6, opacity: 0.9 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          duration: 1.2,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: s2, start: 'top 92%', once: true },
-        }
-      );
+      // ---------- SCENE 1: SHRUTI RAI (Zoom into 'A' with zero flicker) ----------
+      gsap.set(g2, { transformOrigin: aOrigin, opacity: 1, yPercent: 0 });
 
-      gsap.set(g2, { transformOrigin: aOrigin });
       if (!reduced) {
+        // Scrub with 0.4 dampening and without anticipatePin prevents jitter when returning to 0
         const aTL = gsap.timeline({
           defaults: { ease: 'none' },
           scrollTrigger: {
             trigger: s2,
             start: 'top top',
-            end: '+=160%',
+            end: '+=150%',
             pin: true,
-            scrub: true,
-            anticipatePin: 1,
+            scrub: 0.4,
+            pinSpacing: true,
+            fastScrollEnd: true,
+            preventOverlaps: true,
           },
         });
+
         aTL
-          .to(g2, { scale: 10 * Z, duration: 6, ease: 'power1.in' }, 0)
-          .to(nameCaption, { opacity: 0, duration: 2.5, ease: 'power1.in' }, 0)
-          .to(g2, { scale: 12.5 * Z, opacity: 0, duration: 2, ease: 'power1.in' }, 6)
-          .fromTo(portalRing, { opacity: 0, scale: 0.6 }, { opacity: 0.9, duration: 1.0, ease: 'power2.out' }, 5.6)
-          .to(portalRing, { opacity: 0, scale: 1.8, duration: 0.9, ease: 'power1.in' }, 6.6);
+          .to(g2, { scale: 9.5 * Z, duration: 6, ease: 'power1.in' }, 0)
+          .to(nameCaption, { opacity: 0, duration: 2.2, ease: 'power1.in' }, 0)
+          .to(g2, { scale: 12 * Z, opacity: 0, duration: 2, ease: 'power1.in' }, 6)
+          .fromTo(portalRing, { opacity: 0, scale: 0.6 }, { opacity: 0.9, duration: 1.0, ease: 'power2.out' }, 5.5)
+          .to(portalRing, { opacity: 0, scale: 1.8, duration: 0.9, ease: 'power1.in' }, 6.5);
       }
 
       // ---------- SCENE 2: ABOUT ME ----------
@@ -151,7 +142,7 @@ export default function World({ lenis, returnInfo }) {
           { clipPath: 'inset(0% 0% 100% 0%)' },
           {
             clipPath: 'inset(0% 0% 0% 0%)',
-            duration: 1.2,
+            duration: 1.1,
             ease: 'power2.inOut',
             scrollTrigger: { trigger: s3, start: 'top 70%', once: true },
           }
@@ -175,7 +166,7 @@ export default function World({ lenis, returnInfo }) {
         {
           y: 0,
           opacity: 1,
-          duration: 0.95,
+          duration: 0.9,
           ease: 'power2.out',
           stagger: 0.1,
           scrollTrigger: { trigger: s3, start: 'top 72%', once: true },
@@ -195,14 +186,14 @@ export default function World({ lenis, returnInfo }) {
       );
 
       const capRows = [...s4.querySelectorAll('.cap-row')];
-      capRows.forEach((row, i) => {
+      capRows.forEach((row) => {
         gsap.fromTo(
           row,
-          { y: 35, opacity: 0 },
+          { y: 30, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.85,
+            duration: 0.8,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: row,
@@ -295,7 +286,7 @@ export default function World({ lenis, returnInfo }) {
             y: 0,
             opacity: 1,
             duration: 0.8,
-            stagger: 0.1,
+            stagger: 0.08,
             ease: 'power2.out',
             scrollTrigger: { trigger: sExp, start: 'top 72%', once: true },
           }
@@ -305,7 +296,7 @@ export default function World({ lenis, returnInfo }) {
         expCards.forEach((card) => {
           gsap.fromTo(
             card,
-            { y: 32, opacity: 0 },
+            { y: 30, opacity: 0 },
             {
               y: 0,
               opacity: 1,
@@ -392,27 +383,25 @@ export default function World({ lenis, returnInfo }) {
 
       ScrollTrigger.refresh();
 
-      // Restore position if returning from project detail
+      // Reliable position restoration
       if (!restoredRef.current) {
         restoredRef.current = true;
         if (returnInfo && returnInfo.scene) {
           const el = q(root, `[data-scene="${returnInfo.scene}"]`);
           if (el) {
-            const rect = el.getBoundingClientRect();
-            const top = rect.top + window.scrollY;
-            const maxOffset = Math.max(0, rect.height - window.innerHeight);
-            const target = top + Math.min(returnInfo.offset || 0, maxOffset);
             requestAnimationFrame(() => {
               if (lenis) {
                 lenis.resize();
-                lenis.scrollTo(target, { immediate: true, force: true });
+                lenis.scrollTo(el, { duration: 0.8, offset: -20 });
               } else {
-                window.scrollTo(0, target);
+                const rect = el.getBoundingClientRect();
+                window.scrollTo(0, rect.top + window.scrollY - 20);
               }
               ScrollTrigger.update();
             });
           }
         } else {
+          if (lenis) lenis.scrollTo(0, { immediate: true });
           window.scrollTo(0, 0);
         }
       }

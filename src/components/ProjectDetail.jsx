@@ -3,10 +3,12 @@ import { IMG, PROJECTS } from '../data.js';
 import { sounds } from '../lib/sound.js';
 
 export default function ProjectDetail({ index }) {
-  const project = PROJECTS.find((p) => p.index === index);
-  const pos = PROJECTS.findIndex((p) => p.index === index);
-  const prev = pos > 0 ? PROJECTS[pos - 1] : null;
-  const next = pos < PROJECTS.length - 1 ? PROJECTS[pos + 1] : null;
+  // Normalize index lookup (handles both '1' and '01')
+  const normIndex = String(parseInt(index, 10) || 1).padStart(2, '0');
+  const project = PROJECTS.find((p) => p.index === index || p.index === normIndex) || PROJECTS[0];
+  const pos = PROJECTS.findIndex((p) => p.index === project.index);
+  const prev = pos > 0 ? PROJECTS[pos - 1] : PROJECTS[PROJECTS.length - 1];
+  const next = pos < PROJECTS.length - 1 ? PROJECTS[pos + 1] : PROJECTS[0];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,21 +27,6 @@ export default function ProjectDetail({ index }) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [prev, next]);
 
-  if (!project) {
-    return (
-      <div className="detail-page">
-        <div className="world-backdrop" style={{ backgroundImage: `url(${IMG('background.webp')})` }} aria-hidden="true" />
-        <div className="world-shade" aria-hidden="true" />
-        <div className="detail-missing">
-          <p>Project not found.</p>
-          <a className="detail-back" href="#/">
-            ← BACK TO THE JOURNEY
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="detail-page">
       <div
@@ -55,9 +42,9 @@ export default function ProjectDetail({ index }) {
           className="detail-back"
           href="#/"
           onClick={() => sounds.playChime(520, 0.15)}
-          title="Press Esc to return"
+          title="Return to main portfolio"
         >
-          <span aria-hidden="true">←</span> BACK TO THE JOURNEY <span className="kbd-shortcut">(ESC)</span>
+          <span aria-hidden="true">←</span> BACK TO MAIN JOURNEY <span className="kbd-shortcut">(ESC)</span>
         </a>
         <div className="detail-header-actions">
           {project.live && (
@@ -149,37 +136,47 @@ export default function ProjectDetail({ index }) {
 
         {/* Prev / next navigation */}
         <nav className="detail-nav" aria-label="Other projects">
-          {prev ? (
-            <a
-              className="detail-nav-link"
-              href={`#/project/${prev.index}`}
-              onClick={() => sounds.playHover()}
-            >
-              <span className="detail-nav-dir" aria-hidden="true">←</span>
-              <span className="detail-nav-body">
-                <span className="detail-nav-kicker">PREVIOUS PROJECT</span>
-                <span className="detail-nav-name">{prev.name}</span>
-              </span>
-            </a>
-          ) : (
-            <span />
-          )}
-          {next ? (
-            <a
-              className="detail-nav-link detail-nav-next"
-              href={`#/project/${next.index}`}
-              onClick={() => sounds.playHover()}
-            >
-              <span className="detail-nav-body">
-                <span className="detail-nav-kicker">NEXT PROJECT</span>
-                <span className="detail-nav-name">{next.name}</span>
-              </span>
-              <span className="detail-nav-dir" aria-hidden="true">→</span>
-            </a>
-          ) : (
-            <span />
-          )}
+          <a
+            className="detail-nav-link"
+            href={`#/project/${prev.index}`}
+            onClick={() => sounds.playHover()}
+          >
+            <span className="detail-nav-dir" aria-hidden="true">←</span>
+            <span className="detail-nav-body">
+              <span className="detail-nav-kicker">PREVIOUS PROJECT</span>
+              <span className="detail-nav-name">{prev.name}</span>
+            </span>
+          </a>
+
+          <a
+            className="detail-nav-link detail-nav-next"
+            href={`#/project/${next.index}`}
+            onClick={() => sounds.playHover()}
+          >
+            <span className="detail-nav-body">
+              <span className="detail-nav-kicker">NEXT PROJECT</span>
+              <span className="detail-nav-name">{next.name}</span>
+            </span>
+            <span className="detail-nav-dir" aria-hidden="true">→</span>
+          </a>
         </nav>
+
+        {/* Quick Project Switcher: All 9 Projects Grid */}
+        <div className="detail-all-switcher">
+          <h3 className="detail-switcher-title">ALL 9 SELECTED PROJECTS</h3>
+          <div className="detail-switcher-grid">
+            {PROJECTS.map((p) => (
+              <a
+                key={p.index}
+                href={`#/project/${p.index}`}
+                className={`switcher-card ${p.index === project.index ? 'switcher-card-active' : ''}`}
+              >
+                <span className="switcher-num font-hero">{p.index}</span>
+                <span className="switcher-name">{p.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
 
         <p className="detail-foot">S.R. — {project.name} · {project.role}</p>
       </main>

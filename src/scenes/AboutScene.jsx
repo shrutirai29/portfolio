@@ -22,6 +22,18 @@ export default function AboutScene() {
     }
   };
 
+  const scrollToProjects = () => {
+    const el = document.querySelector('[data-scene="projects"]');
+    if (el) {
+      if (window.__lenis) {
+        window.__lenis.scrollTo(el, { duration: 1.2, offset: -30 });
+      } else {
+        const top = el.getBoundingClientRect().top + window.scrollY - 30;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <section className="scene" data-scene="about" aria-label="About Me">
       <div className="stage" data-stage>
@@ -77,13 +89,14 @@ export default function AboutScene() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                   </svg>
                 </a>
-                <a
-                  href="#/project/01"
+                <button
+                  type="button"
+                  onClick={scrollToProjects}
                   className="about-btn-ghost"
                 >
-                  <span>Explore Projects</span>
-                  <span aria-hidden="true">→</span>
-                </a>
+                  <span>Explore All Projects (9)</span>
+                  <span aria-hidden="true">↓</span>
+                </button>
               </div>
             </div>
           </div>

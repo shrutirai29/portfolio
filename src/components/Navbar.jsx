@@ -1,28 +1,65 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { btsAudio, TRACKS } from '../lib/btsAudio.js';
 import { sounds } from '../lib/sound.js';
 
 export default function Navbar({ lenis }) {
   const [activeSection, setActiveSection] = useState('name');
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isAudioOn, setIsAudioOn] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(TRACKS[0]);
+  const [playerOpen, setPlayerOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 60);
+  const activeRef = useRef('name');
+  const scrolledRef = useRef(false);
 
-      // Detect active section
-      const sections = ['name', 'about', 'tech', 'projects', 'experience', 'facts', 'contact'];
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.querySelector(`[data-scene="${sections[i]}"]`);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= window.innerHeight * 0.45) {
-            setActiveSection(sections[i]);
-            break;
+  useEffect(() => {
+    const unsub = btsAudio.subscribe((state) => {
+      setIsPlaying(state.isPlaying);
+      setCurrentTrack(state.currentTrack);
+    });
+    return unsub;
+  }, []);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const nextScrolled = scrollY > 60;
+          if (nextScrolled !== scrolledRef.current) {
+            scrolledRef.current = nextScrolled;
+            setIsScrolled(nextScrolled);
           }
-        }
+
+          if (scrollY < 120) {
+            if (activeRef.current !== 'name') {
+              activeRef.current = 'name';
+              setActiveSection('name');
+            }
+            ticking = false;
+            return;
+          }
+
+          const sections = ['contact', 'facts', 'experience', 'projects', 'tech', 'about', 'name'];
+          for (const s of sections) {
+            const el = document.querySelector(`[data-scene="${s}"]`);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= window.innerHeight * 0.45) {
+                if (activeRef.current !== s) {
+                  activeRef.current = s;
+                  setActiveSection(s);
+                }
+                break;
+              }
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
@@ -33,20 +70,40 @@ export default function Navbar({ lenis }) {
   const scrollToSection = (sceneName) => {
     sounds.playChime(640, 0.15);
     setMobileMenuOpen(false);
+
+    if (sceneName === 'name') {
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
     const target = document.querySelector(`[data-scene="${sceneName}"]`);
     if (target) {
-      const top = target.getBoundingClientRect().top + window.scrollY;
       if (lenis) {
-        lenis.scrollTo(top, { duration: 1.4 });
+        lenis.scrollTo(target, { duration: 1.2, offset: -30 });
       } else {
+        const top = target.getBoundingClientRect().top + window.scrollY - 30;
         window.scrollTo({ top, behavior: 'smooth' });
       }
     }
   };
 
   const handleAudioToggle = () => {
-    const on = sounds.toggleMute();
-    setIsAudioOn(on);
+    const playing = btsAudio.toggle();
+    setIsPlaying(playing);
+  };
+
+  const handleNextTrack = (e) => {
+    e.stopPropagation();
+    btsAudio.nextTrack();
+  };
+
+  const handlePrevTrack = (e) => {
+    e.stopPropagation();
+    btsAudio.prevTrack();
   };
 
   const navItems = [
@@ -81,27 +138,44 @@ export default function Navbar({ lenis }) {
               className={`dock-link ${activeSection === item.id ? 'dock-link-active' : ''}`}
             >
               <span className="dock-link-text">{item.label}</span>
-              {activeSection === item.id && <span className="dock-active-glow" layoutid="activeGlow" />}
+              {activeSection === item.id && <span className="dock-active-glow" />}
             </button>
           ))}
         </nav>
 
         {/* Right: Actions */}
         <div className="header-actions">
-          {/* Sound FX Toggle */}
-          <button
-            onClick={handleAudioToggle}
-            className={`action-btn sound-toggle ${isAudioOn ? 'sound-on' : ''}`}
-            title={isAudioOn ? 'Mute sound effects' : 'Enable ambient soundscape & interaction chimes'}
-            aria-label="Toggle Sound"
-          >
-            <div className="sound-bars" aria-hidden="true">
-              <span className="bar bar-1" />
-              <span className="bar bar-2" />
-              <span className="bar bar-3" />
-            </div>
-            <span className="sound-label">{isAudioOn ? 'SFX ON' : 'SFX'}</span>
-          </button>
+          {/* BTS Audio Player Pill */}
+          <div className="bts-audio-wrapper">
+            <button
+              onClick={handleAudioToggle}
+              className={`action-btn bts-toggle ${isPlaying ? 'bts-on' : ''}`}
+              title={isPlaying ? `Playing: ${currentTrack?.title} — Click to Pause` : 'Play BTS Lo-Fi Melodies 💜'}
+              aria-label="Toggle BTS Audio"
+            >
+              <span className="bts-heart" aria-hidden="true">💜</span>
+              <div className="sound-bars" aria-hidden="true">
+                <span className="bar bar-1" />
+                <span className="bar bar-2" />
+                <span className="bar bar-3" />
+              </div>
+              <span className="sound-label truncate max-w-[90px]">
+                {isPlaying ? currentTrack?.title.split(' ')[0] : 'BTS SFX'}
+              </span>
+            </button>
+
+            {/* Quick Track Switcher (when playing) */}
+            {isPlaying && (
+              <div className="bts-mini-controls">
+                <button onClick={handlePrevTrack} className="bts-ctrl-btn" title="Previous BTS track" aria-label="Previous track">
+                  ‹
+                </button>
+                <button onClick={handleNextTrack} className="bts-ctrl-btn" title="Next BTS track" aria-label="Next track">
+                  ›
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Resume PDF Download/View */}
           <a
@@ -146,6 +220,19 @@ export default function Navbar({ lenis }) {
           ))}
         </div>
         <div className="mobile-drawer-footer">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <button
+              onClick={handleAudioToggle}
+              className={`flex-1 py-2.5 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 ${
+                isPlaying
+                  ? 'border-purple-400 bg-purple-900/30 text-purple-200'
+                  : 'border-white/10 bg-white/5 text-slate-300'
+              }`}
+            >
+              <span>💜</span>
+              <span>{isPlaying ? `Playing: ${currentTrack?.title}` : 'Play BTS Music Box'}</span>
+            </button>
+          </div>
           <a href="resume.pdf" target="_blank" rel="noopener noreferrer" className="mobile-resume-btn">
             Download Resume (PDF)
           </a>
