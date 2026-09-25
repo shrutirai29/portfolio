@@ -1,24 +1,20 @@
-import { btsAudio } from './btsAudio.js';
+import { euphoriaAudio } from './euphoriaAudio.js';
 
 class SoundProxy {
   toggleMute() {
-    return btsAudio.toggle();
+    return euphoriaAudio.toggle();
   }
 
   isMuted() {
-    return !btsAudio.isPlaying;
+    return !euphoriaAudio.isPlaying;
   }
 
   playHover() {
-    if (btsAudio.isPlaying) {
-      btsAudio.playHoverChime();
-    }
+    // Pure silence on hover as requested - only Euphoria instrumental plays
   }
 
-  playChime(freq, dur) {
-    if (btsAudio.isPlaying) {
-      btsAudio.playTone(freq, dur, 'triangle', 0.1);
-    }
+  playChime() {
+    // Pure silence - only Euphoria instrumental plays
   }
 }
 

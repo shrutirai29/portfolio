@@ -1,22 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { btsAudio, TRACKS } from '../lib/btsAudio.js';
-import { sounds } from '../lib/sound.js';
+import { euphoriaAudio } from '../lib/euphoriaAudio.js';
 
 export default function Navbar({ lenis }) {
   const [activeSection, setActiveSection] = useState('name');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState(TRACKS[0]);
-  const [playerOpen, setPlayerOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const activeRef = useRef('name');
   const scrolledRef = useRef(false);
 
   useEffect(() => {
-    const unsub = btsAudio.subscribe((state) => {
-      setIsPlaying(state.isPlaying);
-      setCurrentTrack(state.currentTrack);
+    const unsub = euphoriaAudio.subscribe((playing) => {
+      setIsPlaying(playing);
     });
     return unsub;
   }, []);
@@ -34,7 +30,7 @@ export default function Navbar({ lenis }) {
             setIsScrolled(nextScrolled);
           }
 
-          if (scrollY < 120) {
+          if (scrollY < 100) {
             if (activeRef.current !== 'name') {
               activeRef.current = 'name';
               setActiveSection('name');
@@ -68,7 +64,6 @@ export default function Navbar({ lenis }) {
   }, []);
 
   const scrollToSection = (sceneName) => {
-    sounds.playChime(640, 0.15);
     setMobileMenuOpen(false);
 
     if (sceneName === 'name') {
@@ -92,18 +87,7 @@ export default function Navbar({ lenis }) {
   };
 
   const handleAudioToggle = () => {
-    const playing = btsAudio.toggle();
-    setIsPlaying(playing);
-  };
-
-  const handleNextTrack = (e) => {
-    e.stopPropagation();
-    btsAudio.nextTrack();
-  };
-
-  const handlePrevTrack = (e) => {
-    e.stopPropagation();
-    btsAudio.prevTrack();
+    euphoriaAudio.toggle();
   };
 
   const navItems = [
@@ -145,37 +129,23 @@ export default function Navbar({ lenis }) {
 
         {/* Right: Actions */}
         <div className="header-actions">
-          {/* BTS Audio Player Pill */}
-          <div className="bts-audio-wrapper">
-            <button
-              onClick={handleAudioToggle}
-              className={`action-btn bts-toggle ${isPlaying ? 'bts-on' : ''}`}
-              title={isPlaying ? `Playing: ${currentTrack?.title} — Click to Pause` : 'Play BTS Lo-Fi Melodies 💜'}
-              aria-label="Toggle BTS Audio"
-            >
-              <span className="bts-heart" aria-hidden="true">💜</span>
-              <div className="sound-bars" aria-hidden="true">
-                <span className="bar bar-1" />
-                <span className="bar bar-2" />
-                <span className="bar bar-3" />
-              </div>
-              <span className="sound-label truncate max-w-[90px]">
-                {isPlaying ? currentTrack?.title.split(' ')[0] : 'BTS SFX'}
-              </span>
-            </button>
-
-            {/* Quick Track Switcher (when playing) */}
-            {isPlaying && (
-              <div className="bts-mini-controls">
-                <button onClick={handlePrevTrack} className="bts-ctrl-btn" title="Previous BTS track" aria-label="Previous track">
-                  ‹
-                </button>
-                <button onClick={handleNextTrack} className="bts-ctrl-btn" title="Next BTS track" aria-label="Next track">
-                  ›
-                </button>
-              </div>
-            )}
-          </div>
+          {/* BTS Euphoria Instrumental Button */}
+          <button
+            onClick={handleAudioToggle}
+            className={`action-btn bts-toggle ${isPlaying ? 'bts-on' : ''}`}
+            title={isPlaying ? 'Euphoria Instrumental (BTS) — Click to Pause' : 'Play Euphoria Instrumental (BTS) 💜'}
+            aria-label="Toggle Euphoria Instrumental"
+          >
+            <span className="bts-heart" aria-hidden="true">💜</span>
+            <div className="sound-bars" aria-hidden="true">
+              <span className="bar bar-1" />
+              <span className="bar bar-2" />
+              <span className="bar bar-3" />
+            </div>
+            <span className="sound-label truncate max-w-[110px]">
+              {isPlaying ? 'Euphoria' : 'Euphoria ♫'}
+            </span>
+          </button>
 
           {/* Resume PDF Download/View */}
           <a
@@ -220,19 +190,17 @@ export default function Navbar({ lenis }) {
           ))}
         </div>
         <div className="mobile-drawer-footer">
-          <div className="flex items-center justify-between gap-3 mb-3">
-            <button
-              onClick={handleAudioToggle}
-              className={`flex-1 py-2.5 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 ${
-                isPlaying
-                  ? 'border-purple-400 bg-purple-900/30 text-purple-200'
-                  : 'border-white/10 bg-white/5 text-slate-300'
-              }`}
-            >
-              <span>💜</span>
-              <span>{isPlaying ? `Playing: ${currentTrack?.title}` : 'Play BTS Music Box'}</span>
-            </button>
-          </div>
+          <button
+            onClick={handleAudioToggle}
+            className={`w-full py-3 px-4 rounded-xl border text-xs font-bold tracking-wider flex items-center justify-center gap-2 mb-3 transition-colors ${
+              isPlaying
+                ? 'border-purple-400 bg-purple-950/60 text-purple-200 shadow-lg shadow-purple-900/30'
+                : 'border-white/10 bg-white/5 text-slate-300'
+            }`}
+          >
+            <span>💜</span>
+            <span>{isPlaying ? 'PAUSE EUPHORIA (BTS)' : 'PLAY EUPHORIA INSTRUMENTAL (BTS)'}</span>
+          </button>
           <a href="resume.pdf" target="_blank" rel="noopener noreferrer" className="mobile-resume-btn">
             Download Resume (PDF)
           </a>
