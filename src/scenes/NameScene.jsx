@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Particles from '../components/Particles.jsx';
+import { euphoriaAudio } from '../lib/euphoriaAudio.js';
 
 const LINE_ONE = 'SHRUTI'.split('');
 const LINE_TWO = ['R', 'A', 'I'];
@@ -16,6 +17,15 @@ const FLOATERS = [
 ];
 
 export default function NameScene() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    const unsub = euphoriaAudio.subscribe((state) => {
+      setIsPlaying(state.isPlaying);
+    });
+    return unsub;
+  }, []);
+
   return (
     <section className="scene" data-scene="name" aria-label="Shruti Rai — full name">
       <div className="stage" data-stage>
@@ -67,6 +77,20 @@ export default function NameScene() {
             </code>
           ))}
         </div>
+
+        {/* Interactive sound pill if sound is blocked */}
+        {!isPlaying && (
+          <button
+            type="button"
+            className="hero-sound-pill"
+            onClick={() => euphoriaAudio.play()}
+            title="Play BTS Euphoria Soundtrack"
+            aria-label="Play BTS Soundtrack"
+          >
+            <span className="sound-pill-heart" aria-hidden="true">💜</span>
+            <span>Tap for BTS Soundtrack</span>
+          </button>
+        )}
 
         {/* Scroll Indicator */}
         <div className="hero-scroll-cue" aria-hidden="true">

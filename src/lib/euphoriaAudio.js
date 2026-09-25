@@ -14,8 +14,10 @@ class BTSPlaylistController {
     this.audio = null;
     this.currentIndex = 0;
     this.isPlaying = false;
+    this.isStarting = false;
+    this.playPromise = null;
     this.wasPlayingBeforeHidden = false;
-    this.volume = 0.5;
+    this.volume = 0.55;
     this.fadeInterval = null;
     this.listeners = new Set();
     this.hasUserInteracted = false;
@@ -98,23 +100,15 @@ class BTSPlaylistController {
   startAutoplayOnArrival() {
     this.init();
     if (!this.audio) return;
+    if (this.isPlaying) return;
 
-    // 1. Try immediate unmuted play (succeeds if user already visited or browser allows)
-    const promise = this.audio.play();
-    if (promise !== undefined && promise !== null) {
-      promise
-        .then(() => {
-          this.isPlaying = true;
-          this.hasUserInteracted = true;
-          this.notify();
-        })
-        .catch(() => {
-          // Blocked by browser autoplay policy -> arm persistent gesture listeners
-          this.armGestureListeners();
-        });
-    } else {
-      this.armGestureListeners();
-    }
+    // 1. Try immediate unmuted play (works if browser allows or user already visited)
+    this.play().then((started) => {
+      if (!started) {
+        // Blocked by browser autoplay policy -> arm gesture listener on window
+        this.armGestureListeners();
+      }
+    });
   }
 
   armGestureListeners() {
@@ -123,7 +117,7 @@ class BTSPlaylistController {
 
     const events = ['click', 'pointerdown', 'mousedown', 'touchstart', 'touchend', 'keydown'];
 
-    this.boundGestureHandler = () => {
+    this.boundGestureHandler = (e) => {
       if (this.isPlaying) {
         this.removeGestureListeners();
         return;
@@ -139,7 +133,6 @@ class BTSPlaylistController {
 
     events.forEach((evt) => {
       window.addEventListener(evt, this.boundGestureHandler, { capture: true, passive: true });
-      document.addEventListener(evt, this.boundGestureHandler, { capture: true, passive: true });
     });
   }
 
@@ -148,7 +141,6 @@ class BTSPlaylistController {
     const events = ['click', 'pointerdown', 'mousedown', 'touchstart', 'touchend', 'keydown'];
     events.forEach((evt) => {
       window.removeEventListener(evt, this.boundGestureHandler, { capture: true });
-      document.removeEventListener(evt, this.boundGestureHandler, { capture: true });
     });
     this.listenersArmed = false;
     this.boundGestureHandler = null;
@@ -157,17 +149,24 @@ class BTSPlaylistController {
   play() {
     this.init();
     if (!this.audio) return Promise.resolve(false);
+    if (this.isPlaying) return Promise.resolve(true);
+    if (this.isStarting) return this.playPromise || Promise.resolve(false);
 
+    this.isStarting = true;
     clearInterval(this.fadeInterval);
-    this.audio.volume = 0.08;
+    this.audio.volume = 0.15;
 
     const promise = this.audio.play();
+    this.playPromise = promise;
+
     if (promise !== undefined && promise !== null) {
       return promise
         .then(() => {
+          this.isStarting = false;
           this.isPlaying = true;
           this.notify();
-          let v = 0.08;
+
+          let v = 0.15;
           this.fadeInterval = setInterval(() => {
             v += 0.05;
             if (v >= this.volume) {
@@ -175,15 +174,19 @@ class BTSPlaylistController {
               clearInterval(this.fadeInterval);
             }
             if (this.audio) this.audio.volume = v;
-          }, 45);
+          }, 40);
+
           return true;
         })
         .catch(() => {
+          this.isStarting = false;
           this.isPlaying = false;
           this.notify();
           return false;
         });
     }
+
+    this.isStarting = false;
     return Promise.resolve(false);
   }
 
@@ -208,7 +211,7 @@ class BTSPlaylistController {
       } else {
         if (this.audio) this.audio.volume = v;
       }
-    }, 30);
+    }, 25);
   }
 
   toggle() {

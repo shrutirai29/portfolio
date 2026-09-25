@@ -532,6 +532,113 @@ em {
   color: var(--faint);
 }
 
+.loader-enter-box {
+  margin-top: 18px;
+  animation: enter-box-in 0.4s ease forwards;
+}
+
+@keyframes enter-box-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.loader-enter-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(138, 92, 246, 0.35) 0%, rgba(74, 222, 155, 0.25) 100%);
+  border: 1.5px solid rgba(185, 168, 230, 0.6);
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 28px rgba(138, 92, 246, 0.45);
+  animation: enter-btn-pulse 1.8s ease-in-out infinite;
+  transition: all 0.25s ease;
+}
+
+.loader-enter-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, rgba(138, 92, 246, 0.55) 0%, rgba(74, 222, 155, 0.45) 100%);
+  border-color: #fff;
+  box-shadow: 0 0 45px rgba(185, 168, 230, 0.7);
+}
+
+@keyframes enter-btn-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(138, 92, 246, 0.35); transform: scale(1); }
+  50% { box-shadow: 0 0 38px rgba(185, 168, 230, 0.65); transform: scale(1.02); }
+}
+
+.enter-btn-sub {
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  color: #d8b4fe;
+  text-transform: none;
+}
+
+.loader-hint-micro {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.15em;
+  color: var(--faint);
+  opacity: 0.7;
+  margin-top: 8px;
+  animation: pulse-micro 2s infinite ease-in-out;
+}
+
+@keyframes pulse-micro {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+
+.hero-sound-pill {
+  position: absolute;
+  bottom: 8.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(22, 16, 48, 0.85);
+  border: 1.5px solid rgba(185, 168, 230, 0.6);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(138, 92, 246, 0.4);
+  animation: hero-pill-pulse 2s ease-in-out infinite;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero-sound-pill:hover {
+  transform: translateX(-50%) scale(1.06);
+  background: rgba(138, 92, 246, 0.4);
+  border-color: #fff;
+  box-shadow: 0 0 35px rgba(185, 168, 230, 0.7);
+}
+
+@keyframes hero-pill-pulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(138, 92, 246, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(185, 168, 230, 0.65); }
+}
+
+.sound-pill-heart {
+  font-size: 14px;
+  filter: drop-shadow(0 0 6px rgba(185, 168, 230, 0.9));
+}
+
 /* ------------------------------------------------------------
    World & Atmospheric Backdrops
    ------------------------------------------------------------ */
