@@ -697,7 +697,6 @@ em {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  will-change: transform, opacity;
 }
 
 .scene-content {
@@ -742,6 +741,7 @@ em {
   gap: 0.05em;
   z-index: 2;
   padding: 0 4vw;
+  will-change: transform, opacity;
 }
 
 .name-row {

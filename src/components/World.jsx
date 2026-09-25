@@ -67,16 +67,18 @@ export default function World({ lenis, returnInfo }) {
     const g2 = stage('name');
 
     const backdrop = q(root, '.world-backdrop');
+    const nameContent = q(root, '.name-content');
     const nameCaption = q(root, '.name-caption');
     const scrollCue = q(root, '.hero-scroll-cue');
     const floaters = q(root, '.floaters');
     const portalRing = q(root, '.portal-ring');
+    const soundPill = q(root, '.hero-sound-pill');
     const photo = q(root, '[data-photo]');
     const scrapFacts = [...root.querySelectorAll('.scrap-fact')];
     const finalMark = q(root, '.final-mark');
 
     const aFocal = q(root, '[data-focal="a"]');
-    const aOrigin = aFocal && g2 ? originAt(g2, aFocal) : '50% 50%';
+    const aOrigin = aFocal && nameContent ? originAt(nameContent, aFocal) : '50% 50%';
 
     const ctx = gsap.context(() => {
       // Clean initial states
@@ -110,33 +112,39 @@ export default function World({ lenis, returnInfo }) {
         }
       );
 
-      // ---------- SCENE 1: SHRUTI RAI (Zoom into 'A' with zero flicker) ----------
-      gsap.set(g2, { transformOrigin: aOrigin, autoAlpha: 1, yPercent: 0 });
+      // ---------- SCENE 1: SHRUTI RAI (Focal Zoom into 'A' — 100% stable & lightweight) ----------
+      if (nameContent) {
+        gsap.set(nameContent, { transformOrigin: aOrigin, opacity: 1, scale: 1 });
+      }
       gsap.set(portalRing, { opacity: 0, scale: 0.6 });
 
-      if (!reduced) {
+      if (!reduced && nameContent) {
         const aTL = gsap.timeline({
           defaults: { ease: 'none' },
           scrollTrigger: {
             trigger: s2,
             start: 'top top',
-            end: '+=140%',
+            end: '+=120%',
             pin: true,
             scrub: true,
-            anticipatePin: 1,
             pinSpacing: true,
-            invalidateOnRefresh: true,
           },
         });
 
         aTL
-          .to(g2, { scale: 9.5 * Z, duration: 6, ease: 'power1.in' }, 0)
-          .to(nameCaption, { opacity: 0, duration: 1.8, ease: 'power1.in' }, 0)
-          .to(scrollCue, { opacity: 0, duration: 1.4, ease: 'power1.in' }, 0)
-          .to(floaters, { opacity: 0, duration: 1.6, ease: 'power1.in' }, 0)
-          .to(g2, { scale: 12 * Z, autoAlpha: 0, duration: 2, ease: 'power1.in' }, 6)
-          .to(portalRing, { opacity: 0.9, duration: 1.0, ease: 'power2.out' }, 5.5)
-          .to(portalRing, { opacity: 0, scale: 1.8, duration: 0.9, ease: 'power1.in' }, 6.5);
+          .to(nameCaption, { opacity: 0, duration: 1.4, ease: 'power1.out' }, 0)
+          .to(scrollCue, { opacity: 0, duration: 1.2, ease: 'power1.out' }, 0)
+          .to(floaters, { opacity: 0, duration: 1.4, ease: 'power1.out' }, 0);
+
+        if (soundPill) {
+          aTL.to(soundPill, { opacity: 0, duration: 1.2, ease: 'power1.out' }, 0);
+        }
+
+        aTL
+          .to(nameContent, { scale: 3.5 * Z, duration: 4.8, ease: 'power1.in' }, 0)
+          .to(nameContent, { opacity: 0, duration: 1.6, ease: 'power2.in' }, 3.0)
+          .to(portalRing, { opacity: 0.9, scale: 1.3, duration: 2.0, ease: 'power2.out' }, 1.2)
+          .to(portalRing, { opacity: 0, scale: 2.5, duration: 1.5, ease: 'power2.in' }, 3.1);
       }
 
       // ---------- SCENE 2: ABOUT ME ----------
