@@ -6,6 +6,7 @@ import NameScene from '../scenes/NameScene.jsx';
 import AboutScene from '../scenes/AboutScene.jsx';
 import TechScene from '../scenes/TechScene.jsx';
 import ProjectsScene from '../scenes/ProjectsScene.jsx';
+import ExperienceScene from '../scenes/ExperienceScene.jsx';
 import FunFactsScene from '../scenes/FunFactsScene.jsx';
 import ContactScene from '../scenes/ContactScene.jsx';
 
@@ -25,8 +26,7 @@ export default function World({ lenis, returnInfo }) {
   const restoredRef = useRef(false);
   const [buildKey, setBuildKey] = useState(0);
 
-  // Rebuild when the viewport size changes meaningfully, so focal points
-  // and pinned layouts stay accurate.
+  // Rebuild when the viewport size changes meaningfully
   useLayoutEffect(() => {
     let lastW = window.innerWidth;
     let timer = 0;
@@ -50,36 +50,33 @@ export default function World({ lenis, returnInfo }) {
 
     const isMobile = window.innerWidth <= 768;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const Z = (isMobile ? 0.72 : 1) * (reduced ? 0.55 : 1);
+    const Z = (isMobile ? 0.75 : 1) * (reduced ? 0.55 : 1);
 
     const scene = (name) => q(root, `[data-scene="${name}"]`);
     const stage = (name) => q(root, `[data-scene="${name}"] [data-stage]`);
-    const revealsIn = (name, kind) => scene(name).querySelectorAll(`[data-reveal="${kind}"]`);
+    const revealsIn = (name, kind) => scene(name) ? scene(name).querySelectorAll(`[data-reveal="${kind}"]`) : [];
 
     const s2 = scene('name');
     const s3 = scene('about');
     const s4 = scene('tech');
     const s5 = scene('projects');
+    const sExp = scene('experience');
     const s6 = scene('facts');
     const s7 = scene('contact');
 
     const g2 = stage('name');
     const g3 = stage('about');
     const g4 = stage('tech');
-    const g5 = stage('projects');
-    const g6 = stage('facts');
-    const g7 = stage('contact');
 
     const backdrop = q(root, '.world-backdrop');
     const nameCaption = q(root, '.name-caption');
     const portalRing = q(root, '.portal-ring');
     const photo = q(root, '[data-photo]');
-    const capRows = [...root.querySelectorAll('.cap-row')];
     const scrapFacts = [...root.querySelectorAll('.scrap-fact')];
-    const projStats = q(root, '.proj-stats');
     const finalMark = q(root, '.final-mark');
 
-    const aOrigin = originAt(g2, q(root, '[data-focal="a"]'));
+    const aFocal = q(root, '[data-focal="a"]');
+    const aOrigin = aFocal && g2 ? originAt(g2, aFocal) : '50% 50%';
 
     const ctx = gsap.context(() => {
       // ---------- initial states ----------
@@ -87,8 +84,8 @@ export default function World({ lenis, returnInfo }) {
       gsap.set(root.querySelectorAll('[data-reveal]:not([data-reveal="clip"])'), { opacity: 0 });
       gsap.set(root.querySelectorAll('[data-reveal="clip"]'), { clipPath: 'inset(0% 100% 0% 0%)' });
       gsap.set(root.querySelectorAll('[data-reveal="frame"]'), { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 });
-      gsap.set(photo, { clipPath: 'inset(0% 0% 100% 0%)' });
-      gsap.set(finalMark, { autoAlpha: 0 });
+      if (photo) gsap.set(photo, { clipPath: 'inset(0% 0% 100% 0%)' });
+      if (finalMark) gsap.set(finalMark, { autoAlpha: 0 });
 
       // ---------- journey progress bar ----------
       const progressBar = document.querySelector('#journey-progress');
@@ -104,21 +101,19 @@ export default function World({ lenis, returnInfo }) {
       // ---------- background parallax across the whole journey ----------
       gsap.fromTo(
         backdrop,
-        { scale: 1.12, xPercent: -0.8 },
+        { scale: 1.12, xPercent: -1 },
         {
-          scale: 1.24,
-          xPercent: 0.8,
+          scale: 1.25,
+          xPercent: 1,
           ease: 'none',
           scrollTrigger: { trigger: root, start: 'top top', end: 'bottom bottom', scrub: true },
         }
       );
 
-      // ---------- SHRUTI RAI — the hero scrolls away naturally and the
-      // name arrives, then the pinned camera moment: ZOOM INTO THE A ----------
-      // A gentle rise-and-fade as the name scrolls into view (before the pin).
+      // ---------- SCENE 1: SHRUTI RAI — Zoom into the 'A' ----------
       gsap.fromTo(
         g2,
-        { yPercent: 8, opacity: 0.85 },
+        { yPercent: 6, opacity: 0.9 },
         {
           yPercent: 0,
           opacity: 1,
@@ -127,6 +122,7 @@ export default function World({ lenis, returnInfo }) {
           scrollTrigger: { trigger: s2, start: 'top 92%', once: true },
         }
       );
+
       gsap.set(g2, { transformOrigin: aOrigin });
       if (!reduced) {
         const aTL = gsap.timeline({
@@ -134,233 +130,269 @@ export default function World({ lenis, returnInfo }) {
           scrollTrigger: {
             trigger: s2,
             start: 'top top',
-            end: '+=200%',
+            end: '+=160%',
             pin: true,
             scrub: true,
             anticipatePin: 1,
           },
         });
         aTL
-          .to(g2, { scale: 11.5 * Z, duration: 6, ease: 'power1.in' }, 0)
-          .to(nameCaption, { opacity: 0, duration: 3.5, ease: 'power1.in' }, 0)
-          .to(g2, { scale: 13 * Z, opacity: 0, duration: 2, ease: 'power1.in' }, 6)
-          .fromTo(portalRing, { opacity: 0, scale: 0.5 }, { opacity: 0.85, duration: 0.9, ease: 'power2.out' }, 5.8)
-          .to(portalRing, { opacity: 0, scale: 1.7, duration: 0.8, ease: 'power1.in' }, 6.7);
-      } else {
-        gsap.to(nameCaption, { opacity: 1, duration: 0.8, delay: 0.2 });
+          .to(g2, { scale: 10 * Z, duration: 6, ease: 'power1.in' }, 0)
+          .to(nameCaption, { opacity: 0, duration: 2.5, ease: 'power1.in' }, 0)
+          .to(g2, { scale: 12.5 * Z, opacity: 0, duration: 2, ease: 'power1.in' }, 6)
+          .fromTo(portalRing, { opacity: 0, scale: 0.6 }, { opacity: 0.9, duration: 1.0, ease: 'power2.out' }, 5.6)
+          .to(portalRing, { opacity: 0, scale: 1.8, duration: 0.9, ease: 'power1.in' }, 6.6);
       }
 
-      // ---------- ABOUT — enter reveals, then a pinned camera zoom into
-      // OPEN TO WORK that passes through into the Tech Stack ----------
-      const badge = q(root, '[data-focal="badge"]');
-      const badgeOrigin = originAt(g3, badge);
-      gsap.set(g3, { transformOrigin: badgeOrigin });
-      const aboutZoom = reduced ? 2.4 : 6.8 * Z;
-      if (!reduced) {
-        // The section first pins fully in view and holds STATIC for a long
-        // settle beat (about a third of the pin range) so its content is
-        // readable before the camera push begins — on phones the section is
-        // exactly one viewport tall, so without this the zoom used to start
-        // the moment the section filled the screen.
-        const aboutTL = gsap.timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: { trigger: s3, start: 'top top', end: '+=150%', pin: true, scrub: true, anticipatePin: 1 },
-        });
-        aboutTL
-          .to({}, { duration: 8 })
-          .to(g3, { scale: aboutZoom, duration: 4.5, ease: 'power1.in' }, 8)
-          .to(g3, { scale: aboutZoom * 1.3, opacity: 0, duration: 1.7, ease: 'power1.in' }, 12.5)
-          .fromTo(g4, { yPercent: 16, opacity: 0.15 }, { yPercent: 0, opacity: 1, duration: 2.6, ease: 'power2.out' }, 10.5);
+      // ---------- SCENE 2: ABOUT ME ----------
+      if (photo) {
+        gsap.fromTo(
+          photo,
+          { clipPath: 'inset(0% 0% 100% 0%)' },
+          {
+            clipPath: 'inset(0% 0% 0% 0%)',
+            duration: 1.2,
+            ease: 'power2.inOut',
+            scrollTrigger: { trigger: s3, start: 'top 70%', once: true },
+          }
+        );
       }
 
       gsap.fromTo(
-        photo,
-        { clipPath: 'inset(0% 0% 100% 0%)' },
-        {
-          clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 1.3,
-          ease: 'power2.inOut',
-          scrollTrigger: { trigger: s3, start: 'top 65%', once: true },
-        }
-      );
-      gsap.fromTo(
-        q(root, '[data-scene="about"] [data-reveal="clip"]'),
+        revealsIn('about', 'clip'),
         { clipPath: 'inset(0% 100% 0% 0%)' },
         {
           clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 1.2,
-          ease: 'power2.inOut',
-          scrollTrigger: { trigger: s3, start: 'top 68%', once: true },
-        }
-      );
-      gsap.fromTo(
-        revealsIn('about', 'rise'),
-        { y: 34, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
           duration: 1.1,
-          ease: 'power2.out',
-          stagger: 0.12,
+          ease: 'power2.inOut',
           scrollTrigger: { trigger: s3, start: 'top 70%', once: true },
         }
       );
 
-      // ---------- TECH — enter reveals ----------
       gsap.fromTo(
-        q(root, '[data-scene="tech"] [data-reveal="clip"]'),
+        revealsIn('about', 'rise'),
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.95,
+          ease: 'power2.out',
+          stagger: 0.1,
+          scrollTrigger: { trigger: s3, start: 'top 72%', once: true },
+        }
+      );
+
+      // ---------- SCENE 3: TECH STACK ----------
+      gsap.fromTo(
+        revealsIn('tech', 'clip'),
         { clipPath: 'inset(0% 100% 0% 0%)' },
         {
           clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 1.2,
+          duration: 1.1,
           ease: 'power2.inOut',
           scrollTrigger: { trigger: s4, start: 'top 75%', once: true },
         }
       );
-      // Tech rows cascade in from alternate sides of the screen — even rows
-      // sweep in from the left, odd rows from the right, one after another
-      // (a visible wave), settling to center early in the section so every
-      // row is readable well before the next scene arrives.
-      gsap.fromTo(
-        capRows,
-        { xPercent: (i) => (i % 2 ? 88 : -88), rotation: (i) => (i % 2 ? -2.5 : 2.5), opacity: 0 },
-        {
-          xPercent: 0,
-          rotation: 0,
-          opacity: 1,
-          ease: 'none',
-          stagger: 0.18,
-          scrollTrigger: { trigger: s4, start: 'top 95%', end: 'top 68%', scrub: true },
-        }
-      );
 
-      // ---------- PROJECTS — enter reveals ----------
+      const capRows = [...s4.querySelectorAll('.cap-row')];
+      capRows.forEach((row, i) => {
+        gsap.fromTo(
+          row,
+          { y: 35, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.85,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: row,
+              start: 'top 88%',
+              once: true,
+            },
+          }
+        );
+      });
+
+      // ---------- SCENE 4: PROJECTS ----------
       gsap.fromTo(
-        q(root, '[data-scene="projects"] [data-reveal="clip"]'),
+        revealsIn('projects', 'clip'),
         { clipPath: 'inset(0% 100% 0% 0%)' },
         {
           clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 1.2,
+          duration: 1.1,
           ease: 'power2.inOut',
-          scrollTrigger: { trigger: s5, start: 'top 72%', once: true },
-        }
-      );
-      gsap.fromTo(
-        projStats,
-        { y: 24, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: s5, start: 'top 74%', once: true },
-        }
-      );
-      // Project rows cascade in from alternate sides (even from the left,
-      // odd from the right), one after another as a visible wave, converged
-      // early so the whole index is readable before Fun Facts arrives.
-      gsap.fromTo(
-        revealsIn('projects', 'rise'),
-        { xPercent: (i) => (i % 2 ? 92 : -92), rotation: (i) => (i % 2 ? -2.5 : 2.5), opacity: 0 },
-        {
-          xPercent: 0,
-          rotation: 0,
-          opacity: 1,
-          ease: 'none',
-          stagger: 0.125,
-          scrollTrigger: { trigger: s5, start: 'top 85%', end: 'top 45%', scrub: true },
+          scrollTrigger: { trigger: s5, start: 'top 75%', once: true },
         }
       );
 
-      // ---------- FUN FACTS — enter reveals ----------
+      const projStats = q(s5, '.proj-stats');
+      if (projStats) {
+        gsap.fromTo(
+          projStats,
+          { y: 22, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: s5, start: 'top 72%', once: true },
+          }
+        );
+      }
+
+      const projFilters = q(s5, '.proj-filters');
+      if (projFilters) {
+        gsap.fromTo(
+          projFilters,
+          { y: 16, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: s5, start: 'top 70%', once: true },
+          }
+        );
+      }
+
+      const projRows = [...s5.querySelectorAll('.proj-row-wrap')];
+      projRows.forEach((row) => {
+        gsap.fromTo(
+          row,
+          { y: 28, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.75,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: row,
+              start: 'top 90%',
+              once: true,
+            },
+          }
+        );
+      });
+
+      // ---------- SCENE 5: EXPERIENCE & MILESTONES ----------
+      if (sExp) {
+        gsap.fromTo(
+          revealsIn('experience', 'clip'),
+          { clipPath: 'inset(0% 100% 0% 0%)' },
+          {
+            clipPath: 'inset(0% 0% 0% 0%)',
+            duration: 1.1,
+            ease: 'power2.inOut',
+            scrollTrigger: { trigger: sExp, start: 'top 75%', once: true },
+          }
+        );
+
+        const metricCards = [...sExp.querySelectorAll('.metric-card, .metric-card-link')];
+        gsap.fromTo(
+          metricCards,
+          { y: 28, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: sExp, start: 'top 72%', once: true },
+          }
+        );
+
+        const expCards = [...sExp.querySelectorAll('.exp-timeline-card')];
+        expCards.forEach((card) => {
+          gsap.fromTo(
+            card,
+            { y: 32, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.85,
+              ease: 'power2.out',
+              scrollTrigger: { trigger: card, start: 'top 86%', once: true },
+            }
+          );
+        });
+      }
+
+      // ---------- SCENE 6: FUN FACTS ----------
       gsap.fromTo(
         q(root, '[data-scene="facts"] [data-reveal="frame"]'),
         { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 },
         {
           clipPath: 'inset(0% 0% 0% 0%)',
           opacity: 1,
-          duration: 1.4,
+          duration: 1.3,
           ease: 'power2.inOut',
           scrollTrigger: { trigger: s6, start: 'top 70%', once: true },
         }
       );
+
       gsap.fromTo(
-        q(root, '[data-scene="facts"] [data-reveal="clip"]'),
+        revealsIn('facts', 'clip'),
+        { clipPath: 'inset(0% 100% 0% 0%)' },
+        {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          duration: 1.1,
+          ease: 'power2.inOut',
+          scrollTrigger: { trigger: s6, start: 'top 73%', once: true },
+        }
+      );
+
+      scrapFacts.forEach((f) => {
+        gsap.fromTo(
+          f,
+          { y: 25, opacity: 0 },
+          {
+            y: 0,
+            rotation: parseFloat(f.dataset.rot || 0),
+            opacity: 1,
+            duration: 0.9,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: f, start: 'top 90%', once: true },
+          }
+        );
+      });
+
+      // ---------- SCENE 7: CONTACT ----------
+      gsap.fromTo(
+        revealsIn('contact', 'clip'),
         { clipPath: 'inset(0% 100% 0% 0%)' },
         {
           clipPath: 'inset(0% 0% 0% 0%)',
           duration: 1.2,
           ease: 'power2.inOut',
-          scrollTrigger: { trigger: s6, start: 'top 73%', once: true },
-        }
-      );
-      const factEntries = [
-        { x: -90, y: 16, rotation: -8 },
-        { x: 90, y: -12, rotation: 8 },
-        { x: 30, y: 56, rotation: 6 },
-        { x: -64, y: -18, rotation: -6 },
-        { x: 0, y: 32, rotation: 10, scale: 0.4 },
-        { x: 72, y: 20, rotation: -8 },
-      ];
-      scrapFacts.forEach((f, i) => {
-        const from = factEntries[i] || { x: -50, y: 24, rotation: -4 };
-        gsap.fromTo(
-          f,
-          { ...from, opacity: 0 },
-          {
-            x: 0,
-            y: 0,
-            rotation: parseFloat(f.dataset.rot || 0),
-            scale: 1,
-            opacity: 1,
-            duration: 1.1,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: s6, start: 'top 78%', once: true },
-          }
-        );
-      });
-
-      // ---------- CONTACT — enter reveals + closing S.R. ----------
-      gsap.fromTo(
-        q(root, '[data-scene="contact"] [data-reveal="clip"]'),
-        { clipPath: 'inset(0% 100% 0% 0%)' },
-        {
-          clipPath: 'inset(0% 0% 0% 0%)',
-          duration: 1.3,
-          ease: 'power2.inOut',
           scrollTrigger: { trigger: s7, start: 'top 70%', once: true },
         }
       );
+
       gsap.fromTo(
         revealsIn('contact', 'rise'),
-        { y: 26, opacity: 0 },
+        { y: 25, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.9,
           ease: 'power2.out',
-          stagger: 0.08,
+          stagger: 0.1,
           scrollTrigger: { trigger: s7, start: 'top 72%', once: true },
         }
       );
-      gsap.to(finalMark, {
-        autoAlpha: 1,
-        duration: 1.6,
-        ease: 'power1.out',
-        scrollTrigger: { trigger: s7, start: 'bottom bottom+=260', once: true },
-      });
+
+      if (finalMark) {
+        gsap.to(finalMark, {
+          autoAlpha: 1,
+          duration: 1.4,
+          ease: 'power1.out',
+          scrollTrigger: { trigger: s7, start: 'bottom bottom+=200', once: true },
+        });
+      }
 
       ScrollTrigger.refresh();
 
-      if (import.meta.env.DEV) {
-        window.__journey = { sts: ScrollTrigger.getAll() };
-      }
-
-      // Restore the journey position once (first build) when returning from a
-      // project page. The position is scene-relative, and the scene top is
-      // re-measured here — after pins/spacers exist — so it stays exact even
-      // if the viewport changed between visits. A rAF keeps us after Lenis's
-      // own sync, and force bypasses Lenis if it is stopped/locked.
+      // Restore position if returning from project detail
       if (!restoredRef.current) {
         restoredRef.current = true;
         if (returnInfo && returnInfo.scene) {
@@ -372,9 +404,6 @@ export default function World({ lenis, returnInfo }) {
             const target = top + Math.min(returnInfo.offset || 0, maxOffset);
             requestAnimationFrame(() => {
               if (lenis) {
-                // Lenis caches document dimensions, but this fresh mount just
-                // inserted pin spacers — force a re-measure or scrollTo will
-                // clamp against the stale (tiny) limit.
                 lenis.resize();
                 lenis.scrollTo(target, { immediate: true, force: true });
               } else {
@@ -405,6 +434,7 @@ export default function World({ lenis, returnInfo }) {
         <AboutScene />
         <TechScene />
         <ProjectsScene />
+        <ExperienceScene />
         <FunFactsScene />
         <ContactScene />
       </div>

@@ -4,9 +4,6 @@ import Particles from '../components/Particles.jsx';
 const LINE_ONE = 'SHRUTI'.split('');
 const LINE_TWO = ['R', 'A', 'I'];
 
-// Floating dev-humor snippets — they drift around the name like little
-// sticky notes from a very relatable codebase. Pure jokes, nothing claimed
-// as fact. Positions hug the edges so the big letters stay readable.
 const FLOATERS = [
   { text: '// works on my machine 🤷', left: '4%', top: '13%', rot: -5, dur: 7, delay: 0.2 },
   { text: 'while (alive) { coffee(); }', right: '5%', top: '19%', rot: 4, dur: 8.5, delay: 1.1 },
@@ -26,25 +23,33 @@ export default function NameScene() {
         <div className="scene-content name-content">
           <div className="name-row">
             {LINE_ONE.map((l, i) => (
-              <span key={i} className="letter">
+              <span key={i} className="letter" data-letter={l}>
                 {l}
               </span>
             ))}
           </div>
           <div className="name-row name-row-a">
             {LINE_TWO.map((l, i) => (
-              <span key={i} className={`letter${l === 'A' ? ' letter-a' : ''}`} data-focal={l === 'A' ? 'a' : undefined}>
+              <span
+                key={i}
+                className={`letter${l === 'A' ? ' letter-a' : ''}`}
+                data-focal={l === 'A' ? 'a' : undefined}
+                data-letter={l}
+              >
                 {l}
                 {l === 'A' && <span className="portal-ring" aria-hidden="true" />}
               </span>
             ))}
           </div>
         </div>
+
         <div className="name-caption">
           <span>B.TECH CSE · RASHTRIYA RAKSHA UNIVERSITY</span>
           <span className="name-caption-dot">·</span>
-          <span>FULL-STACK · AI · SECURITY</span>
+          <span>FULL-STACK · AI · CYBERSECURITY</span>
         </div>
+
+        {/* Floating dev jokes */}
         <div className="floaters" aria-hidden="true">
           {FLOATERS.map((f, i) => (
             <code
@@ -62,6 +67,15 @@ export default function NameScene() {
             </code>
           ))}
         </div>
+
+        {/* Scroll Indicator */}
+        <div className="hero-scroll-cue" aria-hidden="true">
+          <div className="scroll-cue-mouse">
+            <div className="scroll-cue-wheel" />
+          </div>
+          <span className="scroll-cue-text">SCROLL TO ENTER</span>
+        </div>
+
         <div className="zoom-dark" data-zoom-dark />
         <div className="vignette vignette-name" />
       </div>

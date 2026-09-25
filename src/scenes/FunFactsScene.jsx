@@ -1,8 +1,6 @@
 import React from 'react';
 import { FACTS, FACTS_INTRO, IMG } from '../data.js';
 
-// Settled rotations for the scrapbook pieces (applied by the timeline,
-// so GSAP owns transforms — no CSS/GSAP conflicts).
 const ROTS = [-1.6, 1.8, -1.2, 2.1, -2.2, 1.3];
 
 export default function FunFactsScene() {
@@ -28,7 +26,7 @@ export default function FunFactsScene() {
               </div>
             </div>
             <span className="scrap-tape" aria-hidden="true" />
-            <span className="scrap-note">THE ANIME EDITION — ONE OF MANY</span>
+            <span className="scrap-note">THE ANIME EDITION · CREATIVE ENERGY</span>
             <div className="anime-float" aria-hidden="true">
               <img src={IMG('anime2.webp')} alt="" loading="lazy" decoding="async" />
             </div>
