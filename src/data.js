@@ -14,11 +14,12 @@ export const CONTACT = {
 
 export const TECH = {
   languages: ['C', 'C++', 'Java', 'Python', 'JavaScript', 'TypeScript'],
-  web: ['HTML5', 'CSS3', 'React.js', 'Vite', 'Node.js', 'Express.js', 'Tailwind CSS', 'WebGL'],
-  backend: ['Flask', 'MongoDB', 'SQL', 'PostgreSQL', 'SQLAlchemy', 'REST APIs', 'JWT Auth', 'Docker'],
-  tools: ['Git', 'GitHub', 'VS Code', 'Postman', 'Odoo 19', 'Linux'],
-  security: ['TryHackMe Top 5%', 'Secure Coding', 'OWASP Top 10', 'Bcrypt Encryption'],
-  concepts: ['OOP', 'Data Structures & Algorithms', 'System Architecture', 'Prompt Engineering'],
+  web: ['React.js', 'JavaScript', 'TypeScript', 'HTML5', 'CSS3', 'Tailwind CSS'],
+  backend: ['Node.js', 'Express.js', 'FastAPI', 'Flask', 'Python', 'REST APIs', 'JWT Authentication', 'MongoDB', 'SQLite', 'SQLAlchemy'],
+  tools: ['Git', 'GitHub', 'Postman', 'VS Code', 'Linux', 'Render', 'Cloudinary'],
+  aiml: ['TensorFlow', 'Scikit-learn', 'YOLOv8', 'OpenCV', 'CNN Image Classification', 'OCR', 'Plotly', 'Streamlit'],
+  security: ['TryHackMe Top 2%', '100+ Rooms Completed', 'Cybersecurity', 'JWT Auth', 'OWASP Top 10', 'Bcrypt Encryption'],
+  concepts: ['Data Structures & Algorithms (200+ LeetCode)', 'OOP', 'System Architecture', 'Full-Stack Development'],
 };
 
 export const PROJECTS = [
@@ -668,47 +669,47 @@ export const FACTS_INTRO = "The résumé's footnotes — the person behind the c
 
 export const FACTS = [
   {
-    icon: '🎭',
-    title: 'Drama club VP',
-    text: "Vice President & Treasurer of Qalavant — Rashtriya Raksha University's drama & films club. Comfortable on a stage that isn't a browser tab.",
+    icon: '🥈',
+    title: 'Hackathon podiums',
+    text: 'Secured 2nd Position in a hackathon at IIT Gandhinagar, alongside 6th Position in the Smart India Hackathon (SIH) Internal Round at RRU.',
   },
   {
     icon: '🛡️',
-    title: 'Top 5% on TryHackMe',
-    text: '82 rooms completed, a 46-day streak and 4 badges — learning how systems break so I can build them better.',
+    title: 'Top 2% on TryHackMe',
+    text: 'Ranked in the Top 2% globally on TryHackMe, completing 100+ rooms — mastering offensive security and network defense to build secure, resilient software.',
   },
   {
-    icon: '🧮',
-    title: '100+ LeetCode problems',
-    text: '109 solved — 40 Easy, 46 Medium, 23 Hard — DSA grind in Python and C++, between shipped projects.',
+    icon: '⚡',
+    title: '200+ LeetCode problems',
+    text: 'Solved 200+ problems on LeetCode with continuous problem-solving practice in Python and C++ across core data structures and algorithmic patterns.',
   },
   {
-    icon: '🏗️',
-    title: 'Builder energy',
-    text: 'Healthcare, agriculture, fleet Odoo modules, typing games — nine public projects across React, Flask, Python and AI stacks, not one tutorial clone.',
+    icon: '🎭',
+    title: 'Drama club VP & Treasurer',
+    text: "Served as Vice President & Treasurer of Qalavant, the Drama and Films Club at RRU — leading production budgets and creative teams.",
   },
   {
     icon: '💼',
     title: 'Infosys Springboard',
-    text: 'Virtual full-stack engineering internship, 2025 — certificates earned, industry patterns internalized.',
+    text: 'Virtual Learning Internship – Software Engineering / Full-Stack Track (2025) — completed structured learning and technical assessments in software development.',
   },
   {
-    icon: '🔐',
-    title: 'Security × development',
-    text: 'I care how systems are built AND how they can be secured — JWT auth, hashed passwords and safe defaults in every project.',
+    icon: '🎓',
+    title: 'Academic Excellence (8.17 CGPA)',
+    text: 'B.Tech in Computer Science and Engineering (Specialization: Cybersecurity) at Rashtriya Raksha University with a consistent 8.17 CGPA.',
   },
 ];
 
 export const ABOUT = {
   openToWork: 'OPEN TO WORK',
   intro:
-    'Computer Science student at Rashtriya Raksha University, Gandhinagar — building real-world applications with AI and modern web technologies.',
-  body: 'I enjoy backend engineering, cybersecurity and scalable systems. From AI-powered healthcare prototypes to agriculture marketplaces with CNN-based disease detection, I love turning ambitious ideas into working products — and learning the offensive side of security along the way.',
+    'B.Tech Computer Science student specializing in Cybersecurity at Rashtriya Raksha University, with hands-on experience building web applications and software projects using React, JavaScript, TypeScript, Node.js, Express, and Python.',
+  body: 'Experienced in developing frontend interfaces, backend services, database-driven applications, and integrating AI-based features. Passionate about full-stack development, competitive problem solving, and building practical, secure software solutions.',
   quick: [
     ['Location', 'Gandhinagar, Gujarat, India'],
-    ['Degree', 'B.Tech CSE · 2024 – 2028'],
-    ['University', 'Rashtriya Raksha University'],
-    ['Focus', 'Backend · AI · Security'],
+    ['Degree', 'B.Tech CSE (Cybersecurity) · 2024 – 2028'],
+    ['University', 'Rashtriya Raksha University (CGPA: 8.17)'],
+    ['Focus', 'Full-Stack · AI / ML · Cybersecurity'],
   ],
 };
 
